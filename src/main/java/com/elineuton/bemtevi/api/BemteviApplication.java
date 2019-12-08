@@ -9,7 +9,6 @@ public class BemteviApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(BemteviApplication.class, args);
 		
-		System.out.println("Pronto!");
 	}
 	
 	
