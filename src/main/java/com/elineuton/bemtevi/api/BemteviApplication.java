@@ -8,13 +8,18 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.elineuton.bemtevi.api.domain.Instituicao;
+import com.elineuton.bemtevi.api.domain.Unidade;
 import com.elineuton.bemtevi.api.repositories.InstituicaoRepository;
+import com.elineuton.bemtevi.api.repositories.UnidadeRepository;
 
 @SpringBootApplication
 public class BemteviApplication implements CommandLineRunner{
 
 	@Autowired
-	InstituicaoRepository repo;
+	InstituicaoRepository instituicaoRepository;
+	
+	@Autowired
+	UnidadeRepository unidadeRepository;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(BemteviApplication.class, args);
@@ -28,7 +33,12 @@ public class BemteviApplication implements CommandLineRunner{
 		Instituicao i1 = new Instituicao(null, "Vovó Francisca");
 		Instituicao i2 = new Instituicao(null, "Vovó Ataíde");
 		
-		repo.saveAll(Arrays.asList(i1, i2));
+		Unidade u1 = new Unidade(null, "Unidade 1","36237090","unidade1@vovofrancisca.com","ativa", i1);
+		Unidade u2 = new Unidade(null, "Unidade 2","36231121","unidade2@vovofrancisca.com","inativa", i1);
+		Unidade u3 = new Unidade(null, "Unidade 1","36250010","unidade1@vovoataide.com","ativa", i2);
+		
+		instituicaoRepository.saveAll(Arrays.asList(i1, i2));
+		unidadeRepository.saveAll(Arrays.asList(u1, u2, u3));
 		
 	}
 	
