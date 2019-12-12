@@ -1,12 +1,12 @@
 package com.elineuton.bemtevi.api.domain;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -17,34 +17,25 @@ import lombok.Setter;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(of="id")
-public class Unidade implements Serializable {
-	
-	private static final long serialVersionUID = 1L;
+@EqualsAndHashCode(of = "id")
+public class AnoLetivo implements Serializable {
 
+	private static final long serialVersionUID = 1L;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Getter
 	private Integer id;
 	
 	@Getter @Setter
-	private String nome;
+	private String descricao;
 	
 	@Getter @Setter
-	private Endereco endereco;
-	
-	//TODO Implementar a anotação @ELEMENTCOLLECTION
-	@Getter @Setter
-	private String telefone;
+	//@Temporal(TemporalType.DATE)
+	private LocalDate dataInicial;
 	
 	@Getter @Setter
-	private String email;
-	
-	@Getter @Setter
-	private String status;
-	
-	@ManyToOne
-	@Getter @Setter
-	private Instituicao instituicao;
+	//@Temporal(TemporalType.DATE)
+	private LocalDate dataFinal;
 
 }
