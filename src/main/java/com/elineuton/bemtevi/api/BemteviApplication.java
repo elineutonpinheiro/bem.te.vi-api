@@ -9,15 +9,19 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import com.elineuton.bemtevi.api.domain.Aluno;
 import com.elineuton.bemtevi.api.domain.AnoLetivo;
 import com.elineuton.bemtevi.api.domain.Atividade;
 import com.elineuton.bemtevi.api.domain.Endereco;
 import com.elineuton.bemtevi.api.domain.Instituicao;
+import com.elineuton.bemtevi.api.domain.Profissional;
 import com.elineuton.bemtevi.api.domain.Turma;
 import com.elineuton.bemtevi.api.domain.Unidade;
+import com.elineuton.bemtevi.api.repositories.AlunoRepository;
 import com.elineuton.bemtevi.api.repositories.AnoLetivoRepository;
 import com.elineuton.bemtevi.api.repositories.AtividadeRepository;
 import com.elineuton.bemtevi.api.repositories.InstituicaoRepository;
+import com.elineuton.bemtevi.api.repositories.ProfissionalRepository;
 import com.elineuton.bemtevi.api.repositories.TurmaRepository;
 import com.elineuton.bemtevi.api.repositories.UnidadeRepository;
 
@@ -38,6 +42,12 @@ public class BemteviApplication implements CommandLineRunner{
 	
 	@Autowired
 	AtividadeRepository atividadeRepository;
+	
+	@Autowired
+	ProfissionalRepository profissionalRepository;
+	
+	@Autowired
+	AlunoRepository alunoRepository;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(BemteviApplication.class, args);
@@ -61,19 +71,30 @@ public class BemteviApplication implements CommandLineRunner{
 		
 		//List<Atividade> la1 = new ArrayList<>(); 
 		
-		Turma t1 = new Turma(null, "Infantil", u1, "Integral", "101", "ativa", al1);
+		Turma t1 = new Turma(null, "Infantil I", u1, "Integral", "101", "ativa", al1);
+		Turma t2 = new Turma(null, "Infantil II", u1, "Integral", "101", "ativa", al1);
 		
 		Atividade a1 = new Atividade(null, "Trabalhando a coordenação motora", LocalDateTime.now());
 		
 		t1.getAtividades().addAll(Arrays.asList(a1));
 		
+		Profissional p1 = new Profissional(null, "Claudia Santos", "Cuidadora", "(95) 99110-1010", "claudiasantos@bemtevi.com", "123"); 
+		
+		p1.getTurmas().addAll(Arrays.asList(t1));
+		p1.getTurmas().addAll(Arrays.asList(t2));
+		
+		Aluno alu1 = new Aluno(null, "Paulo", "da Costa Luz", "12/12/2012", t1);
+		Aluno alu2 = new Aluno(null, "Isis", "da Conceição", "10/10/201o", t2);
+		
+		alu1.getPessoalAutorizado().addAll(Arrays.asList("Francisco Elineuton", "Thiago Ventura"));
 		
 		instituicaoRepository.saveAll(Arrays.asList(i1, i2));
 		unidadeRepository.saveAll(Arrays.asList(u1, u2, u3));
 		anoLetivoRepository.saveAll(Arrays.asList(al1));
 		atividadeRepository.saveAll(Arrays.asList(a1));
-		turmaRepository.saveAll(Arrays.asList(t1));
-		
+		turmaRepository.saveAll(Arrays.asList(t1,t2));
+		profissionalRepository.saveAll(Arrays.asList(p1));
+		alunoRepository.saveAll(Arrays.asList(alu1, alu2));
 		
 	}
 	
