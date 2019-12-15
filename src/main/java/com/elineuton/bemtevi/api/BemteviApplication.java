@@ -2,9 +2,7 @@ package com.elineuton.bemtevi.api;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -61,21 +59,21 @@ public class BemteviApplication implements CommandLineRunner{
 		
 		AnoLetivo al1 = new AnoLetivo(null, "2020", LocalDate.now(), LocalDate.now().plusYears(1));
 		
-		List<Atividade> la1 = new ArrayList<>(); 
+		//List<Atividade> la1 = new ArrayList<>(); 
 		
-		Turma t1 = new Turma(null, "Infantil I", u1, "Integral", "101", "ativa", al1, la1);
+		Turma t1 = new Turma(null, "Infantil", u1, "Integral", "101", "ativa", al1);
 		
 		Atividade a1 = new Atividade(null, "Trabalhando a coordenação motora", LocalDateTime.now());
 		
 		t1.getAtividades().addAll(Arrays.asList(a1));
 		
-	
+		
 		instituicaoRepository.saveAll(Arrays.asList(i1, i2));
 		unidadeRepository.saveAll(Arrays.asList(u1, u2, u3));
 		anoLetivoRepository.saveAll(Arrays.asList(al1));
-		atividadeRepository.saveAll(la1);
-		turmaRepository.saveAll(Arrays.asList(t1));
 		atividadeRepository.saveAll(Arrays.asList(a1));
+		turmaRepository.saveAll(Arrays.asList(t1));
+		
 		
 	}
 	
