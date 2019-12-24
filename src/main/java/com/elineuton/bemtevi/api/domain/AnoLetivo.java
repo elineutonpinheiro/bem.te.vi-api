@@ -8,6 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -31,11 +33,11 @@ public class AnoLetivo implements Serializable {
 	private String descricao;
 	
 	@Getter @Setter
-	//@Temporal(TemporalType.DATE)
+	@JsonFormat(pattern = "dd/MM/yyyy")
 	private LocalDate dataInicial;
 	
 	@Getter @Setter
-	//@Temporal(TemporalType.DATE)
+	@JsonFormat(pattern = "dd/MM/yyyy")
 	private LocalDate dataFinal;
 
 }
