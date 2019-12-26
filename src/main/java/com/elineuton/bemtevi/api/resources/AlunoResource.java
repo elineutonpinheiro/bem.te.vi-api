@@ -1,5 +1,6 @@
 package com.elineuton.bemtevi.api.resources;
 
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -10,10 +11,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.elineuton.bemtevi.api.domain.Aluno;
 import com.elineuton.bemtevi.api.dto.AlunoDTO;
@@ -37,6 +40,18 @@ public class AlunoResource {
 	public ResponseEntity<Aluno> consultarPorId(@PathVariable Integer id) {
 		Aluno obj = service.consultaPorId(id);
 		return obj != null ? ResponseEntity.ok(obj) : ResponseEntity.notFound().build();
+	}
+	
+	@PostMapping
+	public ResponseEntity<Aluno> inserir(@Valid @RequestBody Aluno obj) {
+		Aluno objSalvo = service.inserir(obj);
+		
+		//Mapear o recurso -> instituicao + id
+		
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}")
+				.buildAndExpand(objSalvo.getId()).toUri();
+		
+		return ResponseEntity.created(uri).body(objSalvo);
 	}
 	
 	@PutMapping("/{id}")

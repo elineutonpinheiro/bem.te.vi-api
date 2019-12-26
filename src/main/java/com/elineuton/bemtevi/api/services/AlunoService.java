@@ -30,6 +30,11 @@ public class AlunoService {
 		+ id + ", Tipo: " + Aluno.class.getName()));
 	}
 	
+	public Aluno inserir(Aluno obj) {
+		Aluno objSalvo = repo.save(obj);
+		return objSalvo;
+	}
+	
 	public Aluno atualizar(Aluno obj, Integer id) {
 		Aluno newObj = consultaPorId(id);
 		updateData(newObj, obj);
