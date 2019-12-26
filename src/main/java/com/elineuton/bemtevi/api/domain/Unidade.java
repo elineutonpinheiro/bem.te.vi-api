@@ -2,6 +2,7 @@ package com.elineuton.bemtevi.api.domain;
 
 import java.io.Serializable;
 
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -31,6 +32,7 @@ public class Unidade implements Serializable {
 	private String nome;
 	
 	@Getter @Setter
+	@Embedded
 	private Endereco endereco;
 	
 	//TODO Implementar a anotação @ELEMENTCOLLECTION
