@@ -7,8 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import com.elineuton.bemtevi.api.domain.services.exceptions.DataIntegrityException;
-import com.elineuton.bemtevi.api.domain.services.exceptions.ObjectNotFoundException;
+import com.elineuton.bemtevi.api.services.exceptions.DataIntegrityException;
+import com.elineuton.bemtevi.api.services.exceptions.ObjectNotFoundException;
 
 @ControllerAdvice
 public class ResourceExceptionHandler  {

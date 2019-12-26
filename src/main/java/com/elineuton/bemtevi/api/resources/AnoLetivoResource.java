@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.elineuton.bemtevi.api.domain.AnoLetivo;
-import com.elineuton.bemtevi.api.domain.services.AnoLetivoService;
+import com.elineuton.bemtevi.api.services.AnoLetivoService;
 
 @RestController
 @RequestMapping("/anosletivos")

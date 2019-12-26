@@ -1,4 +1,4 @@
-package com.elineuton.bemtevi.api.domain.services;
+package com.elineuton.bemtevi.api.services;
 
 import java.util.List;
 import java.util.Optional;
@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.elineuton.bemtevi.api.domain.AnoLetivo;
-import com.elineuton.bemtevi.api.domain.services.exceptions.ObjectNotFoundException;
 import com.elineuton.bemtevi.api.repositories.AnoLetivoRepository;
+import com.elineuton.bemtevi.api.services.exceptions.ObjectNotFoundException;
 
 @Service
 public class AnoLetivoService {

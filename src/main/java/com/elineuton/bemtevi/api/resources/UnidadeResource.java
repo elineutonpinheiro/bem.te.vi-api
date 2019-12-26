@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.elineuton.bemtevi.api.domain.Unidade;
-import com.elineuton.bemtevi.api.domain.services.UnidadeService;
+import com.elineuton.bemtevi.api.services.UnidadeService;
 
 @RestController
 @RequestMapping("/unidades")

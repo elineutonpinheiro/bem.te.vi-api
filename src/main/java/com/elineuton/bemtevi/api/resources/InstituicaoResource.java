@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.elineuton.bemtevi.api.domain.Instituicao;
-import com.elineuton.bemtevi.api.domain.services.InstituicaoService;
+import com.elineuton.bemtevi.api.services.InstituicaoService;
 
 @RestController
 @RequestMapping("/instituicoes")
@@ -39,7 +39,6 @@ public class InstituicaoResource {
 		return obj != null ? ResponseEntity.ok(obj) : ResponseEntity.notFound().build();
 	}
 	
-	
 	@PostMapping
 	public ResponseEntity<Instituicao> inserir(@Valid @RequestBody Instituicao obj) {
 		Instituicao objSalvo = service.inserir(obj);
@@ -57,7 +56,6 @@ public class InstituicaoResource {
 		Instituicao objSalvo = service.atualizar(obj, id);
 		return ResponseEntity.ok(objSalvo);
 	}
-	
 	
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> remover(@PathVariable Integer id) {

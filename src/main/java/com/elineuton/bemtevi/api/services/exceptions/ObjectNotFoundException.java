@@ -1,4 +1,4 @@
-package com.elineuton.bemtevi.api.domain.services.exceptions;
+package com.elineuton.bemtevi.api.services.exceptions;
 
 public class ObjectNotFoundException extends RuntimeException{
 

@@ -1,4 +1,4 @@
-package com.elineuton.bemtevi.api.domain.services;
+package com.elineuton.bemtevi.api.services;
 
 import java.util.List;
 import java.util.Optional;
@@ -10,9 +10,9 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.elineuton.bemtevi.api.domain.Instituicao;
-import com.elineuton.bemtevi.api.domain.services.exceptions.DataIntegrityException;
-import com.elineuton.bemtevi.api.domain.services.exceptions.ObjectNotFoundException;
 import com.elineuton.bemtevi.api.repositories.InstituicaoRepository;
+import com.elineuton.bemtevi.api.services.exceptions.DataIntegrityException;
+import com.elineuton.bemtevi.api.services.exceptions.ObjectNotFoundException;
 
 @Service
 public class InstituicaoService {

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.elineuton.bemtevi.api.domain.Atividade;
-import com.elineuton.bemtevi.api.domain.services.AtividadeService;
+import com.elineuton.bemtevi.api.services.AtividadeService;
 
 @RestController
 @RequestMapping("/atividades")
