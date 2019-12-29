@@ -9,6 +9,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import com.elineuton.bemtevi.api.domain.Profissional;
 import com.elineuton.bemtevi.api.domain.Turma;
 import com.elineuton.bemtevi.api.repositories.TurmaRepository;
 import com.elineuton.bemtevi.api.services.exceptions.DataIntegrityException;
@@ -19,6 +20,9 @@ public class TurmaService {
 	
 	@Autowired
 	private TurmaRepository repo;
+	
+	@Autowired
+	private ProfissionalService profissionalService;
 	
 	
 	public List<Turma> listar() {
@@ -54,6 +58,12 @@ public class TurmaService {
 			throw new DataIntegrityException("Não é possível excluir entidades que possuem relacionamentos");
 		}
 		
+	}
+	
+	public List<Turma> consultaTurmasPorProfissionalId(Integer id) {
+		Profissional profissional = profissionalService.consultaPorId(id);
+		List<Turma> lista = repo.findByProfissional(profissional);
+		return lista;
 	}
 
 }

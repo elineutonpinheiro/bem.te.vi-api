@@ -10,6 +10,8 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.elineuton.bemtevi.api.domain.Atividade;
+import com.elineuton.bemtevi.api.domain.Turma;
+import com.elineuton.bemtevi.api.dto.AtividadeDTO;
 import com.elineuton.bemtevi.api.repositories.AtividadeRepository;
 import com.elineuton.bemtevi.api.services.exceptions.DataIntegrityException;
 import com.elineuton.bemtevi.api.services.exceptions.ObjectNotFoundException;
@@ -19,6 +21,9 @@ public class AtividadeService {
 	
 	@Autowired
 	private AtividadeRepository repo;
+	
+	@Autowired
+	private TurmaService turmaService;
 	
 	
 	public List<Atividade> listar() {
@@ -54,6 +59,16 @@ public class AtividadeService {
 			throw new DataIntegrityException("Não é possível excluir instituição que possui turmas");
 		}
 		
+	}
+	
+	public Atividade fromDTO(AtividadeDTO objDto) {
+		return new Atividade(objDto.getId(), objDto.getDescricao(), objDto.getDataHora(), null);
+	}
+	
+	public List<Atividade> consultaAtividadesPorTurmaId(Integer id) {
+		Turma turma = turmaService.consultaPorId(id);
+		List<Atividade> lista = repo.findByTurma(turma);
+		return lista;
 	}
 
 }

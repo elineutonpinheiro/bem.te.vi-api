@@ -107,27 +107,38 @@ public class BemteviApplication implements CommandLineRunner{
 		
 		AnoLetivo al1 = new AnoLetivo(null, "2020", date, parsedDate.plusYears(1));
 		
+		anoLetivoRepository.saveAll(Arrays.asList(al1));
+		
 		Turma t1 = new Turma(null, "Infantil I", u1, "Integral", "101", "ativa", al1);
 		Turma t2 = new Turma(null, "Infantil II", u1, "Integral", "101", "ativa", al1);
+		Turma t3 = new Turma(null, "Infantil III", u1, "Integral", "101", "ativa", al1);
 		
-		Atividade a1 = new Atividade(null, "Trabalhando a coordenação motora", parsedDateTime);
+		turmaRepository.saveAll(Arrays.asList(t1,t2));
 		
-		t1.getAtividades().addAll(Arrays.asList(a1));
+		
+		t3 = turmaRepository.save(t3);
+		
+		Atividade a1 = new Atividade(null, "Trabalhando a coordenação motora", parsedDateTime, t3);
 		
 		//-------------------------------------------------------------------------------
 		//Salva Ano Letivo, Turma e Atividade
 	
-		anoLetivoRepository.saveAll(Arrays.asList(al1));
 		atividadeRepository.saveAll(Arrays.asList(a1));
-		turmaRepository.saveAll(Arrays.asList(t1,t2));
+		
 		
 		//-------------------------------------------------------------------------------
 		
 		Profissional p1 = new Profissional(null, "Claudia Santos", "Cuidadora", "(95) 99110-1010", "claudiasantos@bemtevi.com", "123");
 		Profissional p2 = new Profissional(null, "Yenniver Muniz", "Cuidadora", "(95) 99000-2020", "yennivermuniz@bemtevi.com", "100");
 		
-		p1.getTurmas().addAll(Arrays.asList(t1));
+		p1.getTurmas().addAll(Arrays.asList(t1,t3));
 		p2.getTurmas().addAll(Arrays.asList(t2));
+		
+		
+		/* TURMA CONHECENDO SEUS PROFISSIONAIS
+		 * t1.getProfissionais().addAll(Arrays.asList(p1));
+		 * t3.getProfissionais().addAll(Arrays.asList(p1));
+		 */
 		
 		Aluno alu1 = new Aluno(null, "Paulo", "da Costa Luz", "12/12/2012", t1);
 		Aluno alu2 = new Aluno(null, "Isis", "da Conceição", "10/10/201o", t2);

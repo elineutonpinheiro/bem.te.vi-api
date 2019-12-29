@@ -2,6 +2,7 @@ package com.elineuton.bemtevi.api.resources;
 
 import java.net.URI;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -18,7 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.elineuton.bemtevi.api.domain.Profissional;
+import com.elineuton.bemtevi.api.domain.Turma;
+import com.elineuton.bemtevi.api.dto.TurmaDTO;
 import com.elineuton.bemtevi.api.services.ProfissionalService;
+import com.elineuton.bemtevi.api.services.TurmaService;
 
 @RestController
 @RequestMapping("/profissionais")
@@ -26,6 +30,9 @@ public class ProfissionalResource {
 	
 	@Autowired
 	private ProfissionalService service;
+	
+	@Autowired
+	private TurmaService turmaService;
 	
 	@GetMapping
 	public ResponseEntity<List<Profissional>> listar(){
@@ -61,6 +68,13 @@ public class ProfissionalResource {
 	public ResponseEntity<Void> remover(@PathVariable Integer id) {
 		service.remover(id);
 		return ResponseEntity.noContent().build();
+	}
+	
+	@GetMapping("/{id}/turmas")
+	public ResponseEntity<List<TurmaDTO>> consultaTurmasPorProfissionalId(@PathVariable Integer id){
+		List<Turma> lista = turmaService.consultaTurmasPorProfissionalId(id);
+		List<TurmaDTO> listaDto = lista.stream().map(obj -> new TurmaDTO(obj)).collect(Collectors.toList());
+		return ResponseEntity.ok(listaDto);
 	}
 
 }

@@ -54,9 +54,6 @@ public class UnidadeService {
 			throw new DataIntegrityException("Não é possível excluir entidades que possuem relacionamentos");
 		}
 		
-	}
-	
-	
-	
+	}	
 
 }

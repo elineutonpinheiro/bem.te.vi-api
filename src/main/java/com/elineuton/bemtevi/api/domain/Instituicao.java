@@ -1,12 +1,16 @@
 package com.elineuton.bemtevi.api.domain;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
-import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,7 +18,6 @@ import lombok.Setter;
 
 @Entity
 @NoArgsConstructor 
-@AllArgsConstructor
 @EqualsAndHashCode(of="id")
 public class Instituicao implements Serializable {
 
@@ -27,5 +30,14 @@ public class Instituicao implements Serializable {
 	
 	@Getter @Setter
 	private String nome;
+	
+	@OneToMany(mappedBy = "instituicao", fetch = FetchType.LAZY)
+	private Set<Unidade> unidades = new HashSet<>();
+
+	public Instituicao(Integer id, String nome) {
+		super();
+		this.id = id;
+		this.nome = nome;
+	}
 
 }

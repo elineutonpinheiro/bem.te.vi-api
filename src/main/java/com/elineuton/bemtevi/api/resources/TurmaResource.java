@@ -18,8 +18,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.elineuton.bemtevi.api.domain.Aluno;
+import com.elineuton.bemtevi.api.domain.Atividade;
 import com.elineuton.bemtevi.api.domain.Turma;
+import com.elineuton.bemtevi.api.dto.AlunoDTO;
+import com.elineuton.bemtevi.api.dto.AtividadeDTO;
 import com.elineuton.bemtevi.api.dto.TurmaDTO;
+import com.elineuton.bemtevi.api.services.AlunoService;
+import com.elineuton.bemtevi.api.services.AtividadeService;
 import com.elineuton.bemtevi.api.services.TurmaService;
 
 @RestController
@@ -28,6 +34,12 @@ public class TurmaResource {
 	
 	@Autowired
 	private TurmaService service;
+	
+	@Autowired
+	private AtividadeService atividadeService;
+	
+	@Autowired
+	private AlunoService alunoService;
 	
 	@GetMapping
 	public ResponseEntity<List<TurmaDTO>> listar(){
@@ -64,6 +76,20 @@ public class TurmaResource {
 	public ResponseEntity<Void> remover(@PathVariable Integer id) {
 		service.remover(id);
 		return ResponseEntity.noContent().build();
+	}
+	
+	@GetMapping("/{id}/atividades")
+	public ResponseEntity<List<AtividadeDTO>> consultarAtividadesPorTurmaId(@PathVariable Integer id){
+		List<Atividade> lista = atividadeService.consultaAtividadesPorTurmaId(id);
+		List<AtividadeDTO> listaDto = lista.stream().map(obj -> new AtividadeDTO(obj)).collect(Collectors.toList());
+		return ResponseEntity.ok(listaDto);
+	}
+	
+	@GetMapping("/{id}/alunos")
+	public ResponseEntity<List<AlunoDTO>> consultaAlunosPorTurmaId(@PathVariable Integer id){
+		List<Aluno> lista = alunoService.consultaAlunosPorTurmaId(id);
+		List<AlunoDTO> listaDto = lista.stream().map(obj -> new AlunoDTO(obj)).collect(Collectors.toList());
+		return ResponseEntity.ok(listaDto);
 	}
 
 }

@@ -10,6 +10,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.elineuton.bemtevi.api.domain.Profissional;
+import com.elineuton.bemtevi.api.dto.ProfissionalDTO;
 import com.elineuton.bemtevi.api.repositories.ProfissionalRepository;
 import com.elineuton.bemtevi.api.services.exceptions.DataIntegrityException;
 import com.elineuton.bemtevi.api.services.exceptions.ObjectNotFoundException;
@@ -54,6 +55,10 @@ public class ProfissionalService {
 			throw new DataIntegrityException("Não é possível excluir entidades que possuem relacionamentos");
 		}
 		
+	}
+	
+	public Profissional fromDTO(ProfissionalDTO objDto) {
+		return new Profissional(objDto.getId(), objDto.getCargo(), objDto.getCargo(), objDto.getTelefone(), null, null);
 	}
 
 }

@@ -4,9 +4,11 @@ import java.io.Serializable;
 
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import lombok.AllArgsConstructor;
@@ -46,6 +48,7 @@ public class Unidade implements Serializable {
 	private String status;
 	
 	@ManyToOne
+	@JoinColumn(foreignKey = @ForeignKey(name = "fk_instituicao_id"))
 	@Getter @Setter
 	private Instituicao instituicao;
 

@@ -8,6 +8,7 @@ import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -42,11 +43,12 @@ public class Aluno implements Serializable {
 	
 	@OneToOne
 	@Getter @Setter
+	@JoinColumn(foreignKey = @ForeignKey(name = "fk_turma_id"))
 	private Turma turma;
 	
 	@Getter @Setter
 	@ElementCollection
-	@CollectionTable(name = "aluno_pessoal_autorizado", joinColumns = @JoinColumn(name = "aluno_id"))
+	@CollectionTable(name = "aluno_pessoal_autorizado", joinColumns = @JoinColumn(name = "aluno_id", foreignKey = @ForeignKey(name = "fk_aluno_id")))
 	@Column(name = "pessoal_autorizado")
 	private Set<String> pessoalAutorizado = new HashSet<>();
 

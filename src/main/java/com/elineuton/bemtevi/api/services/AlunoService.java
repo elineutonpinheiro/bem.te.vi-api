@@ -8,6 +8,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.elineuton.bemtevi.api.domain.Aluno;
+import com.elineuton.bemtevi.api.domain.Turma;
 import com.elineuton.bemtevi.api.dto.AlunoDTO;
 import com.elineuton.bemtevi.api.repositories.AlunoRepository;
 import com.elineuton.bemtevi.api.services.exceptions.DataIntegrityException;
@@ -18,6 +19,9 @@ public class AlunoService {
 	
 	@Autowired
 	private AlunoRepository repo;
+	
+	@Autowired
+	private TurmaService turmaService;
 	
 	
 	public List<Aluno> listar() {
@@ -57,6 +61,12 @@ public class AlunoService {
 	private void updateData (Aluno newObj, Aluno objSalvo) {
 		newObj.setNome(objSalvo.getNome());
 		newObj.setSobrenome(objSalvo.getSobrenome());
+	}
+	
+	public List<Aluno> consultaAlunosPorTurmaId(Integer id) {
+		Turma turma = turmaService.consultaPorId(id);
+		List<Aluno> lista = repo.findByTurma(turma);
+		return lista;
 	}
 
 }
