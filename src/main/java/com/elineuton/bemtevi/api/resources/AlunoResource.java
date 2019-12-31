@@ -38,20 +38,21 @@ public class AlunoResource {
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<Aluno> consultarPorId(@PathVariable Integer id) {
-		Aluno obj = service.consultaPorId(id);
+		Aluno obj = service.consultarPorId(id);
 		return obj != null ? ResponseEntity.ok(obj) : ResponseEntity.notFound().build();
 	}
 	
 	@PostMapping
-	public ResponseEntity<Aluno> inserir(@Valid @RequestBody Aluno obj) {
-		Aluno objSalvo = service.inserir(obj);
+	public ResponseEntity<Aluno> inserir(@Valid @RequestBody AlunoDTO objDto) {
+		Aluno obj = service.fromDTO(objDto);
+		obj = service.inserir(obj);
 		
 		//Mapear o recurso -> instituicao + id
 		
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}")
-				.buildAndExpand(objSalvo.getId()).toUri();
+				.buildAndExpand(obj.getId()).toUri();
 		
-		return ResponseEntity.created(uri).body(objSalvo);
+		return ResponseEntity.created(uri).body(obj);
 	}
 	
 	@PutMapping("/{id}")

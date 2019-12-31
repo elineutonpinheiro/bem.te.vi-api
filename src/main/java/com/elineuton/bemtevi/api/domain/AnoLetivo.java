@@ -29,7 +29,7 @@ public class AnoLetivo implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Getter
+	@Getter @Setter
 	private Integer id;
 	
 	@Getter @Setter

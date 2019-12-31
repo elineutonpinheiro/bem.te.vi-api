@@ -28,7 +28,7 @@ public class AlunoService {
 		return repo.findAll();
 	}
 	
-	public Aluno consultaPorId(Integer id) {
+	public Aluno consultarPorId(Integer id) {
 		Optional<Aluno> obj = repo.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado! Id: " 
 		+ id + ", Tipo: " + Aluno.class.getName()));
@@ -40,7 +40,7 @@ public class AlunoService {
 	}
 	
 	public Aluno atualizar(Aluno obj, Integer id) {
-		Aluno newObj = consultaPorId(id);
+		Aluno newObj = consultarPorId(id);
 		updateData(newObj, obj);
 		return repo.save(newObj);
 	}
@@ -64,7 +64,7 @@ public class AlunoService {
 	}
 	
 	public List<Aluno> consultaAlunosPorTurmaId(Integer id) {
-		Turma turma = turmaService.consultaPorId(id);
+		Turma turma = turmaService.consultarPorId(id);
 		List<Aluno> lista = repo.findByTurma(turma);
 		return lista;
 	}

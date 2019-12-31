@@ -2,6 +2,7 @@ package com.elineuton.bemtevi.api.resources;
 
 import java.net.URI;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.elineuton.bemtevi.api.domain.Unidade;
+import com.elineuton.bemtevi.api.dto.UnidadeDTO;
 import com.elineuton.bemtevi.api.services.UnidadeService;
 
 @RestController
@@ -28,9 +30,10 @@ public class UnidadeResource {
 	private UnidadeService service;
 	
 	@GetMapping
-	public ResponseEntity<List<Unidade>> listar(){
+	public ResponseEntity<List<UnidadeDTO>> listar(){
 		List<Unidade> lista = service.listar();
-		return ResponseEntity.ok(lista);
+		List<UnidadeDTO> listaDto = lista.stream().map(obj -> new UnidadeDTO(obj)).collect(Collectors.toList());
+		return ResponseEntity.ok(listaDto);
 	}
 	
 	@GetMapping("/{id}")
@@ -40,21 +43,23 @@ public class UnidadeResource {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Unidade> inserir(@Valid @RequestBody Unidade obj) {
-		Unidade objSalvo = service.inserir(obj);
+	public ResponseEntity<Unidade> inserir(@Valid @RequestBody UnidadeDTO objDto) {
+		Unidade obj = service.fromDTO(objDto); 
+		obj = service.inserir(obj);
 		
 		//Mapear o recurso -> instituicao + id
 		
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}")
-				.buildAndExpand(objSalvo.getId()).toUri();
+				.buildAndExpand(obj.getId()).toUri();
 		
-		return ResponseEntity.created(uri).body(objSalvo);
+		return ResponseEntity.created(uri).body(obj);
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<Unidade> atualizar(@Valid @RequestBody Unidade obj, @PathVariable Integer id) {
-		Unidade objSalvo = service.atualizar(obj, id);
-		return ResponseEntity.ok(objSalvo);
+	public ResponseEntity<Unidade> atualizar(@Valid @RequestBody UnidadeDTO objDto, @PathVariable Integer id) {
+		Unidade obj = service.fromDTO(objDto);
+		obj = service.atualizar(obj, id);
+		return ResponseEntity.ok(obj);
 	}
 	
 	@DeleteMapping("/{id}")

@@ -3,16 +3,15 @@ package com.elineuton.bemtevi.api.services;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.elineuton.bemtevi.api.domain.Atividade;
 import com.elineuton.bemtevi.api.domain.Turma;
 import com.elineuton.bemtevi.api.dto.AtividadeDTO;
 import com.elineuton.bemtevi.api.repositories.AtividadeRepository;
+import com.elineuton.bemtevi.api.repositories.TurmaRepository;
 import com.elineuton.bemtevi.api.services.exceptions.DataIntegrityException;
 import com.elineuton.bemtevi.api.services.exceptions.ObjectNotFoundException;
 
@@ -25,31 +24,30 @@ public class AtividadeService {
 	@Autowired
 	private TurmaService turmaService;
 	
+	@Autowired
+	private TurmaRepository turmaRepository;
+	
 	
 	public List<Atividade> listar() {
 		return repo.findAll();
 	}
 	
-	public Atividade consultaPorId(Integer id) {
+	public Atividade consultarPorId(Integer id) {
 		Optional<Atividade> obj = repo.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado! Id: " 
 		+ id + ", Tipo: " + Atividade.class.getName()));
 	}
 	
 	public Atividade inserir(Atividade obj) {
+		turmaRepository.save(obj.getTurma());
 		Atividade objSalvo = repo.save(obj);
 		return objSalvo;
 	}
 	
 	public Atividade atualizar(Atividade obj, Integer id) {
-		Atividade objSalvo = repo.findById(id).get();
-		
-		if(objSalvo == null) {
-			throw new EmptyResultDataAccessException(1);
-		}
-		
-		BeanUtils.copyProperties(obj, objSalvo, "id");
-		return repo.save(objSalvo);
+		Atividade newObj = consultarPorId(id);
+		updateData(newObj, obj);
+		return repo.save(newObj);
 	}
 	
 	public void remover(Integer id) {
@@ -62,11 +60,19 @@ public class AtividadeService {
 	}
 	
 	public Atividade fromDTO(AtividadeDTO objDto) {
-		return new Atividade(objDto.getId(), objDto.getDescricao(), objDto.getDataHora(), null);
+		Turma turma = turmaService.consultarPorId(objDto.getTurmaId());
+		Atividade atividade = new Atividade(objDto.getId(), objDto.getDescricao(), objDto.getDataHora(), turma);
+		return atividade;
+	}
+	
+	private void updateData (Atividade newObj, Atividade obj) {
+		newObj.setDescricao(obj.getDescricao());
+		newObj.setDataHora(obj.getDataHora());
+		newObj.setTurma(obj.getTurma());
 	}
 	
 	public List<Atividade> consultaAtividadesPorTurmaId(Integer id) {
-		Turma turma = turmaService.consultaPorId(id);
+		Turma turma = turmaService.consultarPorId(id);
 		List<Atividade> lista = repo.findByTurma(turma);
 		return lista;
 	}

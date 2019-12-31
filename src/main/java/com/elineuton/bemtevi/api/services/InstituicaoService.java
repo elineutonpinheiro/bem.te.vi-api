@@ -3,10 +3,8 @@ package com.elineuton.bemtevi.api.services;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.elineuton.bemtevi.api.domain.Instituicao;
@@ -37,14 +35,9 @@ public class InstituicaoService {
 	}
 	
 	public Instituicao atualizar(Instituicao obj, Integer id) {
-		Instituicao objSalvo = repo.findById(id).get();
-		
-		if(objSalvo == null) {
-			throw new EmptyResultDataAccessException(1);
-		}
-		
-		BeanUtils.copyProperties(obj, objSalvo, "id");
-		return repo.save(objSalvo);
+		Instituicao newObj = consultaPorId(id);
+		updateData(newObj, obj);
+		return repo.save(newObj);
 	}
 	
 	public void remover(Integer id) {
@@ -54,6 +47,10 @@ public class InstituicaoService {
 			throw new DataIntegrityException("Não é possível excluir instituição que possui turmas");
 		}
 		
+	}
+	
+	private void updateData (Instituicao newObj, Instituicao objSalvo) {
+		newObj.setNome(objSalvo.getNome());
 	}
 
 }

@@ -19,6 +19,7 @@ public class TurmaDTO implements Serializable {
 	@Getter @Setter
 	private String nome;
 	
+	
 	public TurmaDTO(Turma obj) {
 		this.id = obj.getId();
 		this.nome = obj.getNome();

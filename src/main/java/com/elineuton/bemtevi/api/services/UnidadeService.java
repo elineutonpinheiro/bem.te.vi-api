@@ -3,13 +3,14 @@ package com.elineuton.bemtevi.api.services;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import com.elineuton.bemtevi.api.domain.Instituicao;
 import com.elineuton.bemtevi.api.domain.Unidade;
+import com.elineuton.bemtevi.api.dto.UnidadeDTO;
+import com.elineuton.bemtevi.api.repositories.InstituicaoRepository;
 import com.elineuton.bemtevi.api.repositories.UnidadeRepository;
 import com.elineuton.bemtevi.api.services.exceptions.DataIntegrityException;
 import com.elineuton.bemtevi.api.services.exceptions.ObjectNotFoundException;
@@ -20,6 +21,9 @@ public class UnidadeService {
 	@Autowired
 	private UnidadeRepository repo;
 	
+	@Autowired InstituicaoRepository instituicaoRepository;
+	
+	@Autowired InstituicaoService instituicaoService;
 	
 	public List<Unidade> listar() {
 		return repo.findAll();
@@ -32,19 +36,15 @@ public class UnidadeService {
 	}
 	
 	public Unidade inserir(Unidade obj) {
-		Unidade objSalvo = repo.save(obj);
-		return objSalvo;
+		instituicaoRepository.save(obj.getInstituicao());
+		obj = repo.save(obj);
+		return obj;
 	}
 	
 	public Unidade atualizar(Unidade obj, Integer id) {
-		Unidade objSalvo = repo.findById(id).get();
-		
-		if(objSalvo == null) {
-			throw new EmptyResultDataAccessException(1);
-		}
-		
-		BeanUtils.copyProperties(obj, objSalvo, "id");
-		return repo.save(objSalvo);
+		Unidade newObj = consultaPorId(id);
+		updateData(newObj, obj);
+		return repo.save(newObj);
 	}
 	
 	public void remover(Integer id) {
@@ -52,8 +52,22 @@ public class UnidadeService {
 			repo.deleteById(id);
 		} catch (DataIntegrityViolationException e) {
 			throw new DataIntegrityException("Não é possível excluir entidades que possuem relacionamentos");
-		}
-		
-	}	
+		}	
+	}
+	
+	public Unidade fromDTO(UnidadeDTO objDto) {
+		Instituicao instituicao = instituicaoService.consultaPorId(objDto.getInstituicaoId());
+		Unidade unidade = new Unidade(null, objDto.getNome(), objDto.getEndereco(), objDto.getTelefone(), objDto.getEmail(), objDto.getStatus(), instituicao);
+		return unidade;
+	}
+	
+	private void updateData (Unidade newObj, Unidade obj) {
+		newObj.setNome(obj.getNome());
+		newObj.setEndereco(obj.getEndereco());
+		newObj.setTelefone(obj.getTelefone()); 
+		newObj.setEmail(obj.getEmail());
+		newObj.setStatus(obj.getStatus());
+		newObj.setInstituicao(obj.getInstituicao());
+	}
 
 }

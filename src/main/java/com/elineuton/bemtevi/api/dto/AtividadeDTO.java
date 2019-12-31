@@ -27,12 +27,16 @@ public class AtividadeDTO implements Serializable {
 	@Getter @Setter
 	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
 	private LocalDateTime dataHora;
+	
+	@Getter @Setter
+	private Integer turmaId;
 
 	public AtividadeDTO(Atividade obj) {
 		super();
 		this.id = obj.getId();
 		this.descricao = obj.getDescricao();
 		this.dataHora = obj.getDataHora();
+		this.turmaId = obj.getTurma().getId();
 	}
 	
 }
