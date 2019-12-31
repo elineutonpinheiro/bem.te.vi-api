@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @NoArgsConstructor
-public class ProfissionalDTO implements Serializable {
+public class ProfissionalNewDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -25,11 +25,25 @@ public class ProfissionalDTO implements Serializable {
 	@Getter @Setter
 	private String telefone;
 	
-	public ProfissionalDTO(Profissional obj) {
+	@Getter @Setter
+	private String email;
+	
+	@Getter @Setter
+	private String senha;
+	
+	@Getter @Setter
+	private Integer turmaId;
+	
+	
+	public ProfissionalNewDTO(Profissional obj) {
 		this.id = obj.getId();
 		this.nome = obj.getNome();
 		this.cargo = obj.getCargo();
 		this.telefone = obj.getTelefone();
+		this.email = obj.getEmail();
+		this.senha = obj.getSenha();
 	}
+	
+	
 	
 }

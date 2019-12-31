@@ -8,8 +8,8 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.elineuton.bemtevi.api.domain.Aluno;
-import com.elineuton.bemtevi.api.domain.Turma;
 import com.elineuton.bemtevi.api.dto.AlunoDTO;
+import com.elineuton.bemtevi.api.dto.AlunoNewDTO;
 import com.elineuton.bemtevi.api.repositories.AlunoRepository;
 import com.elineuton.bemtevi.api.services.exceptions.DataIntegrityException;
 import com.elineuton.bemtevi.api.services.exceptions.ObjectNotFoundException;
@@ -19,9 +19,6 @@ public class AlunoService {
 	
 	@Autowired
 	private AlunoRepository repo;
-	
-	@Autowired
-	private TurmaService turmaService;
 	
 	
 	public List<Aluno> listar() {
@@ -35,8 +32,8 @@ public class AlunoService {
 	}
 	
 	public Aluno inserir(Aluno obj) {
-		Aluno objSalvo = repo.save(obj);
-		return objSalvo;
+		obj = repo.save(obj);
+		return obj;
 	}
 	
 	public Aluno atualizar(Aluno obj, Integer id) {
@@ -58,15 +55,23 @@ public class AlunoService {
 		return new Aluno(objDto.getId(), objDto.getNome(), objDto.getSobrenome(), null, null);
 	}
 	
-	private void updateData (Aluno newObj, Aluno objSalvo) {
-		newObj.setNome(objSalvo.getNome());
-		newObj.setSobrenome(objSalvo.getSobrenome());
+	public Aluno fromDTO(AlunoNewDTO objDto) {
+		Aluno aluno = new Aluno(null, objDto.getNome(), objDto.getSobrenome(), objDto.getDataNascimento(), null);
+		aluno.getPessoalAutorizado().addAll(objDto.getPessoalAutorizado());
+		return aluno;
 	}
 	
-	public List<Aluno> consultaAlunosPorTurmaId(Integer id) {
-		Turma turma = turmaService.consultarPorId(id);
-		List<Aluno> lista = repo.findByTurma(turma);
-		return lista;
+	private void updateData (Aluno newObj, Aluno obj) {
+		newObj.setNome(obj.getNome());
+		newObj.setSobrenome(obj.getSobrenome());
+		newObj.setDataNascimento(obj.getDataNascimento());
+		newObj.setPessoalAutorizado(obj.getPessoalAutorizado());
 	}
+	
+	/*
+	 * public List<Aluno> consultaAlunosPorTurmaId(Integer id) { Turma turma =
+	 * turmaService.consultarPorId(id); List<Aluno> lista = repo.findByTurma(turma);
+	 * return lista; }
+	 */
 
 }

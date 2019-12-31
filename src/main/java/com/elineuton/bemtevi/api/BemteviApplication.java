@@ -16,6 +16,7 @@ import com.elineuton.bemtevi.api.domain.Atividade;
 import com.elineuton.bemtevi.api.domain.Avaliacao;
 import com.elineuton.bemtevi.api.domain.Endereco;
 import com.elineuton.bemtevi.api.domain.Instituicao;
+import com.elineuton.bemtevi.api.domain.Lotacao;
 import com.elineuton.bemtevi.api.domain.Profissional;
 import com.elineuton.bemtevi.api.domain.Questao;
 import com.elineuton.bemtevi.api.domain.Resposta;
@@ -26,6 +27,7 @@ import com.elineuton.bemtevi.api.repositories.AnoLetivoRepository;
 import com.elineuton.bemtevi.api.repositories.AtividadeRepository;
 import com.elineuton.bemtevi.api.repositories.AvaliacaoRepository;
 import com.elineuton.bemtevi.api.repositories.InstituicaoRepository;
+import com.elineuton.bemtevi.api.repositories.LotacaoRepository;
 import com.elineuton.bemtevi.api.repositories.ProfissionalRepository;
 import com.elineuton.bemtevi.api.repositories.QuestaoRepository;
 import com.elineuton.bemtevi.api.repositories.RespostaRepository;
@@ -64,6 +66,9 @@ public class BemteviApplication implements CommandLineRunner{
 	
 	@Autowired
 	AvaliacaoRepository avaliacaoRepository;
+	
+	@Autowired
+	LotacaoRepository lotacaoRepository;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(BemteviApplication.class, args);
@@ -113,6 +118,7 @@ public class BemteviApplication implements CommandLineRunner{
 		Turma t2 = new Turma(null, "Infantil II", u1, "Integral", "101", "ativa", al1);
 		Turma t3 = new Turma(null, "Infantil III", u1, "Integral", "101", "ativa", al1);
 		
+		//Salva Turma 1 e 2 
 		turmaRepository.saveAll(Arrays.asList(t1,t2));
 		
 		
@@ -131,17 +137,28 @@ public class BemteviApplication implements CommandLineRunner{
 		Profissional p1 = new Profissional(null, "Claudia Santos", "Cuidadora", "(95) 99110-1010", "claudiasantos@bemtevi.com", "123");
 		Profissional p2 = new Profissional(null, "Yenniver Muniz", "Cuidadora", "(95) 99000-2020", "yennivermuniz@bemtevi.com", "100");
 		
-		p1.getTurmas().addAll(Arrays.asList(t1,t3));
-		p2.getTurmas().addAll(Arrays.asList(t2));
+		//p1.getTurmas().addAll(Arrays.asList(t1,t3));
+		//p2.getTurmas().addAll(Arrays.asList(t2));
 		
+		Lotacao lot1 = new Lotacao(t1, p2, LocalDate.now());
+		Lotacao lot2 = new Lotacao(t2, p1, LocalDate.now());
+		Lotacao lot3 = new Lotacao(t3, p2, LocalDate.now());
+		
+		/*
+		 * t1.getLotacoes().addAll(Arrays.asList(lot1));
+		 * t2.getLotacoes().addAll(Arrays.asList(lot2));
+		 * 
+		 * p1.getLotacoes().addAll(Arrays.asList(lot1));
+		 * p2.getLotacoes().addAll(Arrays.asList(lot2));
+		 */
 		
 		/* TURMA CONHECENDO SEUS PROFISSIONAIS
 		 * t1.getProfissionais().addAll(Arrays.asList(p1));
 		 * t3.getProfissionais().addAll(Arrays.asList(p1));
 		 */
 		
-		Aluno alu1 = new Aluno(null, "Paulo", "da Costa Luz", "12/12/2012", t1);
-		Aluno alu2 = new Aluno(null, "Isis", "da Conceição", "10/10/201o", t2);
+		Aluno alu1 = new Aluno(null, "Paulo", "da Costa Luz", "12/12/2019", t1);
+		Aluno alu2 = new Aluno(null, "Isis", "da Conceição", "12/12/2019", t2);
 		
 		alu1.getPessoalAutorizado().addAll(Arrays.asList("Francisco Elineuton", "Thiago Ventura"));
 		
@@ -149,6 +166,8 @@ public class BemteviApplication implements CommandLineRunner{
 		//Salva Profissional e Aluno
 		profissionalRepository.saveAll(Arrays.asList(p1, p2));
 		alunoRepository.saveAll(Arrays.asList(alu1, alu2));
+		
+		lotacaoRepository.saveAll(Arrays.asList(lot1, lot2, lot3));
 		
 		//-------------------------------------------------------------------------------
 		

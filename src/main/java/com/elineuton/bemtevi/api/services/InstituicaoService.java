@@ -30,8 +30,8 @@ public class InstituicaoService {
 	}
 	
 	public Instituicao inserir(Instituicao obj) {
-		Instituicao objSalvo = repo.save(obj);
-		return objSalvo;
+		obj = repo.save(obj);
+		return obj;
 	}
 	
 	public Instituicao atualizar(Instituicao obj, Integer id) {
@@ -49,8 +49,8 @@ public class InstituicaoService {
 		
 	}
 	
-	private void updateData (Instituicao newObj, Instituicao objSalvo) {
-		newObj.setNome(objSalvo.getNome());
+	private void updateData (Instituicao newObj, Instituicao obj) {
+		newObj.setNome(obj.getNome());
 	}
 
 }

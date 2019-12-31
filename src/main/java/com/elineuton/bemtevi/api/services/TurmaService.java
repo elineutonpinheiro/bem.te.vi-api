@@ -8,14 +8,11 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.elineuton.bemtevi.api.domain.AnoLetivo;
-import com.elineuton.bemtevi.api.domain.Profissional;
 import com.elineuton.bemtevi.api.domain.Turma;
 import com.elineuton.bemtevi.api.domain.Unidade;
 import com.elineuton.bemtevi.api.dto.TurmaDTO;
 import com.elineuton.bemtevi.api.dto.TurmaNewDTO;
-import com.elineuton.bemtevi.api.repositories.AnoLetivoRepository;
 import com.elineuton.bemtevi.api.repositories.TurmaRepository;
-import com.elineuton.bemtevi.api.repositories.UnidadeRepository;
 import com.elineuton.bemtevi.api.services.exceptions.DataIntegrityException;
 import com.elineuton.bemtevi.api.services.exceptions.ObjectNotFoundException;
 
@@ -24,15 +21,6 @@ public class TurmaService {
 	
 	@Autowired
 	private TurmaRepository repo;
-	
-	@Autowired
-	private ProfissionalService profissionalService;
-	
-	@Autowired
-	private UnidadeRepository unidadeRepository;
-	
-	@Autowired
-	private AnoLetivoRepository anoLetivoRepository;
 	
 	@Autowired
 	private UnidadeService unidadeService;
@@ -51,8 +39,6 @@ public class TurmaService {
 	}
 	
 	public Turma inserir(Turma obj) {
-		unidadeRepository.save(obj.getUnidade());
-		anoLetivoRepository.save(obj.getAnoLetivo());
 		obj = repo.save(obj);
 		return obj;
 	}
@@ -92,10 +78,10 @@ public class TurmaService {
 		newObj.setAnoLetivo(obj.getAnoLetivo());
 	}
 	
-	public List<Turma> consultaTurmasPorProfissionalId(Integer id) {
-		Profissional profissional = profissionalService.consultaPorId(id);
-		List<Turma> lista = repo.findByProfissional(profissional);
-		return lista;
-	}
+	/*
+	 * public List<Turma> consultaTurmasPorProfissionalId(Integer id) { Profissional
+	 * profissional = profissionalService.consultarPorId(id); List<Turma> lista =
+	 * repo.findByProfissional(profissional); return lista; }
+	 */
 
 }

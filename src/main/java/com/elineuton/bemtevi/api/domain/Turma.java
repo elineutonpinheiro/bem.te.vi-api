@@ -2,7 +2,9 @@ package com.elineuton.bemtevi.api.domain;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,7 +13,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
@@ -59,15 +60,12 @@ public class Turma implements Serializable {
 
 	@OneToMany(mappedBy = "turma", fetch = FetchType.LAZY)
 	@JsonIgnore
-	@Getter
-	@Setter
+	@Getter @Setter
 	private List<Atividade> atividades = new ArrayList<Atividade>();
-
-	@ManyToMany(mappedBy = "turmas", fetch = FetchType.LAZY)
-	@JsonIgnore
-	@Getter
-	@Setter
-	private List<Profissional> profissionais = new ArrayList<>();
+	
+	@OneToMany(mappedBy = "id.turma")
+	@Getter @Setter
+	private Set<Lotacao> lotacoes = new HashSet<>();
 
 	public Turma(Integer id, String nome, Unidade unidade, String periodo, String sala, String status,
 			AnoLetivo anoLetivo) {

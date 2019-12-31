@@ -11,7 +11,6 @@ import com.elineuton.bemtevi.api.domain.Atividade;
 import com.elineuton.bemtevi.api.domain.Turma;
 import com.elineuton.bemtevi.api.dto.AtividadeDTO;
 import com.elineuton.bemtevi.api.repositories.AtividadeRepository;
-import com.elineuton.bemtevi.api.repositories.TurmaRepository;
 import com.elineuton.bemtevi.api.services.exceptions.DataIntegrityException;
 import com.elineuton.bemtevi.api.services.exceptions.ObjectNotFoundException;
 
@@ -24,10 +23,6 @@ public class AtividadeService {
 	@Autowired
 	private TurmaService turmaService;
 	
-	@Autowired
-	private TurmaRepository turmaRepository;
-	
-	
 	public List<Atividade> listar() {
 		return repo.findAll();
 	}
@@ -39,9 +34,8 @@ public class AtividadeService {
 	}
 	
 	public Atividade inserir(Atividade obj) {
-		turmaRepository.save(obj.getTurma());
-		Atividade objSalvo = repo.save(obj);
-		return objSalvo;
+		obj = repo.save(obj);
+		return obj;
 	}
 	
 	public Atividade atualizar(Atividade obj, Integer id) {

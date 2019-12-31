@@ -20,6 +20,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.elineuton.bemtevi.api.domain.Aluno;
 import com.elineuton.bemtevi.api.dto.AlunoDTO;
+import com.elineuton.bemtevi.api.dto.AlunoNewDTO;
 import com.elineuton.bemtevi.api.services.AlunoService;
 
 @RestController
@@ -43,7 +44,7 @@ public class AlunoResource {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Aluno> inserir(@Valid @RequestBody AlunoDTO objDto) {
+	public ResponseEntity<Aluno> inserir(@Valid @RequestBody AlunoNewDTO objDto) {
 		Aluno obj = service.fromDTO(objDto);
 		obj = service.inserir(obj);
 		
@@ -56,7 +57,7 @@ public class AlunoResource {
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<Aluno> atualizar(@Valid @RequestBody AlunoDTO objDto, @PathVariable Integer id) {
+	public ResponseEntity<Aluno> atualizar(@Valid @RequestBody AlunoNewDTO objDto, @PathVariable Integer id) {
 		Aluno obj = service.fromDTO(objDto);
 		obj = service.atualizar(obj, id);
 		return ResponseEntity.ok(obj);

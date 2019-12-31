@@ -1,20 +1,16 @@
 package com.elineuton.bemtevi.api.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import javax.persistence.OneToMany;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -48,13 +44,9 @@ public class Profissional implements Serializable {
 	@Getter @Setter
 	private String senha;
 	
-	@ManyToMany(fetch = FetchType.LAZY)
-	@JsonIgnore
+	@OneToMany(mappedBy = "id.profissional")
 	@Getter @Setter
-	  @JoinTable(name="profissional_turma",
-	  joinColumns=@JoinColumn(name="profissional_id", foreignKey = @ForeignKey(name = "fk_profissional_id")),
-	  inverseJoinColumns=@JoinColumn(name="turma_id", foreignKey = @ForeignKey(name = "fk_turma_id"))) 
-	private Set<Turma> turmas = new HashSet<Turma>();
+	private Set<Lotacao> lotacoes = new HashSet<>();
 
 	public Profissional(Integer id, String nome, String cargo, String telefone, String email, String senha) {
 		super();
@@ -66,5 +58,12 @@ public class Profissional implements Serializable {
 		this.senha = senha;
 	}
 	
+	public List<Turma> getTurmas() {
+		List<Turma> lista =  new ArrayList<>();
+		for(Lotacao x: lotacoes) {
+			lista.add(x.getTurma());
+		}
+		return lista;
+	}
 
 }
