@@ -17,6 +17,7 @@ import com.elineuton.bemtevi.api.domain.Avaliacao;
 import com.elineuton.bemtevi.api.domain.Endereco;
 import com.elineuton.bemtevi.api.domain.Instituicao;
 import com.elineuton.bemtevi.api.domain.Lotacao;
+import com.elineuton.bemtevi.api.domain.Matricula;
 import com.elineuton.bemtevi.api.domain.Profissional;
 import com.elineuton.bemtevi.api.domain.Questao;
 import com.elineuton.bemtevi.api.domain.Resposta;
@@ -28,6 +29,7 @@ import com.elineuton.bemtevi.api.repositories.AtividadeRepository;
 import com.elineuton.bemtevi.api.repositories.AvaliacaoRepository;
 import com.elineuton.bemtevi.api.repositories.InstituicaoRepository;
 import com.elineuton.bemtevi.api.repositories.LotacaoRepository;
+import com.elineuton.bemtevi.api.repositories.MatriculaRepository;
 import com.elineuton.bemtevi.api.repositories.ProfissionalRepository;
 import com.elineuton.bemtevi.api.repositories.QuestaoRepository;
 import com.elineuton.bemtevi.api.repositories.RespostaRepository;
@@ -69,6 +71,9 @@ public class BemteviApplication implements CommandLineRunner{
 	
 	@Autowired
 	LotacaoRepository lotacaoRepository;
+	
+	@Autowired
+	MatriculaRepository matriculaRepository;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(BemteviApplication.class, args);
@@ -157,8 +162,8 @@ public class BemteviApplication implements CommandLineRunner{
 		 * t3.getProfissionais().addAll(Arrays.asList(p1));
 		 */
 		
-		Aluno alu1 = new Aluno(null, "Paulo", "da Costa Luz", "12/12/2019", t1);
-		Aluno alu2 = new Aluno(null, "Isis", "da Conceição", "12/12/2019", t2);
+		Aluno alu1 = new Aluno(null, "Paulo", "da Costa Luz", "12/12/2019");
+		Aluno alu2 = new Aluno(null, "Isis", "da Conceição", "12/12/2019");
 		
 		alu1.getPessoalAutorizado().addAll(Arrays.asList("Francisco Elineuton", "Thiago Ventura"));
 		
@@ -168,6 +173,14 @@ public class BemteviApplication implements CommandLineRunner{
 		alunoRepository.saveAll(Arrays.asList(alu1, alu2));
 		
 		lotacaoRepository.saveAll(Arrays.asList(lot1, lot2, lot3));
+		
+		//Um aluno não pode estar matriculado em mais de uma turma no mesmo ano
+		
+		Matricula mat1 = new Matricula(t1, alu1, LocalDate.of(2010, 10, 01));
+		Matricula mat2 = new Matricula(t2, alu2, LocalDate.of(2010, 10, 01));
+		Matricula mat3 = new Matricula(t3, alu2, LocalDate.of(2011, 10, 01));
+		
+		matriculaRepository.saveAll(Arrays.asList(mat1, mat2, mat3));
 		
 		//-------------------------------------------------------------------------------
 		

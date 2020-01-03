@@ -46,7 +46,6 @@ public class AnoLetivoService {
 		} catch (DataIntegrityViolationException e) {
 			throw new DataIntegrityException("Não é possível excluir instituição que possui turmas");
 		}
-		
 	}
 	
 	private void updateData (AnoLetivo newObj, AnoLetivo obj) {

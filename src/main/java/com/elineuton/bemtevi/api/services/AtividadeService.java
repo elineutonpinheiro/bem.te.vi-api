@@ -50,7 +50,6 @@ public class AtividadeService {
 		} catch (DataIntegrityViolationException e) {
 			throw new DataIntegrityException("Não é possível excluir instituição que possui turmas");
 		}
-		
 	}
 	
 	public Atividade fromDTO(AtividadeDTO objDto) {

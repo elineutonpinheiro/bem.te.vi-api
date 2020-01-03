@@ -2,9 +2,7 @@ package com.elineuton.bemtevi.api.domain;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -63,9 +61,12 @@ public class Turma implements Serializable {
 	@Getter @Setter
 	private List<Atividade> atividades = new ArrayList<Atividade>();
 	
-	@OneToMany(mappedBy = "id.turma")
-	@Getter @Setter
-	private Set<Lotacao> lotacoes = new HashSet<>();
+	/*
+	 * @OneToMany(mappedBy = "id.turma", fetch = FetchType.LAZY)
+	 * @Getter @Setter private Set<Lotacao> lotacoes = new HashSet<>();
+	 * @OneToMany(mappedBy = "id.turma", fetch = FetchType.LAZY)
+	 * @Getter @Setter private Set<Matricula> matriculas = new HashSet<>();
+	 */
 
 	public Turma(Integer id, String nome, Unidade unidade, String periodo, String sala, String status,
 			AnoLetivo anoLetivo) {

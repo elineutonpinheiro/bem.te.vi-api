@@ -8,30 +8,28 @@ import javax.persistence.Entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @NoArgsConstructor
-@EqualsAndHashCode(of = "id")
-public class Lotacao implements Serializable {
+public class Matricula implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-
+	
 	@JsonIgnore
 	@EmbeddedId
 	@Getter
-	private LotacaoPK id = new LotacaoPK();
+	private MatriculaPK id = new MatriculaPK();
 	
 	@Getter @Setter
 	private LocalDate data;
 
-	public Lotacao(Turma turma, Profissional profissional, LocalDate data) {
+	public Matricula(Turma turma, Aluno aluno, LocalDate data) {
 		super();
 		id.setTurma(turma);
-		id.setProfissional(profissional);
+		id.setAluno(aluno);
 		this.data = data;
 	}
 	
@@ -41,10 +39,9 @@ public class Lotacao implements Serializable {
 	}
 	
 	@JsonIgnore
-	public Profissional getProfissional() {
-		return id.getProfissional();
+	public Aluno getAluno() {
+		return id.getAluno();
 	}
 	
-	
-	
+
 }

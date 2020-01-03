@@ -1,16 +1,11 @@
 package com.elineuton.bemtevi.api.domain;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -44,9 +39,11 @@ public class Profissional implements Serializable {
 	@Getter @Setter
 	private String senha;
 	
-	@OneToMany(mappedBy = "id.profissional")
-	@Getter @Setter
-	private Set<Lotacao> lotacoes = new HashSet<>();
+	/*
+	 * @JsonIgnore
+	 * @OneToMany(mappedBy = "id.profissional")
+	 * @Getter @Setter private Set<Lotacao> lotacoes = new HashSet<>();
+	 */
 
 	public Profissional(Integer id, String nome, String cargo, String telefone, String email, String senha) {
 		super();
@@ -58,12 +55,10 @@ public class Profissional implements Serializable {
 		this.senha = senha;
 	}
 	
-	public List<Turma> getTurmas() {
-		List<Turma> lista =  new ArrayList<>();
-		for(Lotacao x: lotacoes) {
-			lista.add(x.getTurma());
-		}
-		return lista;
-	}
+	/*
+	 * @JsonIgnore public List<Turma> getTurmas() { List<Turma> lista = new
+	 * ArrayList<>(); for(Lotacao x: lotacoes) { lista.add(x.getTurma()); } return
+	 * lista; }
+	 */
 
 }

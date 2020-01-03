@@ -13,7 +13,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -41,25 +40,38 @@ public class Aluno implements Serializable {
 	@Getter @Setter
 	private String dataNascimento;
 	
-	@OneToOne
-	@Getter @Setter
-	@JoinColumn(foreignKey = @ForeignKey(name = "fk_turma_id"))
-	private Turma turma;
+	/*
+	 * @OneToOne
+	 * @Getter @Setter
+	 * @JoinColumn(foreignKey = @ForeignKey(name = "fk_turma_id")) private Turma
+	 * turma;
+	 */
 	
 	@Getter @Setter
 	@ElementCollection
 	@CollectionTable(name = "aluno_pessoal_autorizado", joinColumns = @JoinColumn(name = "aluno_id", foreignKey = @ForeignKey(name = "fk_aluno_id")))
 	@Column(name = "pessoal_autorizado")
 	private Set<String> pessoalAutorizado = new HashSet<>();
+	
+	/*
+	 * @JsonIgnore
+	 * @OneToMany(mappedBy = "id.aluno")
+	 * @Getter @Setter private Set<Matricula> matriculas = new HashSet<>();
+	 */
 
-	public Aluno(Integer id, String nome, String sobrenome, String dataNascimento, Turma turma) {
+	public Aluno(Integer id, String nome, String sobrenome, String dataNascimento) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.sobrenome = sobrenome;
 		this.dataNascimento = dataNascimento;
-		this.turma = turma;
 	}
+	
+	/*
+	 * @JsonIgnore public List<Turma> getTurmas() { List<Turma> lista = new
+	 * ArrayList<>(); for(Matricula x: matriculas) { lista.add(x.getTurma()); }
+	 * return lista; }
+	 */
 	
 
 }
