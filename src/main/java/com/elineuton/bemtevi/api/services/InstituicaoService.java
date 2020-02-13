@@ -3,8 +3,10 @@ package com.elineuton.bemtevi.api.services;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.elineuton.bemtevi.api.domain.Instituicao;
@@ -24,20 +26,25 @@ public class InstituicaoService {
 	}
 	
 	public Instituicao consultaPorId(Integer id) {
-		Optional<Instituicao> obj = repo.findById(id);
-		return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado! Id: " 
+		Optional<Instituicao> instituicao = repo.findById(id);
+		return instituicao.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado! Id: " 
 		+ id + ", Tipo: " + Instituicao.class.getName()));
 	}
 	
-	public Instituicao inserir(Instituicao obj) {
-		obj = repo.save(obj);
-		return obj;
+	public Instituicao inserir(Instituicao instituicao) {
+		instituicao = repo.save(instituicao);
+		return instituicao;
 	}
 	
-	public Instituicao atualizar(Instituicao obj, Integer id) {
-		Instituicao newObj = consultaPorId(id);
-		updateData(newObj, obj);
-		return repo.save(newObj);
+	public Instituicao atualizar(Instituicao instituicao, Integer id) {
+		Instituicao instituicaoSalva = repo.findById(id).get();
+		
+		if(instituicaoSalva == null) {
+			throw new EmptyResultDataAccessException(1);
+		}
+		
+		BeanUtils.copyProperties(instituicao, instituicaoSalva, "id");
+		return repo.save(instituicaoSalva);
 	}
 	
 	public void remover(Integer id) {
@@ -48,8 +55,4 @@ public class InstituicaoService {
 		}
 	}
 	
-	private void updateData (Instituicao newObj, Instituicao obj) {
-		newObj.setNome(obj.getNome());
-	}
-
 }

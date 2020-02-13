@@ -3,45 +3,49 @@ package com.elineuton.bemtevi.api.domain;
 import java.io.Serializable;
 import java.time.LocalDate;
 
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @NoArgsConstructor
+@EqualsAndHashCode(of = "id")
 public class Matricula implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
-	@JsonIgnore
-	@EmbeddedId
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Getter
-	private MatriculaPK id = new MatriculaPK();
+	private Integer id;
 	
 	@Getter @Setter
-	private LocalDate data;
+	@ManyToOne
+	@JoinColumn(foreignKey = @ForeignKey(name = "fk_aluno_id"))
+	private Aluno aluno;
+	
+	@Getter @Setter
+	@ManyToOne
+	@JoinColumn(foreignKey = @ForeignKey(name = "fk_turma_id"))
+	private Turma turma;
+	
+	@Getter @Setter
+	private LocalDate dataTermino;
 
-	public Matricula(Turma turma, Aluno aluno, LocalDate data) {
+	public Matricula(Aluno aluno, Turma turma, LocalDate dataTermino) {
 		super();
-		id.setTurma(turma);
-		id.setAluno(aluno);
-		this.data = data;
+		this.aluno = aluno;
+		this.turma = turma;
+		this.dataTermino = dataTermino;
 	}
-	
-	@JsonIgnore
-	public Turma getTurma() {
-		return id.getTurma();
-	}
-	
-	@JsonIgnore
-	public Aluno getAluno() {
-		return id.getAluno();
-	}
-	
 
 }

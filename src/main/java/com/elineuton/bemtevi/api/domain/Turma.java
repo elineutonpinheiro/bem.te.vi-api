@@ -33,8 +33,7 @@ public class Turma implements Serializable {
 	@Getter
 	private Integer id;
 
-	@Getter
-	@Setter
+	@Getter	@Setter
 	private String nome;
 
 	@ManyToOne
@@ -48,9 +47,6 @@ public class Turma implements Serializable {
 	@Getter	@Setter
 	private String sala;
 
-	@Getter	@Setter
-	private String status;
-
 	@ManyToOne
 	@JoinColumn(foreignKey = @ForeignKey(name = "fk_anoLetivo_id"))
 	@Getter	@Setter
@@ -61,23 +57,17 @@ public class Turma implements Serializable {
 	@Getter @Setter
 	private List<Atividade> atividades = new ArrayList<Atividade>();
 	
-	/*
-	 * @OneToMany(mappedBy = "id.turma", fetch = FetchType.LAZY)
-	 * @Getter @Setter private Set<Lotacao> lotacoes = new HashSet<>();
-	 * @OneToMany(mappedBy = "id.turma", fetch = FetchType.LAZY)
-	 * @Getter @Setter private Set<Matricula> matriculas = new HashSet<>();
-	 */
-
-	public Turma(Integer id, String nome, Unidade unidade, String periodo, String sala, String status,
-			AnoLetivo anoLetivo) {
-		super();
-		this.id = id;
+	@Getter	@Setter
+	private Boolean ativa;
+	 
+	public Turma(String nome, Unidade unidade, String periodo, String sala,
+			AnoLetivo anoLetivo, Boolean ativa) {
 		this.nome = nome;
 		this.unidade = unidade;
 		this.periodo = periodo;
 		this.sala = sala;
-		this.status = status;
 		this.anoLetivo = anoLetivo;
+		this.ativa = ativa;
 	}
 
 }

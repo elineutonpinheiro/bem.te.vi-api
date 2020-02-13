@@ -18,11 +18,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.elineuton.bemtevi.api.domain.Avaliacao;
+import com.elineuton.bemtevi.api.domain.Lotacao;
 import com.elineuton.bemtevi.api.domain.Profissional;
 import com.elineuton.bemtevi.api.domain.Turma;
+import com.elineuton.bemtevi.api.dto.AvaliacaoDTO;
+import com.elineuton.bemtevi.api.dto.LotacaoDTO;
 import com.elineuton.bemtevi.api.dto.ProfissionalDTO;
-import com.elineuton.bemtevi.api.dto.ProfissionalNewDTO;
 import com.elineuton.bemtevi.api.dto.TurmaDTO;
+import com.elineuton.bemtevi.api.services.AvaliacaoService;
+import com.elineuton.bemtevi.api.services.LotacaoService;
 import com.elineuton.bemtevi.api.services.ProfissionalService;
 import com.elineuton.bemtevi.api.services.TurmaService;
 
@@ -35,39 +40,45 @@ public class ProfissionalResource {
 	
 	@Autowired
 	private TurmaService turmaService;
+	
+	@Autowired
+	private AvaliacaoService avaliacaoService;
+	
+	@Autowired
+	private LotacaoService lotacaoService;
 
 	@GetMapping
 	public ResponseEntity<List<ProfissionalDTO>> listar() {
 		List<Profissional> lista = service.listar();
-		List<ProfissionalDTO> listaDto = lista.stream().map(obj -> new ProfissionalDTO(obj))
+		List<ProfissionalDTO> listaDto = lista.stream().map(profissional -> new ProfissionalDTO(profissional))
 				.collect(Collectors.toList());
 		return ResponseEntity.ok(listaDto);
 	}
 
 	@GetMapping("/{id}")
 	public ResponseEntity<Profissional> consultarPorId(@PathVariable Integer id) {
-		Profissional obj = service.consultarPorId(id);
-		return obj != null ? ResponseEntity.ok(obj) : ResponseEntity.notFound().build();
+		Profissional profissional = service.consultarPorId(id);
+		return profissional != null ? ResponseEntity.ok(profissional) : ResponseEntity.notFound().build();
 	}
 
 	@PostMapping
-	public ResponseEntity<Profissional> inserir(@Valid @RequestBody ProfissionalNewDTO objDto) {
-		Profissional obj = service.fromDTO(objDto);
-		obj = service.inserir(obj);
+	public ResponseEntity<Profissional> inserir(@Valid @RequestBody ProfissionalDTO profissionalDto) {
+		Profissional profissional = service.fromDTO(profissionalDto);
+		profissional = service.inserir(profissional);
 
 		// Mapear o recurso -> instituicao + id
 
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(obj.getId()).toUri();
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(profissional.getId()).toUri();
 
-		return ResponseEntity.created(uri).body(obj);
+		return ResponseEntity.created(uri).body(profissional);
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<Profissional> atualizar(@Valid @RequestBody ProfissionalNewDTO objDto,
+	public ResponseEntity<Profissional> atualizar(@Valid @RequestBody ProfissionalDTO profissionalDto,
 			@PathVariable Integer id) {
-		Profissional obj = service.fromDTO(objDto);
-		obj = service.atualizar(obj, id);
-		return ResponseEntity.ok(obj);
+		Profissional profissional = service.fromDTO(profissionalDto);
+		profissional = service.atualizar(profissional, id);
+		return ResponseEntity.ok(profissional);
 	}
 
 	@DeleteMapping("/{id}")
@@ -79,7 +90,22 @@ public class ProfissionalResource {
 	@GetMapping("/{id}/turmas")
 	public ResponseEntity<List<TurmaDTO>> consultaTurmasPorProfissionalId(@PathVariable Integer id) {
 		List<Turma> lista = turmaService.consultaTurmasPorProfissionalId(id);
-		List<TurmaDTO> listaDto = lista.stream().map(obj -> new TurmaDTO(obj)).collect(Collectors.toList());
+		List<TurmaDTO> listaDto = lista.stream().map(profissional -> new TurmaDTO(profissional)).collect(Collectors.toList());
+		return ResponseEntity.ok(listaDto);
+	}
+	
+	
+	@GetMapping("/{id}/avaliacoes")
+	public ResponseEntity<List<AvaliacaoDTO>> consultaAvaliacoesPorProfissionalId(@PathVariable Integer id) {
+		List<Avaliacao> lista = avaliacaoService.consultaAvaliacaoPorProfissionald(id);
+		List<AvaliacaoDTO> listaDto = lista.stream().map(profissional -> new AvaliacaoDTO(profissional)).collect(Collectors.toList());
+		return ResponseEntity.ok(listaDto);
+	}
+	
+	@GetMapping("/{id}/lotacoes")
+	public ResponseEntity<List<LotacaoDTO>> consultarLotacaosPorProfissionallId(@PathVariable Integer id) {
+		List<Lotacao> lista = lotacaoService.consultarLotacaoPorProfissionalId(id);
+		List<LotacaoDTO> listaDto = lista.stream().map(profissional -> new LotacaoDTO(profissional)).collect(Collectors.toList());
 		return ResponseEntity.ok(listaDto);
 	}
 

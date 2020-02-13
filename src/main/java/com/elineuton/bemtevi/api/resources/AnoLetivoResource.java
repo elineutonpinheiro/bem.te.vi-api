@@ -35,26 +35,26 @@ public class AnoLetivoResource {
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<AnoLetivo> consultarPorId(@PathVariable Integer id) {
-		AnoLetivo obj = service.consultaPorId(id);
-		return obj != null ? ResponseEntity.ok(obj) : ResponseEntity.notFound().build();
+		AnoLetivo anoLetivo = service.consultaPorId(id);
+		return anoLetivo != null ? ResponseEntity.ok(anoLetivo) : ResponseEntity.notFound().build();
 	}
 	
 	@PostMapping
-	public ResponseEntity<AnoLetivo> inserir(@Valid @RequestBody AnoLetivo obj) {
-		AnoLetivo objSalvo = service.inserir(obj);
+	public ResponseEntity<AnoLetivo> inserir(@Valid @RequestBody AnoLetivo anoLetivo) {
+		AnoLetivo anoLetivoSalvo = service.inserir(anoLetivo);
 		
-		//Mapear o recurso -> instituicao + id
+		//Mapear o recurso -> anoLetivo + id
 		
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}")
-				.buildAndExpand(objSalvo.getId()).toUri();
+				.buildAndExpand(anoLetivoSalvo.getId()).toUri();
 		
-		return ResponseEntity.created(uri).body(objSalvo);
+		return ResponseEntity.created(uri).body(anoLetivoSalvo);
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<AnoLetivo> atualizar(@Valid @RequestBody AnoLetivo obj, @PathVariable Integer id) {
-		AnoLetivo objSalvo = service.atualizar(obj, id);
-		return ResponseEntity.ok(objSalvo);
+	public ResponseEntity<AnoLetivo> atualizar(@Valid @RequestBody AnoLetivo anoLetivo, @PathVariable Integer id) {
+		AnoLetivo anoLetivoSalvo = service.atualizar(anoLetivo, id);
+		return ResponseEntity.ok(anoLetivoSalvo);
 	}
 	
 	@DeleteMapping("/{id}")

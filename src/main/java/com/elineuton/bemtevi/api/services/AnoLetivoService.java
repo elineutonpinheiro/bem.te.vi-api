@@ -3,8 +3,10 @@ package com.elineuton.bemtevi.api.services;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.elineuton.bemtevi.api.domain.AnoLetivo;
@@ -24,20 +26,25 @@ public class AnoLetivoService {
 	}
 	
 	public AnoLetivo consultaPorId(Integer id) {
-		Optional<AnoLetivo> obj = repo.findById(id);
-		return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado! Id: " 
+		Optional<AnoLetivo> anoLetivo = repo.findById(id);
+		return anoLetivo.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado! Id: " 
 		+ id + ", Tipo: " + AnoLetivo.class.getName()));
 	}
 	
-	public AnoLetivo inserir(AnoLetivo obj) {
-		obj = repo.save(obj);
-		return obj;
+	public AnoLetivo inserir(AnoLetivo anoLetivo) {
+		anoLetivo = repo.save(anoLetivo);
+		return anoLetivo;
 	}
 	
-	public AnoLetivo atualizar(AnoLetivo obj, Integer id) {
-		AnoLetivo newObj = consultaPorId(id);
-		updateData(newObj, obj);
-		return repo.save(newObj);
+	public AnoLetivo atualizar(AnoLetivo anoLetivo, Integer id) {
+		AnoLetivo anoLetivoSalvo = repo.findById(id).get();
+		
+		if(anoLetivoSalvo == null) {
+			throw new EmptyResultDataAccessException(1);
+		}
+		
+		BeanUtils.copyProperties(anoLetivo, anoLetivoSalvo, "id");
+		return repo.save(anoLetivoSalvo);
 	}
 	
 	public void remover(Integer id) {
@@ -46,12 +53,6 @@ public class AnoLetivoService {
 		} catch (DataIntegrityViolationException e) {
 			throw new DataIntegrityException("Não é possível excluir instituição que possui turmas");
 		}
-	}
-	
-	private void updateData (AnoLetivo newObj, AnoLetivo obj) {
-		newObj.setDescricao(obj.getDescricao());
-		newObj.setDataInicial(obj.getDataInicial());
-		newObj.setDataFinal(obj.getDataFinal());
 	}
 
 }

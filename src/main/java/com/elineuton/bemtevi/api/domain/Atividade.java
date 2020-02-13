@@ -1,7 +1,7 @@
 package com.elineuton.bemtevi.api.domain;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
@@ -13,7 +13,6 @@ import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,7 +20,6 @@ import lombok.Setter;
 
 @Entity
 @NoArgsConstructor
-@AllArgsConstructor
 @EqualsAndHashCode
 public class Atividade implements Serializable{
 	
@@ -36,12 +34,18 @@ public class Atividade implements Serializable{
 	private String descricao;
 	
 	@Getter @Setter
-	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
-	private LocalDateTime dataHora;
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	private LocalDate dataCriacao;
 	
-	@ManyToOne
 	@Getter @Setter
+	@ManyToOne
 	@JoinColumn(name = "turma_id", foreignKey = @ForeignKey(name = "fk_turma_id"), nullable = false)
 	private Turma turma;
 
+	public Atividade(String descricao, LocalDate dataCriacao, Turma turma) {
+		this.descricao = descricao;
+		this.dataCriacao = dataCriacao;
+		this.turma = turma;
+	}
+	
 }

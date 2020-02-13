@@ -11,7 +11,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,7 +18,6 @@ import lombok.Setter;
 
 @Entity
 @NoArgsConstructor
-@AllArgsConstructor
 @EqualsAndHashCode(of="id")
 public class Unidade implements Serializable {
 	
@@ -44,12 +42,24 @@ public class Unidade implements Serializable {
 	@Getter @Setter
 	private String email;
 	
-	@Getter @Setter
-	private String status;
-	
 	@ManyToOne
 	@JoinColumn(foreignKey = @ForeignKey(name = "fk_instituicao_id"))
 	@Getter @Setter
 	private Instituicao instituicao;
+	
+	@Getter @Setter
+	private Boolean ativa;
+
+	public Unidade(String nome, Endereco endereco, String telefone, String email, 
+			Instituicao instituicao, Boolean ativa) {
+		this.nome = nome;
+		this.endereco = endereco;
+		this.telefone = telefone;
+		this.email = email;
+		this.instituicao = instituicao;
+		this.ativa = ativa;
+	}
+	
+	
 
 }

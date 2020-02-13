@@ -1,7 +1,7 @@
 package com.elineuton.bemtevi.api.dto;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import javax.persistence.Id;
 
@@ -25,18 +25,17 @@ public class AtividadeDTO implements Serializable {
 	private String descricao;
 	
 	@Getter @Setter
-	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
-	private LocalDateTime dataHora;
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	private LocalDate dataCriacao;
 	
 	@Getter @Setter
 	private Integer turmaId;
 
-	public AtividadeDTO(Atividade obj) {
-		super();
-		this.id = obj.getId();
-		this.descricao = obj.getDescricao();
-		this.dataHora = obj.getDataHora();
-		this.turmaId = obj.getTurma().getId();
+	public AtividadeDTO(Atividade atividade) {
+		this.id = atividade.getId();
+		this.descricao = atividade.getDescricao();
+		this.dataCriacao = atividade.getDataCriacao();
+		this.turmaId = atividade.getTurma().getId();
 	}
 	
 }

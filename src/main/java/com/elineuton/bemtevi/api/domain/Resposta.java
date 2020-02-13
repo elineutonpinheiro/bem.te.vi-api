@@ -10,7 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
-import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,7 +17,6 @@ import lombok.Setter;
 
 @Entity
 @NoArgsConstructor
-@AllArgsConstructor
 @EqualsAndHashCode(of = "id")
 public class Resposta implements Serializable {
 	
@@ -36,5 +34,10 @@ public class Resposta implements Serializable {
 	
 	@Getter @Setter
 	private String resposta;
+
+	public Resposta(Questao questao, String resposta) {
+		this.questao = questao;
+		this.resposta = resposta;
+	}
 
 }

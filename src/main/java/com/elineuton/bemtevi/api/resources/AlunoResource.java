@@ -1,6 +1,6 @@
 package com.elineuton.bemtevi.api.resources;
 
-import java.net.URI;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,12 +16,17 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.elineuton.bemtevi.api.domain.Aluno;
+import com.elineuton.bemtevi.api.domain.Avaliacao;
+import com.elineuton.bemtevi.api.domain.Matricula;
 import com.elineuton.bemtevi.api.dto.AlunoDTO;
 import com.elineuton.bemtevi.api.dto.AlunoNewDTO;
+import com.elineuton.bemtevi.api.dto.AvaliacaoDTO;
+import com.elineuton.bemtevi.api.dto.MatriculaDTO;
 import com.elineuton.bemtevi.api.services.AlunoService;
+import com.elineuton.bemtevi.api.services.AvaliacaoService;
+import com.elineuton.bemtevi.api.services.MatriculaService;
 
 @RestController
 @RequestMapping("/alunos")
@@ -30,37 +35,69 @@ public class AlunoResource {
 	@Autowired
 	private AlunoService service;
 	
+	@Autowired
+	private AvaliacaoService avaliacaoService;
+	
+	@Autowired
+	private MatriculaService matriculaService;
+	
 	@GetMapping
 	public ResponseEntity<List<AlunoDTO>> listar(){
 		List<Aluno> lista = service.listar();
-		List<AlunoDTO> listaDto = lista.stream().map(obj -> new AlunoDTO(obj)).collect(Collectors.toList());
+		List<AlunoDTO> listaDto = lista.stream().map(aluno -> new AlunoDTO(aluno))
+				.collect(Collectors.toList());
 		return ResponseEntity.ok(listaDto);
 	}
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<Aluno> consultarPorId(@PathVariable Integer id) {
-		Aluno obj = service.consultarPorId(id);
-		return obj != null ? ResponseEntity.ok(obj) : ResponseEntity.notFound().build();
+		Aluno aluno = service.consultarPorId(id);
+		return aluno != null ? ResponseEntity.ok(aluno) : ResponseEntity.notFound().build();
 	}
 	
-	@PostMapping
-	public ResponseEntity<Aluno> inserir(@Valid @RequestBody AlunoNewDTO objDto) {
-		Aluno obj = service.fromDTO(objDto);
-		obj = service.inserir(obj);
-		
-		//Mapear o recurso -> instituicao + id
-		
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}")
-				.buildAndExpand(obj.getId()).toUri();
-		
-		return ResponseEntity.created(uri).body(obj);
-	}
+	/* =====  O ALUNO É INSERIDO NO ATO DA MATRÍCULA =====
+	 * 
+	 * @PostMapping public ResponseEntity<Aluno> inserir(@Valid @RequestBody
+	 * AlunoDTO alunoDto) { Aluno aluno = service.fromDTO(alunoDto);
+	 * 
+	 * aluno = service.inserir(aluno);
+	 * 
+	 * //Mapear o recurso -> aluno + id
+	 * 
+	 * URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}")
+	 * .buildAndExpand(aluno.getId()).toUri();
+	 * 
+	 * return ResponseEntity.created(uri).body(aluno); }
+	 */
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<Aluno> atualizar(@Valid @RequestBody AlunoNewDTO objDto, @PathVariable Integer id) {
-		Aluno obj = service.fromDTO(objDto);
-		obj = service.atualizar(obj, id);
-		return ResponseEntity.ok(obj);
+	public ResponseEntity<Aluno> atualizar(@Valid @RequestBody Aluno aluno, @PathVariable Integer id) {
+		aluno = service.atualizar(aluno, id);
+		return ResponseEntity.ok(aluno);
+	}
+	
+	@PutMapping("/{id}/presenca")
+	public void atualizarPresenca(@PathVariable Integer id, @RequestBody LocalDate dataPresenca) {
+		service.atualizarPresenca(id, dataPresenca);
+	}
+	
+	@PostMapping("/{id}/pessoalAutorizado")
+	public ResponseEntity<Aluno> inserir(@Valid @RequestBody AlunoNewDTO alunoNewDTO) {
+		Aluno aluno = service.fromDTO(alunoNewDTO);
+		aluno = service.inserir(aluno);
+		return ResponseEntity.ok().body(aluno);
+	}
+	
+	/*
+	@PutMapping("/{id}/pessoalAutorizado")
+	public void atualizarPessoalAutorizado(@PathVariable Integer id, @RequestBody Set<String> pessoalAutorizado) {
+		service.atualizarPessoalAutorizado(id, pessoalAutorizado);
+	}
+	*/
+	
+	@DeleteMapping("/{id}/pessoalAutorizado")
+	public void removerPessoalAutorizado(@PathVariable Integer id, @RequestBody String pessoaAutorizada) {
+		service.removerPessoalAutorizado(id, pessoaAutorizada);
 	}
 	
 	@DeleteMapping("/{id}")
@@ -69,6 +106,18 @@ public class AlunoResource {
 		return ResponseEntity.noContent().build();
 	}
 	
+	@GetMapping("/{id}/avaliacoes")
+	public ResponseEntity<List<AvaliacaoDTO>> consultaAvaliacaoPorAlunoId(@PathVariable Integer id) {
+		List<Avaliacao> lista = avaliacaoService.consultaAvaliacaoPorAlunoId(id);
+		List<AvaliacaoDTO> listaDto = lista.stream().map(aluno -> new AvaliacaoDTO(aluno)).collect(Collectors.toList());
+		return ResponseEntity.ok(listaDto);
+	}
 	
-
+	@GetMapping("/{id}/matriculas")
+	public ResponseEntity<List<MatriculaDTO>> consultaMatriculasPorAlunolId(@PathVariable Integer id) {
+		List<Matricula> lista = matriculaService.consultarMatriculaPorAlunoId(id);
+		List<MatriculaDTO> listaDto = lista.stream().map(aluno -> new MatriculaDTO(aluno)).collect(Collectors.toList());
+		return ResponseEntity.ok(listaDto);
+	}
+	
 }

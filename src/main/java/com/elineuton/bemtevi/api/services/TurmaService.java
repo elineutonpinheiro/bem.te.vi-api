@@ -3,8 +3,10 @@ package com.elineuton.bemtevi.api.services;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.elineuton.bemtevi.api.domain.AnoLetivo;
@@ -31,29 +33,31 @@ public class TurmaService {
 	
 	@Autowired
 	private ProfissionalService profissionalService;
-	
-	@Autowired
-	private TurmaRepository turmaRepository;
 
 	public List<Turma> listar() {
 		return repo.findAll();
 	}
 
 	public Turma consultarPorId(Integer id) {
-		Optional<Turma> obj = repo.findById(id);
-		return obj.orElseThrow(() -> new ObjectNotFoundException(
+		Optional<Turma> turma = repo.findById(id);
+		return turma.orElseThrow(() -> new ObjectNotFoundException(
 				"Objeto não encontrado! Id: " + id + ", Tipo: " + Turma.class.getName()));
 	}
 
-	public Turma inserir(Turma obj) {
-		obj = repo.save(obj);
-		return obj;
+	public Turma inserir(Turma turma) {
+		turma = repo.save(turma);
+		return turma;
 	}
 
-	public Turma atualizar(Turma obj, Integer id) {
-		Turma newObj = consultarPorId(id);
-		updateData(newObj, obj);
-		return repo.save(newObj);
+	public Turma atualizar(Turma turma, Integer id) {
+		Turma turmaSalva = repo.findById(id).get();
+		
+		if(turmaSalva == null) {
+			throw new EmptyResultDataAccessException(1);
+		}
+		
+		BeanUtils.copyProperties(turma, turmaSalva, "id");
+		return repo.save(turmaSalva);
 	}
 
 	public void remover(Integer id) {
@@ -65,30 +69,21 @@ public class TurmaService {
 	}
 
 	// TODO Trocar os NULL pelos IDs de Turma e Ano Letivo
-	public Turma fromDTO(TurmaDTO objDto) {
-		return new Turma(objDto.getId(), objDto.getNome(), null, null, null, null, null);
+	public Turma fromDTO(TurmaDTO turmaDto) {
+		return new Turma(turmaDto.getNome(), null, null, null, null, null);
 	}
 
-	public Turma fromDTO(TurmaNewDTO objDto) {
-		Unidade unidade = unidadeService.consultaPorId(objDto.getUnidadeId());
-		AnoLetivo anoLetivo = anoLetivoService.consultaPorId(objDto.getAnoLetivoId());
-		Turma turma = new Turma(null, objDto.getNome(), unidade, objDto.getPeriodo(), objDto.getSala(),
-				objDto.getStatus(), anoLetivo);
+	public Turma fromDTO(TurmaNewDTO turmaDto) {
+		Unidade unidade = unidadeService.consultaPorId(turmaDto.getUnidadeId());
+		AnoLetivo anoLetivo = anoLetivoService.consultaPorId(turmaDto.getAnoLetivoId());
+		Turma turma = new Turma(turmaDto.getNome(), unidade, turmaDto.getPeriodo(), 
+				turmaDto.getSala(), anoLetivo, null);
 		return turma;
-	}
-
-	private void updateData(Turma newObj, Turma obj) {
-		newObj.setNome(obj.getNome());
-		newObj.setUnidade(obj.getUnidade());
-		newObj.setPeriodo(obj.getPeriodo());
-		newObj.setSala(obj.getSala());
-		newObj.setStatus(obj.getStatus());
-		newObj.setAnoLetivo(obj.getAnoLetivo());
 	}
 
 	public List<Turma> consultaTurmasPorProfissionalId(Integer id) {
 		Profissional profissional = profissionalService.consultarPorId(id);
-		List<Turma> lista = turmaRepository.findByProfissional(profissional);
+		List<Turma> lista = repo.findByProfissional(profissional);
 		return lista;
 	}
 

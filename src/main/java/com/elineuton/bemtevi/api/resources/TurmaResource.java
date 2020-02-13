@@ -1,12 +1,14 @@
 package com.elineuton.bemtevi.api.resources;
 
 import java.net.URI;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,18 +17,23 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.elineuton.bemtevi.api.domain.Aluno;
 import com.elineuton.bemtevi.api.domain.Atividade;
+import com.elineuton.bemtevi.api.domain.Avaliacao;
 import com.elineuton.bemtevi.api.domain.Turma;
 import com.elineuton.bemtevi.api.dto.AlunoDTO;
 import com.elineuton.bemtevi.api.dto.AtividadeDTO;
+import com.elineuton.bemtevi.api.dto.AvaliacaoDTO;
 import com.elineuton.bemtevi.api.dto.TurmaDTO;
 import com.elineuton.bemtevi.api.dto.TurmaNewDTO;
+import com.elineuton.bemtevi.api.repositories.filter.AtividadeFilter;
 import com.elineuton.bemtevi.api.services.AlunoService;
 import com.elineuton.bemtevi.api.services.AtividadeService;
+import com.elineuton.bemtevi.api.services.AvaliacaoService;
 import com.elineuton.bemtevi.api.services.TurmaService;
 
 @RestController
@@ -41,37 +48,40 @@ public class TurmaResource {
 	
 	@Autowired
 	private AlunoService alunoService;
-
+	
+	@Autowired
+	private AvaliacaoService avaliacaoService;
+	
 	@GetMapping
 	public ResponseEntity<List<TurmaDTO>> listar() {
 		List<Turma> lista = service.listar();
-		List<TurmaDTO> listaDto = lista.stream().map(obj -> new TurmaDTO(obj)).collect(Collectors.toList());
+		List<TurmaDTO> listaDto = lista.stream().map(turma -> new TurmaDTO(turma)).collect(Collectors.toList());
 		return ResponseEntity.ok(listaDto);
 	}
 
 	@GetMapping("/{id}")
 	public ResponseEntity<Turma> consultarPorId(@PathVariable Integer id) {
-		Turma obj = service.consultarPorId(id);
-		return obj != null ? ResponseEntity.ok(obj) : ResponseEntity.notFound().build();
+		Turma turma = service.consultarPorId(id);
+		return turma != null ? ResponseEntity.ok(turma) : ResponseEntity.notFound().build();
 	}
 
 	@PostMapping
-	public ResponseEntity<Turma> inserir(@Valid @RequestBody TurmaNewDTO objDto) {
-		Turma obj = service.fromDTO(objDto);
-		obj = service.inserir(obj);
+	public ResponseEntity<Turma> inserir(@Valid @RequestBody TurmaNewDTO turmaDto) {
+		Turma turma = service.fromDTO(turmaDto);
+		turma = service.inserir(turma);
 
-		// Mapear o recurso -> instituicao + id
+		// Mapear o recurso -> turma + id
 
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(obj.getId()).toUri();
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(turma.getId()).toUri();
 
-		return ResponseEntity.created(uri).body(obj);
+		return ResponseEntity.created(uri).body(turma);
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<Turma> atualizar(@Valid @RequestBody TurmaNewDTO objDto, @PathVariable Integer id) {
-		Turma obj = service.fromDTO(objDto);
-		obj = service.atualizar(obj, id);
-		return ResponseEntity.ok(obj);
+	public ResponseEntity<Turma> atualizar(@Valid @RequestBody TurmaNewDTO turmaDto, @PathVariable Integer id) {
+		Turma turma = service.fromDTO(turmaDto);
+		turma = service.atualizar(turma, id);
+		return ResponseEntity.ok(turma);
 	}
 
 	@DeleteMapping("/{id}")
@@ -79,19 +89,75 @@ public class TurmaResource {
 		service.remover(id);
 		return ResponseEntity.noContent().build();
 	}
-
+	 
 	@GetMapping("/{id}/atividades")
-	public ResponseEntity<List<AtividadeDTO>> consultaAtividadesPorTurmaId(@PathVariable Integer id) {
-		List<Atividade> lista = atividadeService.consultaAtividadesPorTurmaId(id);
-		List<AtividadeDTO> listaDto = lista.stream().map(obj -> new AtividadeDTO(obj)).collect(Collectors.toList());
+	public ResponseEntity<List<AtividadeDTO>> pesquisar(
+		@PathVariable Integer id,
+		@RequestParam(value="descricao", defaultValue = "") String descricao, 
+		@RequestParam(value="dataCriacaoDe", defaultValue = "") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dataCriacaoDe,
+		@RequestParam(value="dataCriacaoAte", defaultValue = "") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dataCriacaoAte) {
+		AtividadeFilter atividadeFilter = new AtividadeFilter(descricao, dataCriacaoDe, dataCriacaoAte);
+		Turma t = service.consultarPorId(id);
+		List<Atividade> lista = atividadeService.pesquisar(t, atividadeFilter);
+		List<AtividadeDTO> listaDto = lista.stream().map(turma -> new AtividadeDTO(turma)).collect(Collectors.toList());
 		return ResponseEntity.ok(listaDto);
 	}
+	
 
 	@GetMapping("/{id}/alunos")
-	public ResponseEntity<List<AlunoDTO>> consultaAlunosPorTurmaId(@PathVariable Integer id) {
-		List<Aluno> lista = alunoService.consultaAlunosPorTurmaId(id);
-		List<AlunoDTO> listaDto = lista.stream().map(obj -> new AlunoDTO(obj)).collect(Collectors.toList());
+	public ResponseEntity<List<AlunoDTO>> consultarAlunosPorTurmaId(@PathVariable Integer id) {
+		List<Aluno> lista = alunoService.consultarAlunosPorTurmaId(id);
+		List<AlunoDTO> listaDto = lista.stream().map(turma -> new AlunoDTO(turma)).collect(Collectors.toList());
+		return ResponseEntity.ok(listaDto);
+	}
+	
+	@GetMapping("/{id}/avaliacoes")
+	public ResponseEntity<List<AvaliacaoDTO>> consultarAvaliacaoPorTurma(
+			@PathVariable Integer id) {
+		List<Avaliacao> lista = avaliacaoService.consultarAvaliacaoPorTurma(id);
+		List<AvaliacaoDTO> listaDto = lista.stream().map(turma -> new AvaliacaoDTO(turma)).collect(Collectors.toList());
 		return ResponseEntity.ok(listaDto);
 	}
 
 }
+
+
+/*
+@GetMapping("/{id}/avaliacoes")
+public ResponseEntity<List<AvaliacaoDTO>> consultaAvaliacaoPorId(@PathVariable Integer id) {
+	List<Avaliacao> lista = avaliacaoService.consultaAvaliacaoPorTurmaId(id);
+	List<AvaliacaoDTO> listaDto = lista.stream().map(turma -> new AvaliacaoDTO(turma)).collect(Collectors.toList());
+	return ResponseEntity.ok(listaDto);
+}
+*/
+/*
+@GetMapping("/{id}/avaliacoes")
+public ResponseEntity<List<AvaliacaoDTO>> consultarAvaliacaoPorTurmaeProfissional(
+		@PathVariable Integer id, 
+		@RequestParam(defaultValue = "") Integer profissional) {
+	List<Avaliacao> lista = avaliacaoService.consultarAvaliacaoPorTurmaEProfissional(id, profissional);
+	List<AvaliacaoDTO> listaDto = lista.stream().map(turma -> new AvaliacaoDTO(turma)).collect(Collectors.toList());
+	return ResponseEntity.ok(listaDto);
+}
+*/
+
+
+/*
+@GetMapping("/{id}/atividades")
+public ResponseEntity<List<AtividadeDTO>> consultarAtividadesPorTurmaId(@PathVariable Integer id) {
+	List<Atividade> lista = atividadeService.consultarAtividadesPorTurmaId(id);
+	List<AtividadeDTO> listaDto = lista.stream().map(turma -> new AtividadeDTO(turma)).collect(Collectors.toList());
+	return ResponseEntity.ok(listaDto);
+}
+*/
+
+/*
+ * @RequestParam(value="hoje", required = false) @DateTimeFormat(pattern =
+ * "dd.MM.yyy") LocalDate hoje,
+ * 
+ * @RequestParam(value="dataInicial", defaultValue = ""
+ * ) @DateTimeFormat(pattern = "dd.MM.yyy") LocalDate dataInicial,
+ * 
+ * @RequestParam(value="dataFinal", defaultValue = "") @DateTimeFormat(pattern =
+ * "dd.MM.yyy") LocalDate dataFinal,
+ */

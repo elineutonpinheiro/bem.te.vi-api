@@ -7,6 +7,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import com.elineuton.bemtevi.api.domain.enums.Perfil;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,49 +19,53 @@ import lombok.Setter;
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
 public class Profissional implements Serializable {
-	
+
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Getter
 	private Integer id;
-	
-	@Getter @Setter
+
+	@Getter	@Setter
 	private String nome;
-	
-	@Getter @Setter
+
+	@Getter	@Setter
 	private String cargo;
-	
-	@Getter @Setter
+
+	@Getter	@Setter
 	private String telefone;
-	
-	@Getter @Setter
+
+	@JsonIgnore
+	@Getter	@Setter
 	private String email;
-	
-	@Getter @Setter
+
+	@JsonIgnore
+	@Getter	@Setter
 	private String senha;
 	
-	/*
-	 * @JsonIgnore
-	 * @OneToMany(mappedBy = "id.profissional")
-	 * @Getter @Setter private Set<Lotacao> lotacoes = new HashSet<>();
-	 */
+	@Getter	@Setter
+	private Boolean ativo;
+	
+	private Integer perfil;
 
-	public Profissional(Integer id, String nome, String cargo, String telefone, String email, String senha) {
-		super();
-		this.id = id;
+	public Profissional(String nome, String cargo, String telefone, String email, String senha, 
+			Boolean ativo, Perfil perfil) {
 		this.nome = nome;
 		this.cargo = cargo;
 		this.telefone = telefone;
 		this.email = email;
 		this.senha = senha;
+		this.ativo = ativo;
+		this.perfil = perfil.getCod();
 	}
 	
-	/*
-	 * @JsonIgnore public List<Turma> getTurmas() { List<Turma> lista = new
-	 * ArrayList<>(); for(Lotacao x: lotacoes) { lista.add(x.getTurma()); } return
-	 * lista; }
-	 */
+	public Perfil getPerfil() {
+		return Perfil.toEnum(perfil);
+	}
 
+	public void setPerfil(Perfil perfil) {
+		this.perfil = perfil.getCod();
+	}
+	
 }

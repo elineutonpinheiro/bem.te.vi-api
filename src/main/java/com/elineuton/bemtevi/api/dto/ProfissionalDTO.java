@@ -25,11 +25,15 @@ public class ProfissionalDTO implements Serializable {
 	@Getter @Setter
 	private String telefone;
 	
-	public ProfissionalDTO(Profissional obj) {
-		this.id = obj.getId();
-		this.nome = obj.getNome();
-		this.cargo = obj.getCargo();
-		this.telefone = obj.getTelefone();
+	@Getter	@Setter
+	private Boolean ativo;
+	
+	public ProfissionalDTO(Profissional profissional) {
+		this.id = profissional.getId();
+		this.nome = profissional.getNome();
+		this.cargo = profissional.getCargo();
+		this.telefone = profissional.getTelefone();
+		this.ativo = profissional.getAtivo();
 	}
 	
 }

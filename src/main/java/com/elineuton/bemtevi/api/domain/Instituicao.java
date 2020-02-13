@@ -33,11 +33,13 @@ public class Instituicao implements Serializable {
 	
 	@OneToMany(mappedBy = "instituicao", fetch = FetchType.LAZY)
 	private Set<Unidade> unidades = new HashSet<>();
+	
+	@Getter @Setter
+	private Boolean ativa;
 
-	public Instituicao(Integer id, String nome) {
-		super();
-		this.id = id;
+	public Instituicao(String nome, Boolean ativa) {
 		this.nome = nome;
+		this.ativa = ativa;
 	}
 
 }

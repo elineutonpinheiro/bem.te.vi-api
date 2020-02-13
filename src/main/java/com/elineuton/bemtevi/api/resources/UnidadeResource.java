@@ -32,34 +32,34 @@ public class UnidadeResource {
 	@GetMapping
 	public ResponseEntity<List<UnidadeDTO>> listar(){
 		List<Unidade> lista = service.listar();
-		List<UnidadeDTO> listaDto = lista.stream().map(obj -> new UnidadeDTO(obj)).collect(Collectors.toList());
+		List<UnidadeDTO> listaDto = lista.stream().map(unidade -> new UnidadeDTO(unidade)).collect(Collectors.toList());
 		return ResponseEntity.ok(listaDto);
 	}
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<Unidade> consultarPorId(@PathVariable Integer id) {
-		Unidade obj = service.consultaPorId(id);
-		return obj != null ? ResponseEntity.ok(obj) : ResponseEntity.notFound().build();
+		Unidade unidade = service.consultaPorId(id);
+		return unidade != null ? ResponseEntity.ok(unidade) : ResponseEntity.notFound().build();
 	}
 	
 	@PostMapping
-	public ResponseEntity<Unidade> inserir(@Valid @RequestBody UnidadeDTO objDto) {
-		Unidade obj = service.fromDTO(objDto); 
-		obj = service.inserir(obj);
+	public ResponseEntity<Unidade> inserir(@Valid @RequestBody UnidadeDTO unidadeDto) {
+		Unidade unidade = service.fromDTO(unidadeDto); 
+		unidade = service.inserir(unidade);
 		
-		//Mapear o recurso -> instituicao + id
+		//Mapear o recurso -> unidade + id
 		
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}")
-				.buildAndExpand(obj.getId()).toUri();
+				.buildAndExpand(unidade.getId()).toUri();
 		
-		return ResponseEntity.created(uri).body(obj);
+		return ResponseEntity.created(uri).body(unidade);
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<Unidade> atualizar(@Valid @RequestBody UnidadeDTO objDto, @PathVariable Integer id) {
-		Unidade obj = service.fromDTO(objDto);
-		obj = service.atualizar(obj, id);
-		return ResponseEntity.ok(obj);
+	public ResponseEntity<Unidade> atualizar(@Valid @RequestBody UnidadeDTO unidadeDto, @PathVariable Integer id) {
+		Unidade unidade = service.fromDTO(unidadeDto);
+		unidade = service.atualizar(unidade, id);
+		return ResponseEntity.ok(unidade);
 	}
 	
 	@DeleteMapping("/{id}")

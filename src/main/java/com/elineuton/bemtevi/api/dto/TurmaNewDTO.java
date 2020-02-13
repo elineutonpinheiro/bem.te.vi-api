@@ -21,7 +21,7 @@ public class TurmaNewDTO implements Serializable {
 	private String sala;
 	
 	@Getter @Setter
-	private String status;
+	private boolean ativa;
 	
 	@Getter @Setter
 	private Integer unidadeId;

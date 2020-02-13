@@ -2,6 +2,7 @@ package com.elineuton.bemtevi.api.resources;
 
 import java.net.URI;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -17,44 +18,45 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.elineuton.bemtevi.api.domain.Instituicao;
-import com.elineuton.bemtevi.api.services.InstituicaoService;
+import com.elineuton.bemtevi.api.domain.Lotacao;
+import com.elineuton.bemtevi.api.dto.LotacaoDTO;
+import com.elineuton.bemtevi.api.services.LotacaoService;
 
 @RestController
-@RequestMapping("/instituicoes")
-public class InstituicaoResource {
+@RequestMapping("/lotacoes")
+public class LotacaoResource {
 	
 	@Autowired
-	private InstituicaoService service;
+	private LotacaoService service;
 	
 	@GetMapping
-	public ResponseEntity<List<Instituicao>> listar(){
-		List<Instituicao> lista = service.listar();
-		return ResponseEntity.ok(lista);
-	}
-	
-	@GetMapping("/{id}")
-	public ResponseEntity<Instituicao> consultarPorId(@PathVariable Integer id) {
-		Instituicao instituicao = service.consultaPorId(id);
-		return instituicao != null ? ResponseEntity.ok(instituicao) : ResponseEntity.notFound().build();
+	public ResponseEntity<List<LotacaoDTO>> listar(){
+		List<Lotacao> lista = service.listar();
+		List<LotacaoDTO> listaDto = lista.stream().map(obj -> new LotacaoDTO(obj))
+				.collect(Collectors.toList());
+		return ResponseEntity.ok(listaDto);
 	}
 	
 	@PostMapping
-	public ResponseEntity<Instituicao> inserir(@Valid @RequestBody Instituicao instituicao) {
-		Instituicao instituicaoSalvo = service.inserir(instituicao);
+	public ResponseEntity<Lotacao> inserir(@Valid @RequestBody LotacaoDTO lotacaoDto) {
+		Lotacao lotacao = service.fromDTO(lotacaoDto);
+		
+		//lotacao.setAluno(lotacaoDto.getAluno());
+		lotacao = service.inserir(lotacao);
 		
 		//Mapear o recurso -> instituicao + id
 		
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}")
-				.buildAndExpand(instituicaoSalvo.getId()).toUri();
+				.buildAndExpand(lotacao.getId()).toUri();
 		
-		return ResponseEntity.created(uri).body(instituicaoSalvo);
+		return ResponseEntity.created(uri).body(lotacao);
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<Instituicao> atualizar(@Valid @RequestBody Instituicao instituicao, @PathVariable Integer id) {
-		Instituicao instituicaoSalvo = service.atualizar(instituicao, id);
-		return ResponseEntity.ok(instituicaoSalvo);
+	public ResponseEntity<Lotacao> atualizar(@Valid @RequestBody LotacaoDTO lotacaoDTO, @PathVariable Integer id) {
+		Lotacao lotacao = service.fromDTO(lotacaoDTO);
+		lotacao = service.atualizar(lotacao, id);
+		return ResponseEntity.ok(lotacao);
 	}
 	
 	@DeleteMapping("/{id}")
@@ -62,5 +64,7 @@ public class InstituicaoResource {
 		service.remover(id);
 		return ResponseEntity.noContent().build();
 	}
-	 
+	
+	
+
 }

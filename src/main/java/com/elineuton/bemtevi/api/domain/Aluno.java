@@ -1,6 +1,7 @@
 package com.elineuton.bemtevi.api.domain;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -23,55 +24,36 @@ import lombok.Setter;
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
 public class Aluno implements Serializable {
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Getter
 	private Integer id;
-	
+
 	@Getter @Setter
 	private String nome;
-	
-	@Getter @Setter
-	private String sobrenome;
-	
+
 	@Getter @Setter
 	private String dataNascimento;
 	
-	/*
-	 * @OneToOne
-	 * @Getter @Setter
-	 * @JoinColumn(foreignKey = @ForeignKey(name = "fk_turma_id")) private Turma
-	 * turma;
-	 */
-	
 	@Getter @Setter
+	private LocalDate dataPresenca;
+
 	@ElementCollection
 	@CollectionTable(name = "aluno_pessoal_autorizado", joinColumns = @JoinColumn(name = "aluno_id", foreignKey = @ForeignKey(name = "fk_aluno_id")))
 	@Column(name = "pessoal_autorizado")
+	@Getter @Setter
 	private Set<String> pessoalAutorizado = new HashSet<>();
 	
-	/*
-	 * @JsonIgnore
-	 * @OneToMany(mappedBy = "id.aluno")
-	 * @Getter @Setter private Set<Matricula> matriculas = new HashSet<>();
-	 */
+	@Getter @Setter
+	private Boolean ativo;
 
-	public Aluno(Integer id, String nome, String sobrenome, String dataNascimento) {
-		super();
-		this.id = id;
+	public Aluno(String nome, String dataNascimento, Boolean ativo) {
 		this.nome = nome;
-		this.sobrenome = sobrenome;
 		this.dataNascimento = dataNascimento;
+		this.ativo = ativo;
 	}
-	
-	/*
-	 * @JsonIgnore public List<Turma> getTurmas() { List<Turma> lista = new
-	 * ArrayList<>(); for(Matricula x: matriculas) { lista.add(x.getTurma()); }
-	 * return lista; }
-	 */
-	
 
 }

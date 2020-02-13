@@ -3,14 +3,15 @@ package com.elineuton.bemtevi.api.services;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.elineuton.bemtevi.api.domain.Instituicao;
 import com.elineuton.bemtevi.api.domain.Unidade;
 import com.elineuton.bemtevi.api.dto.UnidadeDTO;
-import com.elineuton.bemtevi.api.repositories.InstituicaoRepository;
 import com.elineuton.bemtevi.api.repositories.UnidadeRepository;
 import com.elineuton.bemtevi.api.services.exceptions.DataIntegrityException;
 import com.elineuton.bemtevi.api.services.exceptions.ObjectNotFoundException;
@@ -21,30 +22,33 @@ public class UnidadeService {
 	@Autowired
 	private UnidadeRepository repo;
 	
-	@Autowired InstituicaoRepository instituicaoRepository;
-	
-	@Autowired InstituicaoService instituicaoService;
+	@Autowired 
+	private InstituicaoService instituicaoService;
 	
 	public List<Unidade> listar() {
 		return repo.findAll();
 	}
 	
 	public Unidade consultaPorId(Integer id) {
-		Optional<Unidade> obj = repo.findById(id);
-		return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado! Id: " 
+		Optional<Unidade> unidade = repo.findById(id);
+		return unidade.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado! Id: " 
 		+ id + ", Tipo: " + Unidade.class.getName()));
 	}
 	
-	public Unidade inserir(Unidade obj) {
-		instituicaoRepository.save(obj.getInstituicao());
-		obj = repo.save(obj);
-		return obj;
+	public Unidade inserir(Unidade unidade) {
+		unidade = repo.save(unidade);
+		return unidade;
 	}
 	
-	public Unidade atualizar(Unidade obj, Integer id) {
-		Unidade newObj = consultaPorId(id);
-		updateData(newObj, obj);
-		return repo.save(newObj);
+	public Unidade atualizar(Unidade unidade, Integer id) {
+		Unidade unidadeSalva = repo.findById(id).get();
+		
+		if(unidadeSalva == null) {
+			throw new EmptyResultDataAccessException(1);
+		}
+		
+		BeanUtils.copyProperties(unidade, unidadeSalva, "id");
+		return repo.save(unidadeSalva);
 	}
 	
 	public void remover(Integer id) {
@@ -55,19 +59,11 @@ public class UnidadeService {
 		}	
 	}
 	
-	public Unidade fromDTO(UnidadeDTO objDto) {
-		Instituicao instituicao = instituicaoService.consultaPorId(objDto.getInstituicaoId());
-		Unidade unidade = new Unidade(null, objDto.getNome(), objDto.getEndereco(), objDto.getTelefone(), objDto.getEmail(), objDto.getStatus(), instituicao);
+	public Unidade fromDTO(UnidadeDTO unidadeDto) {
+		Instituicao instituicao = instituicaoService.consultaPorId(unidadeDto.getInstituicaoId());
+		Unidade unidade = new Unidade(unidadeDto.getNome(), unidadeDto.getEndereco(), 
+				unidadeDto.getTelefone(), unidadeDto.getEmail(), instituicao, null);
 		return unidade;
-	}
-	
-	private void updateData (Unidade newObj, Unidade obj) {
-		newObj.setNome(obj.getNome());
-		newObj.setEndereco(obj.getEndereco());
-		newObj.setTelefone(obj.getTelefone()); 
-		newObj.setEmail(obj.getEmail());
-		newObj.setStatus(obj.getStatus());
-		newObj.setInstituicao(obj.getInstituicao());
 	}
 
 }

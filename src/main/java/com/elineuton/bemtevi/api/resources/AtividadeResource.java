@@ -1,8 +1,6 @@
 package com.elineuton.bemtevi.api.resources;
 
 import java.net.URI;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -29,37 +27,31 @@ public class AtividadeResource {
 	@Autowired
 	private AtividadeService service;
 	
-	@GetMapping
-	public ResponseEntity<List<AtividadeDTO>> listar(){
-		List<Atividade> lista = service.listar();
-		List<AtividadeDTO> listaDto = lista.stream().map(obj -> new AtividadeDTO(obj)).collect(Collectors.toList());
-		return ResponseEntity.ok(listaDto);
-	}
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<Atividade> consultarPorId(@PathVariable Integer id) {
-		Atividade obj = service.consultarPorId(id);
-		return obj != null ? ResponseEntity.ok(obj) : ResponseEntity.notFound().build();
+		Atividade atividade = service.consultarPorId(id);
+		return atividade != null ? ResponseEntity.ok(atividade) : ResponseEntity.notFound().build();
 	}
 	
 	@PostMapping
-	public ResponseEntity<Atividade> inserir(@Valid @RequestBody AtividadeDTO objDto) {
-		Atividade obj = service.fromDTO(objDto);
-		obj = service.inserir(obj);
+	public ResponseEntity<Atividade> inserir(@Valid @RequestBody AtividadeDTO atividadeDto) {
+		Atividade atividade = service.fromDTO(atividadeDto);
+		atividade = service.inserir(atividade);
 		
-		//Mapear o recurso -> instituicao + id
+		//Mapear o recurso -> atividade + id
 		
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}")
-				.buildAndExpand(obj.getId()).toUri();
+				.buildAndExpand(atividade.getId()).toUri();
 		
-		return ResponseEntity.created(uri).body(obj);
+		return ResponseEntity.created(uri).body(atividade);
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<Atividade> atualizar(@Valid @RequestBody AtividadeDTO objDto, @PathVariable Integer id) {
-		Atividade obj = service.fromDTO(objDto);
-		obj = service.atualizar(obj, id);
-		return ResponseEntity.ok(obj);
+	public ResponseEntity<Atividade> atualizar(@Valid @RequestBody AtividadeDTO atividadeDto, @PathVariable Integer id) {
+		Atividade atividade = service.fromDTO(atividadeDto);
+		atividade = service.atualizar(atividade, id);
+		return ResponseEntity.ok(atividade);
 	}
 	
 	@DeleteMapping("/{id}")
@@ -69,3 +61,32 @@ public class AtividadeResource {
 	}
 
 }
+
+/*
+@GetMapping
+public ResponseEntity<List<AtividadeDTO>> listar(){
+	List<Atividade> lista = service.listar();
+	List<AtividadeDTO> listaDto = lista.stream().map(atividade -> new AtividadeDTO(atividade)).collect(Collectors.toList());
+	return ResponseEntity.ok(listaDto);
+}
+*/
+/*
+@GetMapping
+public ResponseEntity<List<AtividadeDTO>> pesquisar(AtividadeFilter atividadeFilter){
+	List<Atividade> lista = service.pesquisar(atividadeFilter);
+	List<AtividadeDTO> listaDto = lista.stream().map(atividade -> new AtividadeDTO(atividade)).collect(Collectors.toList());
+	return ResponseEntity.ok(listaDto);
+}
+*/
+
+
+/* Implementado em TurmaResource
+@GetMapping
+public ResponseEntity<List<AtividadeDTO>> listar(
+		@RequestParam(value="turma", defaultValue = "") Integer turma,
+		@RequestParam(value="descricao", defaultValue = "") String descricao){
+	List<Atividade> lista = service.consultarPorTurmaEDescricao(turma, descricao);
+	List<AtividadeDTO> listaDto = lista.stream().map(atividade -> new AtividadeDTO(atividade)).collect(Collectors.toList());
+	return ResponseEntity.ok(listaDto);
+}
+*/

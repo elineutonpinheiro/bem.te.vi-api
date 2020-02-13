@@ -2,18 +2,13 @@ package com.elineuton.bemtevi.api.domain;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -42,15 +37,8 @@ public class AnoLetivo implements Serializable {
 	@Getter @Setter
 	@JsonFormat(pattern = "dd/MM/yyyy")
 	private LocalDate dataFinal;
-	
-	@OneToMany(mappedBy = "anoLetivo", fetch = FetchType.LAZY)
-	@Getter @Setter
-	@JsonIgnore
-	private Set<Turma> turma = new HashSet<>();
 
-	public AnoLetivo(Integer id, String descricao, LocalDate dataInicial, LocalDate dataFinal) {
-		super();
-		this.id = id;
+	public AnoLetivo(String descricao, LocalDate dataInicial, LocalDate dataFinal) {
 		this.descricao = descricao;
 		this.dataInicial = dataInicial;
 		this.dataFinal = dataFinal;

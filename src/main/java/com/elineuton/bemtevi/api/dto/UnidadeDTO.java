@@ -30,19 +30,19 @@ public class UnidadeDTO implements Serializable {
 	private String email;
 	
 	@Getter @Setter
-	private String status;
+	private boolean ativa;
 	
 	@Getter @Setter
 	private Integer instituicaoId;
 	
-	public UnidadeDTO(Unidade obj) {
-		this.id = obj.getId();
-		this.nome = obj.getNome();
-		this.endereco = obj.getEndereco();
-		this.telefone = obj.getTelefone();
-		this.email = obj.getEmail();
-		this.status = obj.getStatus();
-		this.instituicaoId = obj.getInstituicao().getId();
+	public UnidadeDTO(Unidade unidade) {
+		this.id = unidade.getId();
+		this.nome = unidade.getNome();
+		this.endereco = unidade.getEndereco();
+		this.telefone = unidade.getTelefone();
+		this.email = unidade.getEmail();
+		this.ativa = unidade.getAtiva();
+		this.instituicaoId = unidade.getInstituicao().getId();
 	}
 
 }
