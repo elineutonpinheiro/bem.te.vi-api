@@ -7,5 +7,8 @@ import com.elineuton.bemtevi.api.domain.Profissional;
 
 @Repository
 public interface ProfissionalRepository extends JpaRepository<Profissional, Integer> {
+	
+	Profissional findByCodigoAcesso(String codigoAcesso);
+	
 
 }

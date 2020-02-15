@@ -1,8 +1,14 @@
 package com.elineuton.bemtevi.api.domain;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
+import javax.persistence.CollectionTable;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -12,11 +18,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@NoArgsConstructor
 @EqualsAndHashCode(of = "id")
 public class Profissional implements Serializable {
 
@@ -47,25 +51,31 @@ public class Profissional implements Serializable {
 	@Getter	@Setter
 	private Boolean ativo;
 	
-	private Integer perfil;
-
+	@ElementCollection(fetch = FetchType.EAGER)
+	@CollectionTable(name = "PERFIS")
+	private Set<Integer> perfis = new HashSet<>();
+	
+	public Profissional() {
+		addPerfil(Perfil.PROFISSIONAL);
+	}
+	
 	public Profissional(String nome, String cargo, String telefone, 
-			String codigoAcesso, String senha, Boolean ativo, Perfil perfil) {
+			String codigoAcesso, String senha, Boolean ativo) {
 		this.nome = nome;
 		this.cargo = cargo;
 		this.telefone = telefone;
 		this.codigoAcesso = codigoAcesso;
 		this.senha = senha;
 		this.ativo = ativo;
-		this.perfil = perfil.getCod();
+		addPerfil(Perfil.PROFISSIONAL);
 	}
 	
-	public Perfil getPerfil() {
-		return Perfil.toEnum(perfil);
+	public Set<Perfil> getPerfis() {
+		return perfis.stream().map(x -> Perfil.toEnum(x)).collect(Collectors.toSet());
 	}
 
-	public void setPerfil(Perfil perfil) {
-		this.perfil = perfil.getCod();
+	public void addPerfil(Perfil perfil) {
+		perfis.add(perfil.getCod());
 	}
 	
 }

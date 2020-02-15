@@ -11,7 +11,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.elineuton.bemtevi.api.domain.Profissional;
-import com.elineuton.bemtevi.api.domain.enums.Perfil;
 import com.elineuton.bemtevi.api.dto.ProfissionalDTO;
 import com.elineuton.bemtevi.api.dto.ProfissionalNewDTO;
 import com.elineuton.bemtevi.api.repositories.ProfissionalRepository;
@@ -64,7 +63,7 @@ public class ProfissionalService {
 	
 	public Profissional fromDTO(ProfissionalDTO profissionalDto) {
 		return new Profissional(profissionalDto.getNome(), profissionalDto.getCargo(), 
-				profissionalDto.getTelefone(), null, null, null, null);
+				profissionalDto.getTelefone(), null, null, null);
 	}
 	
 	public Profissional fromDTO(ProfissionalNewDTO profissionalNewDto) {
@@ -72,7 +71,7 @@ public class ProfissionalService {
 				profissionalNewDto.getTelefone(), 
 				passwordEncoder.encode(profissionalNewDto.getCodigoAcesso()), 
 				passwordEncoder.encode(profissionalNewDto.getSenha()), 
-				profissionalNewDto.getAtivo(), Perfil.PROFISSIONAL);
+				profissionalNewDto.getAtivo());
 	}
 	
 
