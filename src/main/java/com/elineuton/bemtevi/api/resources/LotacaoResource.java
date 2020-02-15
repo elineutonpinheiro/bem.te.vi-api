@@ -40,8 +40,6 @@ public class LotacaoResource {
 	@PostMapping
 	public ResponseEntity<Lotacao> inserir(@Valid @RequestBody LotacaoDTO lotacaoDto) {
 		Lotacao lotacao = service.fromDTO(lotacaoDto);
-		
-		//lotacao.setAluno(lotacaoDto.getAluno());
 		lotacao = service.inserir(lotacao);
 		
 		//Mapear o recurso -> instituicao + id

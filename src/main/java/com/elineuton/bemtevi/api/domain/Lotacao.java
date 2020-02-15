@@ -30,13 +30,13 @@ public class Lotacao implements Serializable {
 	
 	@Getter @Setter
 	@ManyToOne
-	@JoinColumn(foreignKey = @ForeignKey(name = "fk_profissional_id"))
-	private Profissional profissional;
+	@JoinColumn(foreignKey = @ForeignKey(name = "fk_turma_id"))
+	private Turma turma;
 	
 	@Getter @Setter
 	@ManyToOne
-	@JoinColumn(foreignKey = @ForeignKey(name = "fk_turma_id"))
-	private Turma turma;
+	@JoinColumn(foreignKey = @ForeignKey(name = "fk_profissional_id"))
+	private Profissional profissional;
 	
 	@Getter @Setter
 	private LocalDate dataInicio;
@@ -44,9 +44,9 @@ public class Lotacao implements Serializable {
 	@Getter @Setter
 	private LocalDate dataTermino;
 
-	public Lotacao(Profissional profissional, Turma turma, LocalDate dataInicio, LocalDate dataTermino) {
-		this.profissional = profissional;
+	public Lotacao(Turma turma, Profissional profissional, LocalDate dataInicio, LocalDate dataTermino) {
 		this.turma = turma;
+		this.profissional = profissional;
 		this.dataInicio = dataInicio;
 		this.dataTermino = dataTermino;
 	}

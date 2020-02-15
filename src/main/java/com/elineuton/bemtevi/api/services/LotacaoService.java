@@ -13,7 +13,6 @@ import com.elineuton.bemtevi.api.domain.Profissional;
 import com.elineuton.bemtevi.api.domain.Turma;
 import com.elineuton.bemtevi.api.dto.LotacaoDTO;
 import com.elineuton.bemtevi.api.repositories.LotacaoRepository;
-import com.elineuton.bemtevi.api.repositories.ProfissionalRepository;
 import com.elineuton.bemtevi.api.services.exceptions.DataIntegrityException;
 
 @Service
@@ -23,14 +22,10 @@ public class LotacaoService {
 	private LotacaoRepository repo;
 	
 	@Autowired
-	private ProfissionalRepository profissionalRepository;
-	
-	@Autowired
 	private TurmaService turmaService;
 
 	@Autowired 
 	private ProfissionalService profissionalService;
-	 
 
 	public List<Lotacao> listar() {
 		return repo.findAll();
@@ -71,8 +66,8 @@ public class LotacaoService {
 	   
 	public Lotacao fromDTO(LotacaoDTO lotacaoDto) {
 		Turma turma = turmaService.consultarPorId(lotacaoDto.getTurmaId());
-		profissionalRepository.save(lotacaoDto.getProfissional());
-		Lotacao lotacao = new Lotacao(lotacaoDto.getProfissional(), turma, lotacaoDto.getDataInicio(), lotacaoDto.getDataTermino());
+		Profissional profissional = profissionalService.consultarPorId(lotacaoDto.getProfissionalId());
+		Lotacao lotacao = new Lotacao(turma, profissional, lotacaoDto.getDataInicio(), lotacaoDto.getDataTermino());
 		return lotacao;
 	}
 

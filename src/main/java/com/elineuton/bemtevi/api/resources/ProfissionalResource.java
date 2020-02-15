@@ -25,6 +25,7 @@ import com.elineuton.bemtevi.api.domain.Turma;
 import com.elineuton.bemtevi.api.dto.AvaliacaoDTO;
 import com.elineuton.bemtevi.api.dto.LotacaoDTO;
 import com.elineuton.bemtevi.api.dto.ProfissionalDTO;
+import com.elineuton.bemtevi.api.dto.ProfissionalNewDTO;
 import com.elineuton.bemtevi.api.dto.TurmaDTO;
 import com.elineuton.bemtevi.api.services.AvaliacaoService;
 import com.elineuton.bemtevi.api.services.LotacaoService;
@@ -62,8 +63,8 @@ public class ProfissionalResource {
 	}
 
 	@PostMapping
-	public ResponseEntity<Profissional> inserir(@Valid @RequestBody ProfissionalDTO profissionalDto) {
-		Profissional profissional = service.fromDTO(profissionalDto);
+	public ResponseEntity<Profissional> inserir(@Valid @RequestBody ProfissionalNewDTO profissionalNewDto) {
+		Profissional profissional = service.fromDTO(profissionalNewDto);
 		profissional = service.inserir(profissional);
 
 		// Mapear o recurso -> instituicao + id

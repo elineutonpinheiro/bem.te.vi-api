@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.elineuton.bemtevi.api.domain.Aluno;
@@ -72,6 +73,9 @@ public class DBService {
 	
 	@Autowired
 	MatriculaRepository matriculaRepository;
+	
+	@Autowired
+	BCryptPasswordEncoder passwordEnconder;
 
 	public void instantiateTestDatabase() {
 		
@@ -120,13 +124,13 @@ public class DBService {
 		//Salva atividades
 		atividadeRepository.saveAll(Arrays.asList(a1,a2));
 		
-		Profissional p1 = new Profissional("Claudia Santos", "Cuidadora", "(95) 99110-1010", "claudiasantos@bemtevi.com", "123", true, Perfil.PROFISSIONAL);
-		Profissional p2 = new Profissional("Yenniver Muniz", "Cuidadora", "(95) 99000-2020", "yennivermuniz@bemtevi.com", "100", true, Perfil.PROFISSIONAL);
+		Profissional p1 = new Profissional("Claudia Santos", "Cuidadora", "(95) 99110-1010", "A40129", passwordEnconder.encode("123"), true, Perfil.PROFISSIONAL);
+		Profissional p2 = new Profissional("Yenniver Muniz", "Cuidadora", "(95) 99000-2020", "A12012", passwordEnconder.encode("100"), true, Perfil.PROFISSIONAL);
 		
-		Lotacao lot1 = new Lotacao(p1, t1, LocalDate.now(), LocalDate.now().plusYears(1));
-		Lotacao lot2 = new Lotacao(p1, t2, LocalDate.now(), LocalDate.now().plusYears(1));
-		Lotacao lot3 = new Lotacao(p2, t3, LocalDate.now(), LocalDate.now().plusYears(1));
-		Lotacao lot4 = new Lotacao(p1, t3, LocalDate.now(), LocalDate.now().plusYears(1));
+		Lotacao lot1 = new Lotacao(t1, p1, LocalDate.now(), LocalDate.now().plusYears(1));
+		Lotacao lot2 = new Lotacao(t2, p1, LocalDate.now(), LocalDate.now().plusYears(1));
+		Lotacao lot3 = new Lotacao(t3, p2, LocalDate.now(), LocalDate.now().plusYears(1));
+		Lotacao lot4 = new Lotacao(t3, p1, LocalDate.now(), LocalDate.now().plusYears(1));
 		
 		Aluno alu1 = new Aluno("Paulo da Costa Luz", "12/12/2019", true);
 		Aluno alu2 = new Aluno("Isis da Conceição", "12/12/2019", true);

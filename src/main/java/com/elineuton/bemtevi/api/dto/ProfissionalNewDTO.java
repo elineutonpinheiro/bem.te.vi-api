@@ -1,0 +1,47 @@
+package com.elineuton.bemtevi.api.dto;
+
+import java.io.Serializable;
+
+import com.elineuton.bemtevi.api.domain.Profissional;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@NoArgsConstructor
+public class ProfissionalNewDTO implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+	
+	@Getter
+	private Integer id;
+	
+	@Getter @Setter
+	private String nome;
+	
+	@Getter @Setter
+	private String cargo;
+	
+	@Getter @Setter
+	private String telefone;
+	
+	@Getter @Setter
+	private String codigoAcesso;
+	
+	@Getter @Setter
+	private String senha;
+	
+	@Getter	@Setter
+	private Boolean ativo;
+	
+	public ProfissionalNewDTO(Profissional profissional) {
+		this.id = profissional.getId();
+		this.nome = profissional.getNome();
+		this.cargo = profissional.getCargo();
+		this.telefone = profissional.getTelefone();
+		this.codigoAcesso = profissional.getCodigoAcesso();
+		this.senha = profissional.getSenha();
+		this.ativo = profissional.getAtivo();
+	}
+	
+}

@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 import com.elineuton.bemtevi.api.domain.Lotacao;
-import com.elineuton.bemtevi.api.domain.Profissional;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -21,7 +20,7 @@ public class LotacaoDTO implements Serializable {
 	private Integer turmaId;
 	
 	@Getter @Setter
-	private Profissional profissional;
+	private Integer profissionalId;
 	
 	@JsonIgnore
 	@Getter @Setter
@@ -35,7 +34,7 @@ public class LotacaoDTO implements Serializable {
 	
 	public LotacaoDTO(Lotacao lotacao) {
 		this.turmaId = lotacao.getTurma().getId();
-		this.profissional = lotacao.getProfissional();
+		this.profissionalId = lotacao.getProfissional().getId();
 	}
 	
 	

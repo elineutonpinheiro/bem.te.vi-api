@@ -7,10 +7,13 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.elineuton.bemtevi.api.domain.Profissional;
+import com.elineuton.bemtevi.api.domain.enums.Perfil;
 import com.elineuton.bemtevi.api.dto.ProfissionalDTO;
+import com.elineuton.bemtevi.api.dto.ProfissionalNewDTO;
 import com.elineuton.bemtevi.api.repositories.ProfissionalRepository;
 import com.elineuton.bemtevi.api.services.exceptions.DataIntegrityException;
 import com.elineuton.bemtevi.api.services.exceptions.ObjectNotFoundException;
@@ -20,6 +23,9 @@ public class ProfissionalService {
 	
 	@Autowired
 	private ProfissionalRepository repo;
+	
+	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
 	
 	public List<Profissional> listar() {
 		return repo.findAll();
@@ -59,6 +65,14 @@ public class ProfissionalService {
 	public Profissional fromDTO(ProfissionalDTO profissionalDto) {
 		return new Profissional(profissionalDto.getNome(), profissionalDto.getCargo(), 
 				profissionalDto.getTelefone(), null, null, null, null);
+	}
+	
+	public Profissional fromDTO(ProfissionalNewDTO profissionalNewDto) {
+		return new Profissional(profissionalNewDto.getNome(), profissionalNewDto.getCargo(), 
+				profissionalNewDto.getTelefone(), 
+				passwordEncoder.encode(profissionalNewDto.getCodigoAcesso()), 
+				passwordEncoder.encode(profissionalNewDto.getSenha()), 
+				profissionalNewDto.getAtivo(), Perfil.PROFISSIONAL);
 	}
 	
 
