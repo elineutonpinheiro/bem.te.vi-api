@@ -11,9 +11,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.elineuton.bemtevi.api.domain.Profissional;
+import com.elineuton.bemtevi.api.domain.enums.Perfil;
 import com.elineuton.bemtevi.api.dto.ProfissionalDTO;
 import com.elineuton.bemtevi.api.dto.ProfissionalNewDTO;
 import com.elineuton.bemtevi.api.repositories.ProfissionalRepository;
+import com.elineuton.bemtevi.api.security.Usuario;
+import com.elineuton.bemtevi.api.services.exceptions.AuthorizationException;
 import com.elineuton.bemtevi.api.services.exceptions.DataIntegrityException;
 import com.elineuton.bemtevi.api.services.exceptions.ObjectNotFoundException;
 
@@ -31,6 +34,13 @@ public class ProfissionalService {
 	}
 	
 	public Profissional consultarPorId(Integer id) {
+		
+		Usuario usuario = UsuarioService.authenticated();
+		if (usuario == null || !usuario.hasRole(Perfil.ADMIN) && !id.equals(usuario.getId())) {
+			throw new AuthorizationException("Acesso negado");
+			
+		}
+		
 		Optional<Profissional> profissional = repo.findById(id);
 		return profissional.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado! Id: " 
 		+ id + ", Tipo: " + Profissional.class.getName()));

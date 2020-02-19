@@ -11,8 +11,11 @@ import org.springframework.stereotype.Service;
 import com.elineuton.bemtevi.api.domain.Lotacao;
 import com.elineuton.bemtevi.api.domain.Profissional;
 import com.elineuton.bemtevi.api.domain.Turma;
+import com.elineuton.bemtevi.api.domain.enums.Perfil;
 import com.elineuton.bemtevi.api.dto.LotacaoDTO;
 import com.elineuton.bemtevi.api.repositories.LotacaoRepository;
+import com.elineuton.bemtevi.api.security.Usuario;
+import com.elineuton.bemtevi.api.services.exceptions.AuthorizationException;
 import com.elineuton.bemtevi.api.services.exceptions.DataIntegrityException;
 
 @Service
@@ -33,6 +36,12 @@ public class LotacaoService {
 
 
 	public List<Lotacao> consultarLotacaoPorProfissionalId(Integer id) {
+		Usuario usuario = UsuarioService.authenticated();
+		if (usuario == null || !usuario.hasRole(Perfil.ADMIN) && !id.equals(usuario.getId())) {
+			throw new AuthorizationException("Acesso negado");
+			
+		}
+		
 		Profissional profissional = profissionalService.consultarPorId(id);
 		List<Lotacao> lista = repo.findByProfissional(profissional);
 		return lista;

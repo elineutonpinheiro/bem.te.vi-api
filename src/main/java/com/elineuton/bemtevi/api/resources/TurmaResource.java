@@ -10,6 +10,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -52,6 +53,7 @@ public class TurmaResource {
 	@Autowired
 	private AvaliacaoService avaliacaoService;
 	
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@GetMapping
 	public ResponseEntity<List<TurmaDTO>> listar() {
 		List<Turma> lista = service.listar();
@@ -59,12 +61,14 @@ public class TurmaResource {
 		return ResponseEntity.ok(listaDto);
 	}
 
+	@PreAuthorize("hasAnyRole('PROFISSIONAL','ADMIN')")
 	@GetMapping("/{id}")
 	public ResponseEntity<Turma> consultarPorId(@PathVariable Integer id) {
 		Turma turma = service.consultarPorId(id);
 		return turma != null ? ResponseEntity.ok(turma) : ResponseEntity.notFound().build();
 	}
 
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@PostMapping
 	public ResponseEntity<Turma> inserir(@Valid @RequestBody TurmaNewDTO turmaDto) {
 		Turma turma = service.fromDTO(turmaDto);
@@ -77,6 +81,7 @@ public class TurmaResource {
 		return ResponseEntity.created(uri).body(turma);
 	}
 
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@PutMapping("/{id}")
 	public ResponseEntity<Turma> atualizar(@Valid @RequestBody TurmaNewDTO turmaDto, @PathVariable Integer id) {
 		Turma turma = service.fromDTO(turmaDto);
@@ -84,12 +89,14 @@ public class TurmaResource {
 		return ResponseEntity.ok(turma);
 	}
 
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> remover(@PathVariable Integer id) {
 		service.remover(id);
 		return ResponseEntity.noContent().build();
 	}
-	 
+	
+	@PreAuthorize("hasAnyRole('PROFISSIONAL', 'ADMIN')")
 	@GetMapping("/{id}/atividades")
 	public ResponseEntity<List<AtividadeDTO>> pesquisar(
 		@PathVariable Integer id,
@@ -103,7 +110,7 @@ public class TurmaResource {
 		return ResponseEntity.ok(listaDto);
 	}
 	
-
+	@PreAuthorize("hasAnyRole('PROFISSIONAL','ADMIN')")
 	@GetMapping("/{id}/alunos")
 	public ResponseEntity<List<AlunoDTO>> consultarAlunosPorTurmaId(@PathVariable Integer id) {
 		List<Aluno> lista = alunoService.consultarAlunosPorTurmaId(id);
@@ -111,53 +118,13 @@ public class TurmaResource {
 		return ResponseEntity.ok(listaDto);
 	}
 	
+	@PreAuthorize("hasAnyRole('PROFISSIONAL','ADMIN')")
 	@GetMapping("/{id}/avaliacoes")
-	public ResponseEntity<List<AvaliacaoDTO>> consultarAvaliacaoPorTurma(
+	public ResponseEntity<List<AvaliacaoDTO>> consultarAvaliacaoPorTurmaId(
 			@PathVariable Integer id) {
-		List<Avaliacao> lista = avaliacaoService.consultarAvaliacaoPorTurma(id);
+		List<Avaliacao> lista = avaliacaoService.consultarAvaliacaoPorTurmaId(id);
 		List<AvaliacaoDTO> listaDto = lista.stream().map(turma -> new AvaliacaoDTO(turma)).collect(Collectors.toList());
 		return ResponseEntity.ok(listaDto);
 	}
 
 }
-
-
-/*
-@GetMapping("/{id}/avaliacoes")
-public ResponseEntity<List<AvaliacaoDTO>> consultaAvaliacaoPorId(@PathVariable Integer id) {
-	List<Avaliacao> lista = avaliacaoService.consultaAvaliacaoPorTurmaId(id);
-	List<AvaliacaoDTO> listaDto = lista.stream().map(turma -> new AvaliacaoDTO(turma)).collect(Collectors.toList());
-	return ResponseEntity.ok(listaDto);
-}
-*/
-/*
-@GetMapping("/{id}/avaliacoes")
-public ResponseEntity<List<AvaliacaoDTO>> consultarAvaliacaoPorTurmaeProfissional(
-		@PathVariable Integer id, 
-		@RequestParam(defaultValue = "") Integer profissional) {
-	List<Avaliacao> lista = avaliacaoService.consultarAvaliacaoPorTurmaEProfissional(id, profissional);
-	List<AvaliacaoDTO> listaDto = lista.stream().map(turma -> new AvaliacaoDTO(turma)).collect(Collectors.toList());
-	return ResponseEntity.ok(listaDto);
-}
-*/
-
-
-/*
-@GetMapping("/{id}/atividades")
-public ResponseEntity<List<AtividadeDTO>> consultarAtividadesPorTurmaId(@PathVariable Integer id) {
-	List<Atividade> lista = atividadeService.consultarAtividadesPorTurmaId(id);
-	List<AtividadeDTO> listaDto = lista.stream().map(turma -> new AtividadeDTO(turma)).collect(Collectors.toList());
-	return ResponseEntity.ok(listaDto);
-}
-*/
-
-/*
- * @RequestParam(value="hoje", required = false) @DateTimeFormat(pattern =
- * "dd.MM.yyy") LocalDate hoje,
- * 
- * @RequestParam(value="dataInicial", defaultValue = ""
- * ) @DateTimeFormat(pattern = "dd.MM.yyy") LocalDate dataInicial,
- * 
- * @RequestParam(value="dataFinal", defaultValue = "") @DateTimeFormat(pattern =
- * "dd.MM.yyy") LocalDate dataFinal,
- */

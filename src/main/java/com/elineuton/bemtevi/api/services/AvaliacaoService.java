@@ -15,10 +15,13 @@ import com.elineuton.bemtevi.api.domain.Avaliacao;
 import com.elineuton.bemtevi.api.domain.Profissional;
 import com.elineuton.bemtevi.api.domain.Resposta;
 import com.elineuton.bemtevi.api.domain.Turma;
+import com.elineuton.bemtevi.api.domain.enums.Perfil;
 import com.elineuton.bemtevi.api.dto.AvaliacaoDTO;
 import com.elineuton.bemtevi.api.repositories.AvaliacaoRepository;
 import com.elineuton.bemtevi.api.repositories.QuestaoRepository;
 import com.elineuton.bemtevi.api.repositories.RespostaRepository;
+import com.elineuton.bemtevi.api.security.Usuario;
+import com.elineuton.bemtevi.api.services.exceptions.AuthorizationException;
 import com.elineuton.bemtevi.api.services.exceptions.DataIntegrityException;
 import com.elineuton.bemtevi.api.services.exceptions.ObjectNotFoundException;
 
@@ -102,13 +105,19 @@ public class AvaliacaoService {
 	
 	
 	public List<Avaliacao> consultaAvaliacaoPorProfissionald(Integer id) {
+		Usuario usuario = UsuarioService.authenticated();
+		if (usuario == null || !usuario.hasRole(Perfil.ADMIN) && !id.equals(usuario.getId())) {
+			throw new AuthorizationException("Acesso negado");
+			
+		}
+		
 		Profissional profissional = profissionalService.consultarPorId(id);
 		List<Avaliacao> lista = repo.findByProfissional(profissional);
 		return lista;
 	}
 	
 	
-	public List<Avaliacao> consultaAvaliacaoPorTurmaId(Integer id) {
+	public List<Avaliacao> consultarAvaliacaoPorTurmaId(Integer id) {
 		Turma turma = turmaService.consultarPorId(id);
 		List<Avaliacao> lista = repo.findByTurma(turma);
 		return lista;
@@ -128,10 +137,10 @@ public class AvaliacaoService {
 	}
 	*/
 	
-	public List<Avaliacao> consultarAvaliacaoPorTurma(Integer id) {
-		Turma turma = turmaService.consultarPorId(id);
-		List<Avaliacao> lista = repo.findByTurma(turma);
-		return lista;
-	}
+	/*
+	 	public List<Avaliacao> consultarAvaliacaoPorTurma(Integer id) { Turma turma =
+	 	turmaService.consultarPorId(id); List<Avaliacao> lista =
+	 	repo.findByTurma(turma); return lista; }
+	 */
 
 }

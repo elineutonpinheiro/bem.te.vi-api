@@ -21,6 +21,7 @@ import com.elineuton.bemtevi.api.domain.Questao;
 import com.elineuton.bemtevi.api.domain.Resposta;
 import com.elineuton.bemtevi.api.domain.Turma;
 import com.elineuton.bemtevi.api.domain.Unidade;
+import com.elineuton.bemtevi.api.domain.enums.Perfil;
 import com.elineuton.bemtevi.api.repositories.AlunoRepository;
 import com.elineuton.bemtevi.api.repositories.AnoLetivoRepository;
 import com.elineuton.bemtevi.api.repositories.AtividadeRepository;
@@ -125,6 +126,7 @@ public class DBService {
 		
 		Profissional p1 = new Profissional("Claudia Santos", "Cuidadora", "(95) 99110-1010", "A40129", passwordEnconder.encode("123"), true);
 		Profissional p2 = new Profissional("Yenniver Muniz", "Cuidadora", "(95) 99000-2020", "A12012", passwordEnconder.encode("100"), true);
+		p2.addPerfil(Perfil.ADMIN);
 		
 		Lotacao lot1 = new Lotacao(t1, p1, LocalDate.now(), LocalDate.now().plusYears(1));
 		Lotacao lot2 = new Lotacao(t2, p1, LocalDate.now(), LocalDate.now().plusYears(1));

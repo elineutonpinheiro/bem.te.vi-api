@@ -8,6 +8,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,6 +30,7 @@ public class AvaliacaoResource {
 	@Autowired
 	private AvaliacaoService service;
 	
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@GetMapping
 	public ResponseEntity<List<AvaliacaoDTO>> listar(){
 		List<Avaliacao> lista = service.listar();
@@ -36,12 +38,14 @@ public class AvaliacaoResource {
 		return ResponseEntity.ok(listaDto);
 	}
 	
+	//@PreAuthorize("hasAnyRole('ADMIN')")
 	@GetMapping("/{id}")
 	public ResponseEntity<Avaliacao> consultarPorId(@PathVariable Integer id) {
 		Avaliacao avaliacao = service.consultaPorId(id);
 		return avaliacao != null ? ResponseEntity.ok(avaliacao) : ResponseEntity.notFound().build();
 	}
 	
+	@PreAuthorize("hasAnyRole('PROFISSIONAL')")
 	@PostMapping
 	public ResponseEntity<Avaliacao> inserir(@Valid @RequestBody AvaliacaoDTO avaliacaoDto) {
 		Avaliacao avaliacao = service.fromDTO(avaliacaoDto);
@@ -55,6 +59,7 @@ public class AvaliacaoResource {
 		return ResponseEntity.created(uri).body(avaliacao);
 	}
 	
+	@PreAuthorize("hasAnyRole('PROFISSIONAL')")
 	@PutMapping("/{id}")
 	public ResponseEntity<Avaliacao> atualizar(@Valid @RequestBody AvaliacaoDTO avaliacaoDto, @PathVariable Integer id) {
 		Avaliacao avaliacao = service.fromDTO(avaliacaoDto);
@@ -62,12 +67,11 @@ public class AvaliacaoResource {
 		return ResponseEntity.ok(avaliacao);
 	}
 	
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> remover(@PathVariable Integer id) {
 		service.remover(id);
 		return ResponseEntity.noContent().build();
 	}
-	
-	
 
 }

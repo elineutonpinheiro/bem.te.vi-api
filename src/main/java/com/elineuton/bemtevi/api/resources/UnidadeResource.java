@@ -8,6 +8,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,6 +30,7 @@ public class UnidadeResource {
 	@Autowired
 	private UnidadeService service;
 	
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@GetMapping
 	public ResponseEntity<List<UnidadeDTO>> listar(){
 		List<Unidade> lista = service.listar();
@@ -36,12 +38,14 @@ public class UnidadeResource {
 		return ResponseEntity.ok(listaDto);
 	}
 	
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@GetMapping("/{id}")
 	public ResponseEntity<Unidade> consultarPorId(@PathVariable Integer id) {
 		Unidade unidade = service.consultaPorId(id);
 		return unidade != null ? ResponseEntity.ok(unidade) : ResponseEntity.notFound().build();
 	}
 	
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@PostMapping
 	public ResponseEntity<Unidade> inserir(@Valid @RequestBody UnidadeDTO unidadeDto) {
 		Unidade unidade = service.fromDTO(unidadeDto); 
@@ -55,6 +59,7 @@ public class UnidadeResource {
 		return ResponseEntity.created(uri).body(unidade);
 	}
 	
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@PutMapping("/{id}")
 	public ResponseEntity<Unidade> atualizar(@Valid @RequestBody UnidadeDTO unidadeDto, @PathVariable Integer id) {
 		Unidade unidade = service.fromDTO(unidadeDto);
@@ -62,6 +67,7 @@ public class UnidadeResource {
 		return ResponseEntity.ok(unidade);
 	}
 	
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> remover(@PathVariable Integer id) {
 		service.remover(id);
