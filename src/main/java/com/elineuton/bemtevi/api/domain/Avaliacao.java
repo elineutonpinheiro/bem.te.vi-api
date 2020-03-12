@@ -2,19 +2,14 @@ package com.elineuton.bemtevi.api.domain;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
-import javax.persistence.CascadeType;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -56,18 +51,16 @@ public class Avaliacao implements Serializable {
 	@Getter @Setter
 	private String status;
 	
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
 	@Getter @Setter
-	@JoinTable(name="avaliacao_resposta",
-	  joinColumns=@JoinColumn(name="avaliacao_id", foreignKey = @ForeignKey(name ="fk_avaliacao_id")),
-	  inverseJoinColumns=@JoinColumn(name="resposta_id", foreignKey = @ForeignKey(name = "fk_resposta_id")))
-	private List<Resposta> respostas = new ArrayList<Resposta>();
+	@Embedded
+	private Questionario questionario;
 
-	public Avaliacao(Aluno aluno, Profissional profissional, LocalDate data, String status) {
+	public Avaliacao(Aluno aluno, Profissional profissional, LocalDate data, String status, Questionario questionario) {
 		this.aluno = aluno;
 		this.profissional = profissional;
 		this.data = data;
 		this.status = status;
+		this.questionario = questionario;
 	}
 
 }

@@ -13,13 +13,12 @@ import org.springframework.stereotype.Service;
 import com.elineuton.bemtevi.api.domain.Aluno;
 import com.elineuton.bemtevi.api.domain.Avaliacao;
 import com.elineuton.bemtevi.api.domain.Profissional;
-import com.elineuton.bemtevi.api.domain.Resposta;
+import com.elineuton.bemtevi.api.domain.Questionario;
 import com.elineuton.bemtevi.api.domain.Turma;
 import com.elineuton.bemtevi.api.domain.enums.Perfil;
 import com.elineuton.bemtevi.api.dto.AvaliacaoDTO;
+import com.elineuton.bemtevi.api.dto.AvaliacaoNewDTO;
 import com.elineuton.bemtevi.api.repositories.AvaliacaoRepository;
-import com.elineuton.bemtevi.api.repositories.QuestaoRepository;
-import com.elineuton.bemtevi.api.repositories.RespostaRepository;
 import com.elineuton.bemtevi.api.security.Usuario;
 import com.elineuton.bemtevi.api.services.exceptions.AuthorizationException;
 import com.elineuton.bemtevi.api.services.exceptions.DataIntegrityException;
@@ -40,12 +39,6 @@ public class AvaliacaoService {
 	@Autowired
 	private ProfissionalService profissionalService;
 	
-	@Autowired
-	private RespostaRepository respostaRepository;
-	
-	@Autowired
-	private QuestaoRepository questaoRepository;
-	
 	public List<Avaliacao> listar() {
 		return repo.findAll();
 	}
@@ -60,9 +53,15 @@ public class AvaliacaoService {
 		LocalDate a = LocalDate.now();
 		avaliacao.setData(a);
 		
-		for (Resposta resposta : avaliacao.getRespostas()) {
-			resposta.setQuestao(questaoRepository.findById(resposta.getQuestao().getId()).get());
-		}
+		//Usuario usuario = UsuarioService.authenticated();
+		//Profissional profissional = profissionalService.consultarPorId(usuario.getId());
+		//avaliacao.setProfissional(profissional);
+		
+		/*
+		 * for (Resposta resposta : avaliacao.getRespostas()) {
+		 * resposta.setQuestao(questaoRepository.findById(resposta.getQuestao().getId())
+		 * .get()); }
+		 */
 
 		avaliacao = repo.save(avaliacao);
 		return avaliacao;
@@ -90,10 +89,13 @@ public class AvaliacaoService {
 	public Avaliacao fromDTO(AvaliacaoDTO avaliacaoDto) {
 		Aluno aluno = alunoService.consultarPorId(avaliacaoDto.getAlunoId());
 		Profissional profissional = profissionalService.consultarPorId(avaliacaoDto.getProfissionalId());
-		Avaliacao avaliacao = new Avaliacao(aluno, profissional, avaliacaoDto.getData(), avaliacaoDto.getStatus());
-		List<Resposta> respostas = avaliacaoDto.getRespostas();
-		avaliacao.getRespostas().addAll(respostas);
-		respostaRepository.saveAll(respostas);
+		Questionario questionario = new Questionario(avaliacaoDto.getCafeDaManha(), avaliacaoDto.getLancheDaManha(),
+				avaliacaoDto.getAlmoco(), avaliacaoDto.getLancheDaTarde(), avaliacaoDto.getBanho(), avaliacaoDto.getFralda(),
+				avaliacaoDto.getEscovacao(), avaliacaoDto.isDormiu(), avaliacaoDto.getEstadoDoSono(), avaliacaoDto.isFebre(),
+				avaliacaoDto.getUrina(), avaliacaoDto.getEvacuacao(), avaliacaoDto.getInteracao(), avaliacaoDto.getParticipacao(),
+				avaliacaoDto.getObservacao());
+		Avaliacao avaliacao = new Avaliacao(aluno, profissional, avaliacaoDto.getData(), 
+				avaliacaoDto.getStatus(), questionario);
 		return avaliacao;
 	}
 	

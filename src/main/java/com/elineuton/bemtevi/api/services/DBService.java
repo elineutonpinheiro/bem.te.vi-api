@@ -17,8 +17,7 @@ import com.elineuton.bemtevi.api.domain.Instituicao;
 import com.elineuton.bemtevi.api.domain.Lotacao;
 import com.elineuton.bemtevi.api.domain.Matricula;
 import com.elineuton.bemtevi.api.domain.Profissional;
-import com.elineuton.bemtevi.api.domain.Questao;
-import com.elineuton.bemtevi.api.domain.Resposta;
+import com.elineuton.bemtevi.api.domain.Questionario;
 import com.elineuton.bemtevi.api.domain.Turma;
 import com.elineuton.bemtevi.api.domain.Unidade;
 import com.elineuton.bemtevi.api.domain.enums.Perfil;
@@ -30,8 +29,6 @@ import com.elineuton.bemtevi.api.repositories.InstituicaoRepository;
 import com.elineuton.bemtevi.api.repositories.LotacaoRepository;
 import com.elineuton.bemtevi.api.repositories.MatriculaRepository;
 import com.elineuton.bemtevi.api.repositories.ProfissionalRepository;
-import com.elineuton.bemtevi.api.repositories.QuestaoRepository;
-import com.elineuton.bemtevi.api.repositories.RespostaRepository;
 import com.elineuton.bemtevi.api.repositories.TurmaRepository;
 import com.elineuton.bemtevi.api.repositories.UnidadeRepository;
 
@@ -59,11 +56,11 @@ public class DBService {
 	@Autowired
 	AlunoRepository alunoRepository;
 	
-	@Autowired
-	QuestaoRepository questaoRepository;
-	
-	@Autowired
-	RespostaRepository respostaRepository;
+	/*
+	 * @Autowired QuestaoRepository questaoRepository;
+	 * 
+	 * @Autowired RespostaRepository respostaRepository;
+	 */
 	
 	@Autowired
 	AvaliacaoRepository avaliacaoRepository;
@@ -135,12 +132,13 @@ public class DBService {
 		
 		Aluno alu1 = new Aluno("Paulo da Costa Luz", "12/12/2019", true);
 		Aluno alu2 = new Aluno("Isis da Conceição", "12/12/2019", true);
+		Aluno alu3 = new Aluno("Tainara da Conceição", "12/12/2019", true);
 		
 		alu1.getPessoalAutorizado().addAll(Arrays.asList("Francisco Elineuton", "Thiago Ventura"));
 		
 		//Salva Profissional e Aluno
 		profissionalRepository.saveAll(Arrays.asList(p1, p2));
-		alunoRepository.saveAll(Arrays.asList(alu1, alu2));
+		alunoRepository.saveAll(Arrays.asList(alu1, alu2, alu3));
 		
 		//Salva Lotações
 		lotacaoRepository.saveAll(Arrays.asList(lot1, lot2, lot3, lot4));
@@ -149,26 +147,40 @@ public class DBService {
 		Matricula mat1 = new Matricula(alu1, t1, LocalDate.of(2010, 10, 01));
 		Matricula mat2 = new Matricula(alu2, t2, LocalDate.of(2010, 10, 01));
 		Matricula mat3 = new Matricula(alu2, t3, LocalDate.of(2011, 10, 01));
+		Matricula mat4 = new Matricula(alu3, t1, LocalDate.of(2011, 10, 01));
 		
 		//Salva Matrículas
-		matriculaRepository.saveAll(Arrays.asList(mat1, mat2, mat3));
+		matriculaRepository.saveAll(Arrays.asList(mat1, mat2, mat3, mat4));
 		
-		Questao q1 = new Questao("Café da Manhã");
-		Questao q2 = new Questao("Lanche da Manhã");
+		/*
+		 * Questao q1 = new Questao("Café da Manhã"); Questao q2 = new
+		 * Questao("Lanche da Manhã"); Questao q3 = new Questao("Almoço"); Questao q4 =
+		 * new Questao("Lanche da Tarde"); Questao q5 = new Questao("Banho"); Questao q6
+		 * = new Questao("Fralda"); Questao q7 = new Questao("Escovação"); Questao q8 =
+		 * new Questao("Dormiu"); Questao q9 = new Questao("Estado do sono"); Questao
+		 * q10 = new Questao("Febre"); Questao q11 = new Questao("Urina"); Questao q12 =
+		 * new Questao("Evacuação"); Questao q13 = new Questao("Interação"); Questao q14
+		 * = new Questao("Participação");
+		 */
 		
-		Resposta r1 = new Resposta(q1, "Pouco");
-		Resposta r2 = new Resposta(q2, "Não aceitou");
 		
-		Avaliacao av1 = new Avaliacao(alu1, p1, parsedDate, "Suspensa");
-		Avaliacao av2 = new Avaliacao(alu2, p1, parsedDate, "Finalizada");
-		Avaliacao av3 = new Avaliacao(alu2, p2, parsedDate, "Finalizada");
-		Avaliacao av4 = new Avaliacao(alu2, p2, parsedDate, "Finalizada");
+		/*
+		 * Resposta r1 = new Resposta(q1, "Pouco"); Resposta r2 = new Resposta(q2,
+		 * "Não aceitou");
+		 */
 		
-		av1.getRespostas().addAll(Arrays.asList(r1, r2));
+		Questionario questionario = new Questionario("x", "x", "x", "x", 1, 1, 1, false, "x", false, "x", "x", "x", "x", "x");
+		
+		Avaliacao av1 = new Avaliacao(alu1, p1, parsedDate, "Suspensa", questionario);
+		Avaliacao av2 = new Avaliacao(alu2, p1, parsedDate, "Finalizada", questionario);
+		Avaliacao av3 = new Avaliacao(alu2, p2, parsedDate, "Finalizada", questionario);
+		Avaliacao av4 = new Avaliacao(alu2, p2, parsedDate, "Finalizada", questionario);
+		
+		//av1.getRespostas().addAll(Arrays.asList(r1, r2));
 
 		//Salva Questão, Resposta e Avaliação	
-		questaoRepository.saveAll(Arrays.asList(q1, q2));
-		respostaRepository.saveAll(Arrays.asList(r1, r2));
+		//questaoRepository.saveAll(Arrays.asList(q1, q2, q3, q4, q5, q6, q7, q8, q9, q10, q11, q12, q13, q14));
+		//respostaRepository.saveAll(Arrays.asList(r1, r2));
 		avaliacaoRepository.saveAll(Arrays.asList(av1, av2, av3, av4));
 		
 	}

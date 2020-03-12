@@ -30,7 +30,7 @@ public class AvaliacaoResource {
 	@Autowired
 	private AvaliacaoService service;
 	
-	@PreAuthorize("hasAnyRole('ADMIN')")
+	@PreAuthorize("hasAnyRole('ADMIN', 'PROFISSIONAL')")
 	@GetMapping
 	public ResponseEntity<List<AvaliacaoDTO>> listar(){
 		List<Avaliacao> lista = service.listar();

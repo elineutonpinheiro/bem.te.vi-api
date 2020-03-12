@@ -85,11 +85,6 @@ public class TurmaService {
 
 	// TODO Implementar busca paginada - Udemy
 	public List<Turma> consultaTurmasPorProfissionalId(Integer id) {
-		Usuario usuario = UsuarioService.authenticated();
-		if (usuario == null) {
-			throw new AuthorizationException("Acesso negado");
-		}
-		
 		Profissional profissional = profissionalService.consultarPorId(id);
 		List<Turma> lista = repo.findByProfissional(profissional);
 		return lista;

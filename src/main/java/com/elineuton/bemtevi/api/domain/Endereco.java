@@ -14,7 +14,7 @@ import lombok.Setter;
 @Setter
 public class Endereco {
 
-private String logradouro;
+	private String logradouro;
 	
 	private String numero;
 	

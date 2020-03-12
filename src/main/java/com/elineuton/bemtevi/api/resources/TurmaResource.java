@@ -53,7 +53,7 @@ public class TurmaResource {
 	@Autowired
 	private AvaliacaoService avaliacaoService;
 	
-	@PreAuthorize("hasAnyRole('ADMIN')")
+	//@PreAuthorize("hasAnyRole('ADMIN')")
 	@GetMapping
 	public ResponseEntity<List<TurmaDTO>> listar() {
 		List<Turma> lista = service.listar();

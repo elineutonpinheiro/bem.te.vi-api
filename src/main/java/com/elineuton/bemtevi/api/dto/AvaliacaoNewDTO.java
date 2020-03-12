@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 import com.elineuton.bemtevi.api.domain.Avaliacao;
-import com.elineuton.bemtevi.api.domain.Questionario;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.Getter;
@@ -12,7 +11,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @NoArgsConstructor
-public class AvaliacaoDTO implements Serializable {
+public class AvaliacaoNewDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -31,6 +30,7 @@ public class AvaliacaoDTO implements Serializable {
 	
 	@Getter @Setter
 	private String status;
+	
 	
 	@Getter @Setter
 	private String cafeDaManha;
@@ -75,14 +75,15 @@ public class AvaliacaoDTO implements Serializable {
 	private String participacao;
 
 	@Getter	@Setter
-	private String observacao; 
+	private String observacao;
 	
-	public AvaliacaoDTO(Avaliacao avaliacao) {
+	public AvaliacaoNewDTO(Avaliacao avaliacao) {
 		this.id = avaliacao.getId();
 		this.alunoId = avaliacao.getAluno().getId();
 		this.profissionalId = avaliacao.getProfissional().getId();
 		this.data = avaliacao.getData();
 		this.status = avaliacao.getStatus();
+
 		this.cafeDaManha = avaliacao.getQuestionario().getCafeDaManha();
 		this.lancheDaManha = avaliacao.getQuestionario().getLancheDaManha();
 		this.almoco = avaliacao.getQuestionario().getAlmoco();

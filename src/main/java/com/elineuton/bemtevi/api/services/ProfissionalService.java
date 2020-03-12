@@ -46,6 +46,12 @@ public class ProfissionalService {
 		+ id + ", Tipo: " + Profissional.class.getName()));
 	}
 	
+	public Profissional consultarPorCodigoAcesso(String codigoAcesso) {
+		Profissional profissional = repo.findByCodigoAcesso(codigoAcesso);
+		return profissional;
+	}
+	
+	
 	public Profissional inserir(Profissional profissional) {
 		profissional = repo.save(profissional);
 		return profissional;

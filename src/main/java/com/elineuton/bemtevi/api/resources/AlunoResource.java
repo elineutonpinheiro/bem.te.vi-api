@@ -51,7 +51,7 @@ public class AlunoResource {
 		return ResponseEntity.ok(listaDto);
 	}
 	
-	@PreAuthorize("hasAnyRole('RESPONSAVEL')")
+	@PreAuthorize("hasAnyRole('RESPONSAVEL', 'PROFISSIONAL')")
 	@GetMapping("/{id}")
 	public ResponseEntity<Aluno> consultarPorId(@PathVariable Integer id) {
 		Aluno aluno = service.consultarPorId(id);

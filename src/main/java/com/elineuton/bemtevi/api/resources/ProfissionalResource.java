@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -32,6 +34,7 @@ import com.elineuton.bemtevi.api.services.AvaliacaoService;
 import com.elineuton.bemtevi.api.services.LotacaoService;
 import com.elineuton.bemtevi.api.services.ProfissionalService;
 import com.elineuton.bemtevi.api.services.TurmaService;
+
 
 @RestController
 @RequestMapping("/profissionais")
@@ -65,6 +68,12 @@ public class ProfissionalResource {
 	public ResponseEntity<Profissional> consultarPorId(@PathVariable Integer id) {
 		Profissional profissional = service.consultarPorId(id);
 		return profissional != null ? ResponseEntity.ok(profissional) : ResponseEntity.notFound().build();
+	}
+	
+	@GetMapping("/codigoAcesso")
+	public ResponseEntity<ProfissionalDTO> consultarPorCodigoAcesso(@RequestParam(value="value") String codigoAcesso) {
+		Profissional profissional = service.consultarPorCodigoAcesso(codigoAcesso);
+		return ResponseEntity.ok().body(new ProfissionalDTO(profissional));
 	}
 
 	@PreAuthorize("hasAnyRole('ADMIN')")
