@@ -32,7 +32,6 @@ public class ProfissionalDTO implements Serializable {
 		this.id = profissional.getId();
 		this.nome = profissional.getNome();
 		this.cargo = profissional.getCargo();
-		this.telefone = profissional.getTelefone();
 		this.ativo = profissional.getAtivo();
 	}
 	

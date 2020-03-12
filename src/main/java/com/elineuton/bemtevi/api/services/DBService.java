@@ -121,8 +121,8 @@ public class DBService {
 		//Salva atividades
 		atividadeRepository.saveAll(Arrays.asList(a1,a2));
 		
-		Profissional p1 = new Profissional("Claudia Santos", "Cuidadora", "(95) 99110-1010", "A40129", passwordEnconder.encode("123"), true);
-		Profissional p2 = new Profissional("Yenniver Muniz", "Cuidadora", "(95) 99000-2020", "A12012", passwordEnconder.encode("100"), true);
+		Profissional p1 = new Profissional("Claudia Santos", "Cuidadora", "elineuton.ps@gmail.com", passwordEnconder.encode("123"), true);
+		Profissional p2 = new Profissional("Yenniver Muniz", "Cuidadora", "francisco.ps@gmail.com", passwordEnconder.encode("100"), true);
 		p2.addPerfil(Perfil.ADMIN);
 		
 		Lotacao lot1 = new Lotacao(t1, p1, LocalDate.now(), LocalDate.now().plusYears(1));

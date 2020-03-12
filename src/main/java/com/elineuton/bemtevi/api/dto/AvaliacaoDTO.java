@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 import com.elineuton.bemtevi.api.domain.Avaliacao;
-import com.elineuton.bemtevi.api.domain.Questionario;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.Getter;

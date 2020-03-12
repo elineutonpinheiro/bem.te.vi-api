@@ -23,10 +23,7 @@ public class ProfissionalNewDTO implements Serializable {
 	private String cargo;
 	
 	@Getter @Setter
-	private String telefone;
-	
-	@Getter @Setter
-	private String codigoAcesso;
+	private String email;
 	
 	@Getter @Setter
 	private String senha;
@@ -38,8 +35,7 @@ public class ProfissionalNewDTO implements Serializable {
 		this.id = profissional.getId();
 		this.nome = profissional.getNome();
 		this.cargo = profissional.getCargo();
-		this.telefone = profissional.getTelefone();
-		this.codigoAcesso = profissional.getCodigoAcesso();
+		this.email = profissional.getEmail();
 		this.senha = profissional.getSenha();
 		this.ativo = profissional.getAtivo();
 	}

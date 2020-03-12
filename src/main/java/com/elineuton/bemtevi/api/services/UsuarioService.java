@@ -1,3 +1,4 @@
+/*
 package com.elineuton.bemtevi.api.services;
 
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,3 +16,4 @@ public class UsuarioService {
 	}
 
 }
+*/

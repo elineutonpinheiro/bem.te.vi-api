@@ -31,11 +31,11 @@ public class AnoLetivo implements Serializable {
 	private String descricao;
 	
 	@Getter @Setter
-	@JsonFormat(pattern = "dd/MM/yyyy")
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	private LocalDate dataInicial;
 	
 	@Getter @Setter
-	@JsonFormat(pattern = "dd/MM/yyyy")
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	private LocalDate dataFinal;
 
 	public AnoLetivo(String descricao, LocalDate dataInicial, LocalDate dataFinal) {

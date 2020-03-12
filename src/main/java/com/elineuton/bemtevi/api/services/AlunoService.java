@@ -65,7 +65,7 @@ public class AlunoService {
 	}
 
 	public Aluno fromDTO(AlunoDTO alunoDto) {
-		return new Aluno(alunoDto.getNome(), alunoDto.getDataNascimento(), null);
+		return new Aluno(alunoDto.getNome(), null, null);
 	}
 
 	public Aluno fromDTO(AlunoNewDTO alunoDto) {

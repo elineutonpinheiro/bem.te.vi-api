@@ -30,7 +30,7 @@ public class AvaliacaoResource {
 	@Autowired
 	private AvaliacaoService service;
 	
-	@PreAuthorize("hasAnyRole('ADMIN', 'PROFISSIONAL')")
+	//@PreAuthorize("hasAnyRole('ADMIN', 'PROFISSIONAL')")
 	@GetMapping
 	public ResponseEntity<List<AvaliacaoDTO>> listar(){
 		List<Avaliacao> lista = service.listar();
@@ -39,13 +39,13 @@ public class AvaliacaoResource {
 	}
 	
 	//@PreAuthorize("hasAnyRole('ADMIN')")
-	@GetMapping("/{id}")
+	//@GetMapping("/{id}")
 	public ResponseEntity<Avaliacao> consultarPorId(@PathVariable Integer id) {
 		Avaliacao avaliacao = service.consultaPorId(id);
 		return avaliacao != null ? ResponseEntity.ok(avaliacao) : ResponseEntity.notFound().build();
 	}
 	
-	@PreAuthorize("hasAnyRole('PROFISSIONAL')")
+	//@PreAuthorize("hasAnyRole('PROFISSIONAL')")
 	@PostMapping
 	public ResponseEntity<Avaliacao> inserir(@Valid @RequestBody AvaliacaoDTO avaliacaoDto) {
 		Avaliacao avaliacao = service.fromDTO(avaliacaoDto);
@@ -59,7 +59,7 @@ public class AvaliacaoResource {
 		return ResponseEntity.created(uri).body(avaliacao);
 	}
 	
-	@PreAuthorize("hasAnyRole('PROFISSIONAL')")
+	//@PreAuthorize("hasAnyRole('PROFISSIONAL')")
 	@PutMapping("/{id}")
 	public ResponseEntity<Avaliacao> atualizar(@Valid @RequestBody AvaliacaoDTO avaliacaoDto, @PathVariable Integer id) {
 		Avaliacao avaliacao = service.fromDTO(avaliacaoDto);
@@ -67,7 +67,7 @@ public class AvaliacaoResource {
 		return ResponseEntity.ok(avaliacao);
 	}
 	
-	@PreAuthorize("hasAnyRole('ADMIN')")
+	//@PreAuthorize("hasAnyRole('ADMIN')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> remover(@PathVariable Integer id) {
 		service.remover(id);

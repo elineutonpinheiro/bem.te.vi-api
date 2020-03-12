@@ -1,4 +1,4 @@
-package com.elineuton.bemtevi.api.security;
+/*package com.elineuton.bemtevi.api.security;
 
 import java.util.Date;
 
@@ -57,3 +57,4 @@ public class JWTUtil {
 	}
 
 }
+*/

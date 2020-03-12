@@ -61,14 +61,14 @@ public class TurmaResource {
 		return ResponseEntity.ok(listaDto);
 	}
 
-	@PreAuthorize("hasAnyRole('PROFISSIONAL','ADMIN')")
+	//@PreAuthorize("hasAnyRole('PROFISSIONAL','ADMIN')")
 	@GetMapping("/{id}")
 	public ResponseEntity<Turma> consultarPorId(@PathVariable Integer id) {
 		Turma turma = service.consultarPorId(id);
 		return turma != null ? ResponseEntity.ok(turma) : ResponseEntity.notFound().build();
 	}
 
-	@PreAuthorize("hasAnyRole('ADMIN')")
+	//@PreAuthorize("hasAnyRole('ADMIN')")
 	@PostMapping
 	public ResponseEntity<Turma> inserir(@Valid @RequestBody TurmaNewDTO turmaDto) {
 		Turma turma = service.fromDTO(turmaDto);
@@ -81,7 +81,7 @@ public class TurmaResource {
 		return ResponseEntity.created(uri).body(turma);
 	}
 
-	@PreAuthorize("hasAnyRole('ADMIN')")
+	//@PreAuthorize("hasAnyRole('ADMIN')")
 	@PutMapping("/{id}")
 	public ResponseEntity<Turma> atualizar(@Valid @RequestBody TurmaNewDTO turmaDto, @PathVariable Integer id) {
 		Turma turma = service.fromDTO(turmaDto);
@@ -89,14 +89,14 @@ public class TurmaResource {
 		return ResponseEntity.ok(turma);
 	}
 
-	@PreAuthorize("hasAnyRole('ADMIN')")
+	//@PreAuthorize("hasAnyRole('ADMIN')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> remover(@PathVariable Integer id) {
 		service.remover(id);
 		return ResponseEntity.noContent().build();
 	}
 	
-	@PreAuthorize("hasAnyRole('PROFISSIONAL', 'ADMIN')")
+	//@PreAuthorize("hasAnyRole('PROFISSIONAL', 'ADMIN')")
 	@GetMapping("/{id}/atividades")
 	public ResponseEntity<List<AtividadeDTO>> pesquisar(
 		@PathVariable Integer id,
@@ -110,7 +110,7 @@ public class TurmaResource {
 		return ResponseEntity.ok(listaDto);
 	}
 	
-	@PreAuthorize("hasAnyRole('PROFISSIONAL','ADMIN')")
+	//@PreAuthorize("hasAnyRole('PROFISSIONAL','ADMIN')")
 	@GetMapping("/{id}/alunos")
 	public ResponseEntity<List<AlunoDTO>> consultarAlunosPorTurmaId(@PathVariable Integer id) {
 		List<Aluno> lista = alunoService.consultarAlunosPorTurmaId(id);
@@ -118,13 +118,13 @@ public class TurmaResource {
 		return ResponseEntity.ok(listaDto);
 	}
 	
-	@PreAuthorize("hasAnyRole('PROFISSIONAL','ADMIN')")
-	@GetMapping("/{id}/avaliacoes")
+	//@PreAuthorize("hasAnyRole('PROFISSIONAL','ADMIN')")
+	/*@GetMapping("/{id}/avaliacoes")
 	public ResponseEntity<List<AvaliacaoDTO>> consultarAvaliacaoPorTurmaId(
 			@PathVariable Integer id) {
 		List<Avaliacao> lista = avaliacaoService.consultarAvaliacaoPorTurmaId(id);
 		List<AvaliacaoDTO> listaDto = lista.stream().map(turma -> new AvaliacaoDTO(turma)).collect(Collectors.toList());
 		return ResponseEntity.ok(listaDto);
 	}
-
+	*/
 }

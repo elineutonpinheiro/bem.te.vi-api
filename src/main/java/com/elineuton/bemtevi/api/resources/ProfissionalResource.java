@@ -52,7 +52,7 @@ public class ProfissionalResource {
 	@Autowired
 	private LotacaoService lotacaoService;
 
-	@PreAuthorize("hasAnyRole('ADMIN')")
+	//@PreAuthorize("hasAnyRole('ADMIN')")
 	@GetMapping
 	public ResponseEntity<List<ProfissionalDTO>> listar() {
 		List<Profissional> lista = service.listar();
@@ -70,13 +70,13 @@ public class ProfissionalResource {
 		return profissional != null ? ResponseEntity.ok(profissional) : ResponseEntity.notFound().build();
 	}
 	
-	@GetMapping("/codigoAcesso")
-	public ResponseEntity<ProfissionalDTO> consultarPorCodigoAcesso(@RequestParam(value="value") String codigoAcesso) {
-		Profissional profissional = service.consultarPorCodigoAcesso(codigoAcesso);
+	@GetMapping("/email")
+	public ResponseEntity<ProfissionalDTO> consultarPorEmail(@RequestParam(value="value") String email) {
+		Profissional profissional = service.consultarPorEmail(email);
 		return ResponseEntity.ok().body(new ProfissionalDTO(profissional));
 	}
 
-	@PreAuthorize("hasAnyRole('ADMIN')")
+	//@PreAuthorize("hasAnyRole('ADMIN')")
 	@PostMapping
 	public ResponseEntity<Profissional> inserir(@Valid @RequestBody ProfissionalNewDTO profissionalNewDto) {
 		Profissional profissional = service.fromDTO(profissionalNewDto);
@@ -89,7 +89,7 @@ public class ProfissionalResource {
 		return ResponseEntity.created(uri).body(profissional);
 	}
 
-	@PreAuthorize("hasAnyRole('ADMIN')")
+	//@PreAuthorize("hasAnyRole('ADMIN')")
 	@PutMapping("/{id}")
 	public ResponseEntity<Profissional> atualizar(@Valid @RequestBody ProfissionalDTO profissionalDto,
 			@PathVariable Integer id) {
@@ -98,30 +98,31 @@ public class ProfissionalResource {
 		return ResponseEntity.ok(profissional);
 	}
 
-	@PreAuthorize("hasAnyRole('ADMIN')")
+	//@PreAuthorize("hasAnyRole('ADMIN')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> remover(@PathVariable Integer id) {
 		service.remover(id);
 		return ResponseEntity.noContent().build();
 	}
 
-	@PreAuthorize("hasAnyRole('PROFISSIONAL', 'ADMIN')")
-	@GetMapping("/{id}/turmas")
-	public ResponseEntity<List<TurmaDTO>> consultaTurmasPorProfissionalId(@PathVariable Integer id) {
-		List<Turma> lista = turmaService.consultaTurmasPorProfissionalId(id);
+	//@PreAuthorize("hasAnyRole('PROFISSIONAL', 'ADMIN')")
+	@GetMapping("/{email}/turmas")
+	public ResponseEntity<List<TurmaDTO>> consultarTurmasPorEmailProfissional(@PathVariable String email) {
+		List<Turma> lista = turmaService.consultarTurmasPorEmailProfissional(email);
 		List<TurmaDTO> listaDto = lista.stream().map(profissional -> new TurmaDTO(profissional)).collect(Collectors.toList());
 		return ResponseEntity.ok(listaDto);
 	}
 	
-	@PreAuthorize("hasAnyRole('PROFISSIONAL', 'ADMIN')")
-	@GetMapping("/{id}/avaliacoes")
+	//@PreAuthorize("hasAnyRole('PROFISSIONAL', 'ADMIN')")
+	/*@GetMapping("/{id}/avaliacoes")
 	public ResponseEntity<List<AvaliacaoDTO>> consultaAvaliacoesPorProfissionalId(@PathVariable Integer id) {
 		List<Avaliacao> lista = avaliacaoService.consultaAvaliacaoPorProfissionald(id);
 		List<AvaliacaoDTO> listaDto = lista.stream().map(profissional -> new AvaliacaoDTO(profissional)).collect(Collectors.toList());
 		return ResponseEntity.ok(listaDto);
 	}
+	*/
 	
-	@PreAuthorize("hasAnyRole('ADMIN')")
+	//@PreAuthorize("hasAnyRole('ADMIN')")
 	@GetMapping("/{id}/lotacoes")
 	public ResponseEntity<List<LotacaoDTO>> consultarLotacaosPorProfissionallId(@PathVariable Integer id) {
 		List<Lotacao> lista = lotacaoService.consultarLotacaoPorProfissionalId(id);

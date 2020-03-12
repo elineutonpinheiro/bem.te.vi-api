@@ -28,21 +28,21 @@ public class InstituicaoResource {
 	@Autowired
 	private InstituicaoService service;
 	
-	@PreAuthorize("hasAnyRole('ADMIN')")
+	//@PreAuthorize("hasAnyRole('ADMIN')")
 	@GetMapping
 	public ResponseEntity<List<Instituicao>> listar(){
 		List<Instituicao> lista = service.listar();
 		return ResponseEntity.ok(lista);
 	}
 	
-	@PreAuthorize("hasAnyRole('ADMIN')")
+	//@PreAuthorize("hasAnyRole('ADMIN')")
 	@GetMapping("/{id}")
 	public ResponseEntity<Instituicao> consultarPorId(@PathVariable Integer id) {
 		Instituicao instituicao = service.consultaPorId(id);
 		return instituicao != null ? ResponseEntity.ok(instituicao) : ResponseEntity.notFound().build();
 	}
 	
-	@PreAuthorize("hasAnyRole('ADMIN')")
+	//@PreAuthorize("hasAnyRole('ADMIN')")
 	@PostMapping
 	public ResponseEntity<Instituicao> inserir(@Valid @RequestBody Instituicao instituicao) {
 		Instituicao instituicaoSalvo = service.inserir(instituicao);
@@ -55,14 +55,14 @@ public class InstituicaoResource {
 		return ResponseEntity.created(uri).body(instituicaoSalvo);
 	}
 	
-	@PreAuthorize("hasAnyRole('ADMIN')")
+	//@PreAuthorize("hasAnyRole('ADMIN')")
 	@PutMapping("/{id}")
 	public ResponseEntity<Instituicao> atualizar(@Valid @RequestBody Instituicao instituicao, @PathVariable Integer id) {
 		Instituicao instituicaoSalvo = service.atualizar(instituicao, id);
 		return ResponseEntity.ok(instituicaoSalvo);
 	}
 	
-	@PreAuthorize("hasAnyRole('ADMIN')")
+	//@PreAuthorize("hasAnyRole('ADMIN')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> remover(@PathVariable Integer id) {
 		service.remover(id);

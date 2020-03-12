@@ -30,7 +30,7 @@ public class LotacaoResource {
 	@Autowired
 	private LotacaoService service;
 	
-	@PreAuthorize("hasAnyRole('ADMIN')")
+	//@PreAuthorize("hasAnyRole('ADMIN')")
 	@GetMapping
 	public ResponseEntity<List<LotacaoDTO>> listar(){
 		List<Lotacao> lista = service.listar();
@@ -39,7 +39,7 @@ public class LotacaoResource {
 		return ResponseEntity.ok(listaDto);
 	}
 	
-	@PreAuthorize("hasAnyRole('ADMIN')")
+	//@PreAuthorize("hasAnyRole('ADMIN')")
 	@PostMapping
 	public ResponseEntity<Lotacao> inserir(@Valid @RequestBody LotacaoDTO lotacaoDto) {
 		Lotacao lotacao = service.fromDTO(lotacaoDto);
@@ -53,7 +53,7 @@ public class LotacaoResource {
 		return ResponseEntity.created(uri).body(lotacao);
 	}
 	
-	@PreAuthorize("hasAnyRole('ADMIN')")
+	//@PreAuthorize("hasAnyRole('ADMIN')")
 	@PutMapping("/{id}")
 	public ResponseEntity<Lotacao> atualizar(@Valid @RequestBody LotacaoDTO lotacaoDTO, @PathVariable Integer id) {
 		Lotacao lotacao = service.fromDTO(lotacaoDTO);
@@ -61,7 +61,7 @@ public class LotacaoResource {
 		return ResponseEntity.ok(lotacao);
 	}
 	
-	@PreAuthorize("hasAnyRole('ADMIN')")
+	//@PreAuthorize("hasAnyRole('ADMIN')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> remover(@PathVariable Integer id) {
 		service.remover(id);

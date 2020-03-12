@@ -34,7 +34,7 @@ public class MatriculaResource {
 	@Autowired
 	private AlunoRepository alunoRepository;
 	
-	@PreAuthorize("hasAnyRole('ADMIN')")
+	//@PreAuthorize("hasAnyRole('ADMIN')")
 	@GetMapping
 	public ResponseEntity<List<MatriculaDTO>> listar(){
 		List<Matricula> lista = service.listar();
@@ -43,7 +43,7 @@ public class MatriculaResource {
 		return ResponseEntity.ok(listaDto);
 	}
 	
-	@PreAuthorize("hasAnyRole('ADMIN')")
+	//@PreAuthorize("hasAnyRole('ADMIN')")
 	@PostMapping
 	public ResponseEntity<Matricula> inserir(@Valid @RequestBody MatriculaDTO matriculaDto) {
 		Matricula matricula = service.fromDTO(matriculaDto);
@@ -59,7 +59,7 @@ public class MatriculaResource {
 		return ResponseEntity.created(uri).body(matricula);
 	}
 	
-	@PreAuthorize("hasAnyRole('ADMIN')")
+	//@PreAuthorize("hasAnyRole('ADMIN')")
 	@PutMapping("/{id}")
 	public ResponseEntity<Matricula> atualizar(@Valid @RequestBody MatriculaDTO matriculaDTO, @PathVariable Integer id) {
 		Matricula matricula = service.fromDTO(matriculaDTO);
@@ -67,7 +67,7 @@ public class MatriculaResource {
 		return ResponseEntity.ok(matricula);
 	}
 	
-	@PreAuthorize("hasAnyRole('ADMIN')")
+	//@PreAuthorize("hasAnyRole('ADMIN')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> remover(@PathVariable Integer id) {
 		service.remover(id);

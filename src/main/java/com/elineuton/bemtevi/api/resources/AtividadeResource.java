@@ -6,7 +6,6 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,14 +27,14 @@ public class AtividadeResource {
 	@Autowired
 	private AtividadeService service;
 	
-	@PreAuthorize("hasAnyRole('ADMIN')")
+	//@PreAuthorize("hasAnyRole('ADMIN')")
 	@GetMapping("/{id}")
 	public ResponseEntity<Atividade> consultarPorId(@PathVariable Integer id) {
 		Atividade atividade = service.consultarPorId(id);
 		return atividade != null ? ResponseEntity.ok(atividade) : ResponseEntity.notFound().build();
 	}
 	
-	@PreAuthorize("hasAnyRole('PROFISSIONAL')")
+	//@PreAuthorize("hasAnyRole('PROFISSIONAL')")
 	@PostMapping
 	public ResponseEntity<Atividade> inserir(@Valid @RequestBody AtividadeDTO atividadeDto) {
 		Atividade atividade = service.fromDTO(atividadeDto);
@@ -49,7 +48,7 @@ public class AtividadeResource {
 		return ResponseEntity.created(uri).body(atividade);
 	}
 	
-	@PreAuthorize("hasAnyRole('PROFISSIONAL')")
+	//@PreAuthorize("hasAnyRole('PROFISSIONAL')")
 	@PutMapping("/{id}")
 	public ResponseEntity<Atividade> atualizar(@Valid @RequestBody AtividadeDTO atividadeDto, @PathVariable Integer id) {
 		Atividade atividade = service.fromDTO(atividadeDto);
@@ -57,7 +56,7 @@ public class AtividadeResource {
 		return ResponseEntity.ok(atividade);
 	}
 	
-	@PreAuthorize("hasAnyRole('PROFISSIONAL')")
+	//@PreAuthorize("hasAnyRole('PROFISSIONAL')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> remover(@PathVariable Integer id) {
 		service.remover(id);

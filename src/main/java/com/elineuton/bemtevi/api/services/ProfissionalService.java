@@ -11,12 +11,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.elineuton.bemtevi.api.domain.Profissional;
-import com.elineuton.bemtevi.api.domain.enums.Perfil;
 import com.elineuton.bemtevi.api.dto.ProfissionalDTO;
 import com.elineuton.bemtevi.api.dto.ProfissionalNewDTO;
 import com.elineuton.bemtevi.api.repositories.ProfissionalRepository;
-import com.elineuton.bemtevi.api.security.Usuario;
-import com.elineuton.bemtevi.api.services.exceptions.AuthorizationException;
 import com.elineuton.bemtevi.api.services.exceptions.DataIntegrityException;
 import com.elineuton.bemtevi.api.services.exceptions.ObjectNotFoundException;
 
@@ -34,20 +31,20 @@ public class ProfissionalService {
 	}
 	
 	public Profissional consultarPorId(Integer id) {
-		
+		/*
 		Usuario usuario = UsuarioService.authenticated();
 		if (usuario == null || !usuario.hasRole(Perfil.ADMIN) && !id.equals(usuario.getId())) {
 			throw new AuthorizationException("Acesso negado");
 			
 		}
-		
+		*/
 		Optional<Profissional> profissional = repo.findById(id);
 		return profissional.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado! Id: " 
 		+ id + ", Tipo: " + Profissional.class.getName()));
 	}
 	
-	public Profissional consultarPorCodigoAcesso(String codigoAcesso) {
-		Profissional profissional = repo.findByCodigoAcesso(codigoAcesso);
+	public Profissional consultarPorEmail(String email) {
+		Profissional profissional = repo.findByEmail(email);
 		return profissional;
 	}
 	
@@ -77,17 +74,15 @@ public class ProfissionalService {
 		
 	}
 	
-	public Profissional fromDTO(ProfissionalDTO profissionalDto) {
-		return new Profissional(profissionalDto.getNome(), profissionalDto.getCargo(), 
-				profissionalDto.getTelefone(), null, null, null);
+	public Profissional fromDTO(ProfissionalDTO profissionalDTO) {
+		return new Profissional(profissionalDTO.getNome(), profissionalDTO.getCargo(), null, null, null);
 	}
 	
-	public Profissional fromDTO(ProfissionalNewDTO profissionalNewDto) {
-		return new Profissional(profissionalNewDto.getNome(), profissionalNewDto.getCargo(), 
-				profissionalNewDto.getTelefone(), 
-				passwordEncoder.encode(profissionalNewDto.getCodigoAcesso()), 
-				passwordEncoder.encode(profissionalNewDto.getSenha()), 
-				profissionalNewDto.getAtivo());
+	public Profissional fromDTO(ProfissionalNewDTO profissionalNewDTO) {
+		return new Profissional(profissionalNewDTO.getNome(), profissionalNewDTO.getCargo(), 
+				passwordEncoder.encode(profissionalNewDTO.getEmail()), 
+				passwordEncoder.encode(profissionalNewDTO.getSenha()), 
+				profissionalNewDTO.getAtivo());
 	}
 	
 

@@ -21,11 +21,11 @@ public class AuthService {
 	
 	private Random rand = new Random();
 	
-	public void enviarNovaSenha(String codigoAcesso) {
+	public void enviarNovaSenha(String email) {
 		
-		Profissional profissional = profissionalRepository.findByCodigoAcesso(codigoAcesso);
+		Profissional profissional = profissionalRepository.findByEmail(email);
 		if (profissional == null) {
-			throw new ObjectNotFoundException("Código de Acesso inválido");
+			throw new ObjectNotFoundException("Email inválido");
 		}
 		
 		String novaSenha = novaSenha();

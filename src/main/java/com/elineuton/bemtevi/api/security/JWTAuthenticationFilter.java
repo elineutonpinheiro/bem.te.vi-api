@@ -1,4 +1,4 @@
-package com.elineuton.bemtevi.api.security;
+/*package com.elineuton.bemtevi.api.security;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -40,7 +40,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 			CredenciaisDTO creds = new ObjectMapper()
 	                .readValue(req.getInputStream(), CredenciaisDTO.class);
 	
-	        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(creds.getCodigoAcesso(), creds.getSenha(), new ArrayList<>());
+	        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(creds.getEmail(), creds.getSenha(), new ArrayList<>());
 	        
 	        Authentication auth = authenticationManager.authenticate(authToken);
 	        return auth;
@@ -84,3 +84,4 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     }
 
 }
+*/

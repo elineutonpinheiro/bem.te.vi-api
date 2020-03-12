@@ -8,7 +8,6 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.elineuton.bemtevi.api.domain.Aluno;
@@ -42,7 +42,7 @@ public class AlunoResource {
 	@Autowired
 	private MatriculaService matriculaService;
 	
-	@PreAuthorize("hasAnyRole('ADMIN')")
+	//@PreAuthorize("hasAnyRole('ADMIN')")
 	@GetMapping
 	public ResponseEntity<List<AlunoDTO>> listar(){
 		List<Aluno> lista = service.listar();
@@ -51,7 +51,7 @@ public class AlunoResource {
 		return ResponseEntity.ok(listaDto);
 	}
 	
-	@PreAuthorize("hasAnyRole('RESPONSAVEL', 'PROFISSIONAL')")
+	//@PreAuthorize("hasAnyRole('RESPONSAVEL', 'PROFISSIONAL')")
 	@GetMapping("/{id}")
 	public ResponseEntity<Aluno> consultarPorId(@PathVariable Integer id) {
 		Aluno aluno = service.consultarPorId(id);
@@ -73,20 +73,20 @@ public class AlunoResource {
 	 * return ResponseEntity.created(uri).body(aluno); }
 	 */
 	
-	@PreAuthorize("hasAnyRole('ADMIN')")
+	//@PreAuthorize("hasAnyRole('ADMIN')")
 	@PutMapping("/{id}")
 	public ResponseEntity<Aluno> atualizar(@Valid @RequestBody Aluno aluno, @PathVariable Integer id) {
 		aluno = service.atualizar(aluno, id);
 		return ResponseEntity.ok(aluno);
 	}
 	
-	@PreAuthorize("hasAnyRole('PROFISSIONAL')")
+	//@PreAuthorize("hasAnyRole('PROFISSIONAL')")
 	@PutMapping("/{id}/presenca")
 	public void atualizarPresenca(@PathVariable Integer id, @RequestBody LocalDate dataPresenca) {
 		service.atualizarPresenca(id, dataPresenca);
 	}
 	
-	@PreAuthorize("hasAnyRole('PROFISSIONAL', 'ADMIN')")
+	//@PreAuthorize("hasAnyRole('PROFISSIONAL', 'ADMIN')")
 	@PostMapping("/{id}/pessoalAutorizado")
 	public ResponseEntity<Aluno> inserir(@Valid @RequestBody AlunoNewDTO alunoNewDTO) {
 		Aluno aluno = service.fromDTO(alunoNewDTO);
@@ -101,28 +101,28 @@ public class AlunoResource {
 	}
 	*/
 	
-	@PreAuthorize("hasAnyRole('RESPONSAVEL', 'ADMIN')")
+	//@PreAuthorize("hasAnyRole('RESPONSAVEL', 'ADMIN')")
 	@DeleteMapping("/{id}/pessoalAutorizado")
 	public void removerPessoalAutorizado(@PathVariable Integer id, @RequestBody String pessoaAutorizada) {
 		service.removerPessoalAutorizado(id, pessoaAutorizada);
 	}
 	
-	@PreAuthorize("hasAnyRole('ADMIN')")
+	//@PreAuthorize("hasAnyRole('ADMIN')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> remover(@PathVariable Integer id) {
 		service.remover(id);
 		return ResponseEntity.noContent().build();
 	}
 	
-	@PreAuthorize("hasAnyRole('RESPONSAVEL')")
+	//@PreAuthorize("hasAnyRole('RESPONSAVEL')")
 	@GetMapping("/{id}/avaliacoes")
-	public ResponseEntity<List<AvaliacaoDTO>> consultaAvaliacaoPorAlunoId(@PathVariable Integer id) {
-		List<Avaliacao> lista = avaliacaoService.consultaAvaliacaoPorAlunoId(id);
+	public ResponseEntity<List<AvaliacaoDTO>> consultarAvaliacaoPorAlunoIdEData(@PathVariable Integer id, @RequestParam(value="data") LocalDate data) {
+		List<Avaliacao> lista = avaliacaoService.consultarAvaliacaoPorAlunoIdEData(id, data);
 		List<AvaliacaoDTO> listaDto = lista.stream().map(aluno -> new AvaliacaoDTO(aluno)).collect(Collectors.toList());
 		return ResponseEntity.ok(listaDto);
 	}
 	
-	@PreAuthorize("hasAnyRole('ADMIN')")
+	//@PreAuthorize("hasAnyRole('ADMIN')")
 	@GetMapping("/{id}/matriculas")
 	public ResponseEntity<List<MatriculaDTO>> consultaMatriculasPorAlunolId(@PathVariable Integer id) {
 		List<Matricula> lista = matriculaService.consultarMatriculaPorAlunoId(id);

@@ -16,8 +16,6 @@ import com.elineuton.bemtevi.api.domain.Unidade;
 import com.elineuton.bemtevi.api.dto.TurmaDTO;
 import com.elineuton.bemtevi.api.dto.TurmaNewDTO;
 import com.elineuton.bemtevi.api.repositories.TurmaRepository;
-import com.elineuton.bemtevi.api.security.Usuario;
-import com.elineuton.bemtevi.api.services.exceptions.AuthorizationException;
 import com.elineuton.bemtevi.api.services.exceptions.DataIntegrityException;
 import com.elineuton.bemtevi.api.services.exceptions.ObjectNotFoundException;
 
@@ -86,6 +84,12 @@ public class TurmaService {
 	// TODO Implementar busca paginada - Udemy
 	public List<Turma> consultaTurmasPorProfissionalId(Integer id) {
 		Profissional profissional = profissionalService.consultarPorId(id);
+		List<Turma> lista = repo.findByProfissional(profissional);
+		return lista;
+	}
+	
+	public List<Turma> consultarTurmasPorEmailProfissional(String email) {
+		Profissional profissional = profissionalService.consultarPorEmail(email);
 		List<Turma> lista = repo.findByProfissional(profissional);
 		return lista;
 	}

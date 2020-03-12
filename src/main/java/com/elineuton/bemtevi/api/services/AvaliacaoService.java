@@ -14,13 +14,8 @@ import com.elineuton.bemtevi.api.domain.Aluno;
 import com.elineuton.bemtevi.api.domain.Avaliacao;
 import com.elineuton.bemtevi.api.domain.Profissional;
 import com.elineuton.bemtevi.api.domain.Questionario;
-import com.elineuton.bemtevi.api.domain.Turma;
-import com.elineuton.bemtevi.api.domain.enums.Perfil;
 import com.elineuton.bemtevi.api.dto.AvaliacaoDTO;
-import com.elineuton.bemtevi.api.dto.AvaliacaoNewDTO;
 import com.elineuton.bemtevi.api.repositories.AvaliacaoRepository;
-import com.elineuton.bemtevi.api.security.Usuario;
-import com.elineuton.bemtevi.api.services.exceptions.AuthorizationException;
 import com.elineuton.bemtevi.api.services.exceptions.DataIntegrityException;
 import com.elineuton.bemtevi.api.services.exceptions.ObjectNotFoundException;
 
@@ -99,13 +94,13 @@ public class AvaliacaoService {
 		return avaliacao;
 	}
 	
-	public List<Avaliacao> consultaAvaliacaoPorAlunoId(Integer id) {
+	public List<Avaliacao> consultarAvaliacaoPorAlunoIdEData(Integer id, LocalDate data) {
 		Aluno aluno = alunoService.consultarPorId(id);
-		List<Avaliacao> lista = repo.findByAluno(aluno);
+		List<Avaliacao> lista = repo.findByAlunoAndData(aluno, data);
 		return lista;
 	}
 	
-	
+	/*
 	public List<Avaliacao> consultaAvaliacaoPorProfissionald(Integer id) {
 		Usuario usuario = UsuarioService.authenticated();
 		if (usuario == null || !usuario.hasRole(Perfil.ADMIN) && !id.equals(usuario.getId())) {
@@ -124,6 +119,7 @@ public class AvaliacaoService {
 		List<Avaliacao> lista = repo.findByTurma(turma);
 		return lista;
 	}
+	*/
 	
 	/*
 	public List<Avaliacao> consultarAvaliacaoPorTurmaEProfissional(Integer turmaId, Integer profissionalId) {

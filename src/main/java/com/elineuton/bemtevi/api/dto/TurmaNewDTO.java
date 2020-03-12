@@ -11,6 +11,9 @@ public class TurmaNewDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
+	@Getter
+	private Integer id;
+	
 	@Getter @Setter
 	private String nome;
 	

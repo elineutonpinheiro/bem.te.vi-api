@@ -1,4 +1,4 @@
-package com.elineuton.bemtevi.api.services;
+/*package com.elineuton.bemtevi.api.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,12 +18,13 @@ public class UsuarioDetailsServiceImpl implements UserDetailsService{
 	private ProfissionalRepository repo;
 	
 	@Override
-	public UserDetails loadUserByUsername(String codigoAcesso) throws UsernameNotFoundException {
-		Profissional profissional = repo.findByCodigoAcesso(codigoAcesso);
+	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+		Profissional profissional = repo.findByEmail(email);
 		if (profissional == null) {
-			throw new UsernameNotFoundException(codigoAcesso);
+			throw new UsernameNotFoundException(email);
 		}
-		return new Usuario(profissional.getId(), profissional.getCodigoAcesso(), profissional.getSenha(), profissional.getPerfis());
+		return new Usuario(profissional.getId(), profissional.getEmail(), profissional.getSenha(), profissional.getPerfis());
 	}
 
 }
+*/

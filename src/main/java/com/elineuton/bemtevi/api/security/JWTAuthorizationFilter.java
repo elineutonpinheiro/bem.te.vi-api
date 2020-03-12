@@ -1,4 +1,4 @@
-package com.elineuton.bemtevi.api.security;
+/*package com.elineuton.bemtevi.api.security;
 
 import java.io.IOException;
 
@@ -52,3 +52,4 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 	}
 
 }
+*/

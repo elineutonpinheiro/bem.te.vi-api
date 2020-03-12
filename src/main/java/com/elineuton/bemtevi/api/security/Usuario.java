@@ -1,4 +1,4 @@
-package com.elineuton.bemtevi.api.security;
+/*package com.elineuton.bemtevi.api.security;
 
 import java.util.Collection;
 import java.util.Set;
@@ -21,15 +21,15 @@ public class Usuario implements UserDetails{
 	@Getter
 	private Integer id;
 	
-	private String codigoAcesso;
+	private String email;
 	
 	private String senha;
 	
 	private Collection<? extends GrantedAuthority> authorities;
 	
-	public Usuario(Integer id, String codigoAcesso, String senha, Set<Perfil> perfis) {
+	public Usuario(Integer id, String email, String senha, Set<Perfil> perfis) {
 		this.id = id;
-		this.codigoAcesso = codigoAcesso;
+		this.email = email;
 		this.senha = senha;
 		this.authorities = perfis.stream().map(x -> new SimpleGrantedAuthority(x.getDescricao())).collect(Collectors.toList());
 	}	
@@ -46,7 +46,7 @@ public class Usuario implements UserDetails{
 
 	@Override
 	public String getUsername() {
-		return codigoAcesso;
+		return email;
 	}
 
 	@Override
@@ -74,3 +74,4 @@ public class Usuario implements UserDetails{
 	}
 
 }
+*/
