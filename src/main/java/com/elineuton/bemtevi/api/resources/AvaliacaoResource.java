@@ -39,7 +39,7 @@ public class AvaliacaoResource {
 	}
 	
 	//@PreAuthorize("hasAnyRole('ADMIN')")
-	//@GetMapping("/{id}")
+	@GetMapping("/{id}")
 	public ResponseEntity<Avaliacao> consultarPorId(@PathVariable Integer id) {
 		Avaliacao avaliacao = service.consultaPorId(id);
 		return avaliacao != null ? ResponseEntity.ok(avaliacao) : ResponseEntity.notFound().build();
@@ -49,7 +49,7 @@ public class AvaliacaoResource {
 	@PostMapping
 	public ResponseEntity<Avaliacao> inserir(@Valid @RequestBody AvaliacaoDTO avaliacaoDto) {
 		Avaliacao avaliacao = service.fromDTO(avaliacaoDto);
-		avaliacao = service.inserir(avaliacao);
+		avaliacao = service.salvar(avaliacao);
 		
 		//Mapear o recurso -> instituicao + id
 		
@@ -60,11 +60,12 @@ public class AvaliacaoResource {
 	}
 	
 	//@PreAuthorize("hasAnyRole('PROFISSIONAL')")
-	@PutMapping("/{id}")
-	public ResponseEntity<Avaliacao> atualizar(@Valid @RequestBody AvaliacaoDTO avaliacaoDto, @PathVariable Integer id) {
+	@PutMapping
+	public ResponseEntity<AvaliacaoDTO> atualizar(@Valid @RequestBody AvaliacaoDTO avaliacaoDto) {
 		Avaliacao avaliacao = service.fromDTO(avaliacaoDto);
-		avaliacao = service.atualizar(avaliacao, id);
-		return ResponseEntity.ok(avaliacao);
+		avaliacao = service.salvar(avaliacao);
+		
+		return ResponseEntity.ok(service.convertToDTO(avaliacao));
 	}
 	
 	//@PreAuthorize("hasAnyRole('ADMIN')")

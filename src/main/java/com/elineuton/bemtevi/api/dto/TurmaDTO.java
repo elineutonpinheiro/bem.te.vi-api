@@ -22,10 +22,14 @@ public class TurmaDTO implements Serializable {
 	@Getter @Setter
 	private String sala;
 	
+	@Getter @Setter
+	private Long qtdeMatriculas;
+	
 	public TurmaDTO(Turma turma) {
 		this.id = turma.getId();
 		this.nome = turma.getNome();
 		this.sala = turma.getSala();
+		this.qtdeMatriculas = turma.getQtdeMatriculas();
 	}
 	
 }

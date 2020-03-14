@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -59,6 +60,10 @@ public class Turma implements Serializable {
 	
 	@Getter	@Setter
 	private Boolean ativa;
+	
+	@Getter	@Setter
+	@Transient
+	private Long qtdeMatriculas;
 	 
 	public Turma(String nome, Unidade unidade, String periodo, String sala,
 			AnoLetivo anoLetivo, Boolean ativa) {

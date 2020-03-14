@@ -1,12 +1,14 @@
 package com.elineuton.bemtevi.api.resources;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -115,13 +117,30 @@ public class AlunoResource {
 	}
 	
 	//@PreAuthorize("hasAnyRole('RESPONSAVEL')")
+	
 	@GetMapping("/{id}/avaliacoes")
-	public ResponseEntity<List<AvaliacaoDTO>> consultarAvaliacaoPorAlunoIdEData(@PathVariable Integer id, @RequestParam(value="data") LocalDate data) {
-		List<Avaliacao> lista = avaliacaoService.consultarAvaliacaoPorAlunoIdEData(id, data);
+	public ResponseEntity<AvaliacaoDTO> consultarAvaliacaoPorAlunoIdEData(@PathVariable Integer id, @RequestParam(value="data") String data) {
+		LocalDate date = LocalDate.parse(data);
+		//String formato = "dd/MM/yyyy";
+		//DateTimeFormatter format = DateTimeFormatter.ofPattern(formato);
+		//LocalDate date = LocalDate.parse(data, format);
+		//System.out.println("DATAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" + date);
+		Avaliacao avaliacao = avaliacaoService.buscarAvaliacaoAndamento(id, date);
+		
+
+		AvaliacaoDTO avaliacaoDTO = avaliacaoService.convertToDTO(avaliacao);
+		//List<AvaliacaoDTO> listaDto = lista.stream().map(aluno -> new AvaliacaoDTO(aluno)).collect(Collectors.toList());
+		return ResponseEntity.ok(avaliacaoDTO);
+	}
+	
+	/*
+	@GetMapping("/{id}/avaliacoes")
+	public ResponseEntity<List<AvaliacaoDTO>> consultarAvaliacaoPorAlunoId(@PathVariable Integer id) {
+		List<Avaliacao> lista = avaliacaoService.consultarAvaliacaoPorAlunoId(id);
 		List<AvaliacaoDTO> listaDto = lista.stream().map(aluno -> new AvaliacaoDTO(aluno)).collect(Collectors.toList());
 		return ResponseEntity.ok(listaDto);
 	}
-	
+	*/
 	//@PreAuthorize("hasAnyRole('ADMIN')")
 	@GetMapping("/{id}/matriculas")
 	public ResponseEntity<List<MatriculaDTO>> consultaMatriculasPorAlunolId(@PathVariable Integer id) {

@@ -21,6 +21,7 @@ import com.elineuton.bemtevi.api.domain.Questionario;
 import com.elineuton.bemtevi.api.domain.Turma;
 import com.elineuton.bemtevi.api.domain.Unidade;
 import com.elineuton.bemtevi.api.domain.enums.Perfil;
+import com.elineuton.bemtevi.api.domain.enums.StatusAvaliacao;
 import com.elineuton.bemtevi.api.repositories.AlunoRepository;
 import com.elineuton.bemtevi.api.repositories.AnoLetivoRepository;
 import com.elineuton.bemtevi.api.repositories.AtividadeRepository;
@@ -169,19 +170,19 @@ public class DBService {
 		 * "Não aceitou");
 		 */
 		
-		Questionario questionario = new Questionario("x", "x", "x", "x", 1, 1, 1, false, "x", false, "x", "x", "x", "x", "x");
+		Questionario questionario = new Questionario("Aceitou bem", "bem", "não", "x", 1, 2, 5, false, "x", false, "x", "x", "x", "x", "x");
 		
-		Avaliacao av1 = new Avaliacao(alu1, p1, parsedDate, "Suspensa", questionario);
-		Avaliacao av2 = new Avaliacao(alu2, p1, parsedDate, "Finalizada", questionario);
-		Avaliacao av3 = new Avaliacao(alu2, p2, parsedDate, "Finalizada", questionario);
-		Avaliacao av4 = new Avaliacao(alu2, p2, parsedDate, "Finalizada", questionario);
+		//Avaliacao av1 = new Avaliacao(alu1, p1, parsedDate.plusDays(1), StatusAvaliacao.A_FAZER, questionario);
+		//Avaliacao av2 = new Avaliacao(alu2, p1, parsedDate.plusDays(2), StatusAvaliacao.A_FAZER, questionario);
+		//Avaliacao av3 = new Avaliacao(alu2, p2, parsedDate.plusDays(3), StatusAvaliacao.A_FAZER, questionario);
+		Avaliacao av4 = new Avaliacao(null, alu3, p1, parsedDate, StatusAvaliacao.EM_ANDAMENTO, questionario);
 		
 		//av1.getRespostas().addAll(Arrays.asList(r1, r2));
 
 		//Salva Questão, Resposta e Avaliação	
 		//questaoRepository.saveAll(Arrays.asList(q1, q2, q3, q4, q5, q6, q7, q8, q9, q10, q11, q12, q13, q14));
 		//respostaRepository.saveAll(Arrays.asList(r1, r2));
-		avaliacaoRepository.saveAll(Arrays.asList(av1, av2, av3, av4));
+		avaliacaoRepository.saveAll(Arrays.asList(av4));
 		
 	}
 }

@@ -15,6 +15,7 @@ import com.elineuton.bemtevi.api.domain.Turma;
 import com.elineuton.bemtevi.api.domain.Unidade;
 import com.elineuton.bemtevi.api.dto.TurmaDTO;
 import com.elineuton.bemtevi.api.dto.TurmaNewDTO;
+import com.elineuton.bemtevi.api.repositories.MatriculaRepository;
 import com.elineuton.bemtevi.api.repositories.TurmaRepository;
 import com.elineuton.bemtevi.api.services.exceptions.DataIntegrityException;
 import com.elineuton.bemtevi.api.services.exceptions.ObjectNotFoundException;
@@ -33,6 +34,9 @@ public class TurmaService {
 	
 	@Autowired
 	private ProfissionalService profissionalService;
+	
+	@Autowired
+	private MatriculaRepository matriculaRepository;
 
 	public List<Turma> listar() {
 		return repo.findAll();
@@ -91,6 +95,11 @@ public class TurmaService {
 	public List<Turma> consultarTurmasPorEmailProfissional(String email) {
 		Profissional profissional = profissionalService.consultarPorEmail(email);
 		List<Turma> lista = repo.findByProfissional(profissional);
+		
+		for (Turma turma : lista) {
+			turma.setQtdeMatriculas(matriculaRepository.countMatriculasPorTurma(turma));
+		}
+		
 		return lista;
 	}
 

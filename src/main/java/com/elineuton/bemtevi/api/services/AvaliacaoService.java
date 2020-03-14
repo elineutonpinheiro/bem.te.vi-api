@@ -1,9 +1,12 @@
 package com.elineuton.bemtevi.api.services;
 
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import org.modelmapper.ModelMapper;
+import org.modelmapper.PropertyMap;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -44,33 +47,22 @@ public class AvaliacaoService {
 		+ id + ", Tipo: " + Avaliacao.class.getName()));
 	}
 	
-	public Avaliacao inserir(Avaliacao avaliacao) {
+	public Avaliacao salvar(Avaliacao avaliacao) {
 		LocalDate a = LocalDate.now();
 		avaliacao.setData(a);
 		
-		//Usuario usuario = UsuarioService.authenticated();
-		//Profissional profissional = profissionalService.consultarPorId(usuario.getId());
-		//avaliacao.setProfissional(profissional);
+		Avaliacao avaliacaoTemp = consultarAvaliacaoPorAlunoIdEData(avaliacao.getAluno().getId(), avaliacao.getData());
 		
-		/*
-		 * for (Resposta resposta : avaliacao.getRespostas()) {
-		 * resposta.setQuestao(questaoRepository.findById(resposta.getQuestao().getId())
-		 * .get()); }
-		 */
+		if(avaliacaoTemp != null && avaliacao.getId() == null) {
+			return avaliacaoTemp;
+		}
 
 		avaliacao = repo.save(avaliacao);
 		return avaliacao;
 	}
 	
-	public Avaliacao atualizar(Avaliacao avaliacao, Integer id) {
-		Avaliacao avaliacaoSalva = repo.findById(id).get();
-		
-		if(avaliacaoSalva == null) {
-			throw new EmptyResultDataAccessException(1);
-		}
-		
-		BeanUtils.copyProperties(avaliacao, avaliacaoSalva, "id");
-		return repo.save(avaliacaoSalva);
+	public Avaliacao atualizar(Avaliacao avaliacao) {
+		return repo.save(avaliacao);
 	}
 	
 	public void remover(Integer id) {
@@ -89,14 +81,74 @@ public class AvaliacaoService {
 				avaliacaoDto.getEscovacao(), avaliacaoDto.isDormiu(), avaliacaoDto.getEstadoDoSono(), avaliacaoDto.isFebre(),
 				avaliacaoDto.getUrina(), avaliacaoDto.getEvacuacao(), avaliacaoDto.getInteracao(), avaliacaoDto.getParticipacao(),
 				avaliacaoDto.getObservacao());
-		Avaliacao avaliacao = new Avaliacao(aluno, profissional, avaliacaoDto.getData(), 
+		Avaliacao avaliacao = new Avaliacao(avaliacaoDto.getId(), aluno, profissional, avaliacaoDto.getData(), 
 				avaliacaoDto.getStatus(), questionario);
 		return avaliacao;
 	}
 	
-	public List<Avaliacao> consultarAvaliacaoPorAlunoIdEData(Integer id, LocalDate data) {
+	public Avaliacao buscarAvaliacaoAndamento(Integer id, LocalDate data) {
 		Aluno aluno = alunoService.consultarPorId(id);
-		List<Avaliacao> lista = repo.findByAlunoAndData(aluno, data);
+		Avaliacao avaliacao = repo.findByAlunoAndData(aluno, data);
+		
+		if(avaliacao == null) {
+			avaliacao = new Avaliacao();
+		}
+		return avaliacao;
+	}
+	
+
+	public Avaliacao consultarAvaliacaoPorAlunoIdEData(Integer alunoId, LocalDate data) {
+		Aluno aluno = alunoService.consultarPorId(alunoId);
+		Avaliacao avaliacao = repo.findByAlunoAndData(aluno, data);
+	
+		return avaliacao;
+	}
+	
+	
+	public AvaliacaoDTO convertToDTO(Avaliacao avaliacao) {
+		ModelMapper modelMapper = new ModelMapper();
+		
+		modelMapper.addMappings(new PropertyMap<Avaliacao, AvaliacaoDTO>() {
+
+			@Override
+			protected void configure() {
+				map().setId(source.getId());
+				map().setAlunoId(source.getAluno().getId());
+				map().setProfissionalId(source.getProfissional().getId());
+				map().setData(source.getData());
+				map().setStatus(source.getStatus());
+				map().setCafeDaManha(source.getQuestionario().getCafeDaManha());
+				map().setLancheDaManha(source.getQuestionario().getLancheDaManha());
+				map().setAlmoco(source.getQuestionario().getAlmoco());
+				map().setLancheDaTarde(source.getQuestionario().getLancheDaTarde());
+				map().setBanho(source.getQuestionario().getBanho());
+				map().setFralda(source.getQuestionario().getFralda());
+				map().setEscovacao(source.getQuestionario().getEscovacao());
+				map().setDormiu(source.getQuestionario().isDormiu());
+				map().setEstadoDoSono(source.getQuestionario().getEstadoDoSono());
+				map().setFebre(source.getQuestionario().isFebre());
+				map().setUrina(source.getQuestionario().getUrina());
+				map().setEvacuacao(source.getQuestionario().getEvacuacao());
+				map().setInteracao(source.getQuestionario().getInteracao());
+				map().setObservacao(source.getQuestionario().getObservacao());
+			}
+			
+		});
+		
+	    AvaliacaoDTO avaliacaoDTO = modelMapper.map(avaliacao, AvaliacaoDTO.class);
+	    return avaliacaoDTO;
+	}
+	
+	
+	/*
+	 * public List<Avaliacao> consultarAvaliacaoPorAlunoIdEData(Integer id,
+	 * LocalDate data) { Aluno aluno = alunoService.consultarPorId(id);
+	 * List<Avaliacao> lista = repo.findByAlunoAndData(aluno, data); return lista; }
+	 */
+	
+	public List<Avaliacao> consultarAvaliacaoPorAlunoId(Integer id) {
+		Aluno aluno = alunoService.consultarPorId(id);
+		List<Avaliacao> lista = repo.findByAluno(aluno);
 		return lista;
 	}
 	

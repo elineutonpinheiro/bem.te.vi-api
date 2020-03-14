@@ -14,7 +14,7 @@ public interface AvaliacaoRepository extends JpaRepository<Avaliacao, Integer> {
 	
 	List<Avaliacao> findByAluno(Aluno aluno);
 	
-	List<Avaliacao> findByAlunoAndData(Aluno aluno, LocalDate data);
+	Avaliacao findByAlunoAndData(Aluno aluno, LocalDate data);
 	
 }
 

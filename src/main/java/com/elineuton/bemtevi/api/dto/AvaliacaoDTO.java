@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 import com.elineuton.bemtevi.api.domain.Avaliacao;
+import com.elineuton.bemtevi.api.domain.enums.StatusAvaliacao;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.Getter;
@@ -15,7 +16,7 @@ public class AvaliacaoDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
-	@Getter
+	@Getter @Setter
 	private Integer id;
 	
 	@Getter @Setter
@@ -29,7 +30,7 @@ public class AvaliacaoDTO implements Serializable {
 	private LocalDate data;
 	
 	@Getter @Setter
-	private String status;
+	private StatusAvaliacao status;
 	
 	@Getter @Setter
 	private String cafeDaManha;
