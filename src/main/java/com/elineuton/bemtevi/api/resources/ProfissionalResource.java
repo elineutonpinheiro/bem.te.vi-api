@@ -124,7 +124,7 @@ public class ProfissionalResource {
 	
 	//@PreAuthorize("hasAnyRole('ADMIN')")
 	@GetMapping("/{id}/lotacoes")
-	public ResponseEntity<List<LotacaoDTO>> consultarLotacaosPorProfissionallId(@PathVariable Integer id) {
+	public ResponseEntity<List<LotacaoDTO>> consultarLotacaosPorProfissionalId(@PathVariable Integer id) {
 		List<Lotacao> lista = lotacaoService.consultarLotacaoPorProfissionalId(id);
 		List<LotacaoDTO> listaDto = lista.stream().map(profissional -> new LotacaoDTO(profissional)).collect(Collectors.toList());
 		return ResponseEntity.ok(listaDto);

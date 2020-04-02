@@ -1,5 +1,6 @@
 package com.elineuton.bemtevi.api.services;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.BeanUtils;
@@ -10,8 +11,10 @@ import org.springframework.stereotype.Service;
 
 import com.elineuton.bemtevi.api.domain.Aluno;
 import com.elineuton.bemtevi.api.domain.Matricula;
+import com.elineuton.bemtevi.api.domain.Responsavel;
 import com.elineuton.bemtevi.api.domain.Turma;
 import com.elineuton.bemtevi.api.dto.MatriculaDTO;
+import com.elineuton.bemtevi.api.dto.MatriculaNewDTO;
 import com.elineuton.bemtevi.api.repositories.MatriculaRepository;
 import com.elineuton.bemtevi.api.services.exceptions.DataIntegrityException;
 
@@ -26,6 +29,9 @@ public class MatriculaService {
 	
 	@Autowired
 	private AlunoService alunoService;
+	
+	@Autowired
+	private ResponsavelService responsavelService;
 
 	
 	public List<Matricula> listar() { 
@@ -44,7 +50,19 @@ public class MatriculaService {
 		List<Matricula> lista = repo.findByAluno(aluno);
 		return lista;
 	}
-		 
+	
+	/*
+	 * public List<Matricula> consultarMatriculasPorEmailResponsavel(String email) {
+	 * Responsavel responsavel = responsavelService.consultarPorEmail(email);
+	 * LocalDate dataAtual = LocalDate.now(); List<Matricula> lista =
+	 * repo.findByResponsavel(responsavel, dataAtual); return lista; }
+	 */
+	
+	public List<Matricula> consultarMatriculasPorEmailResponsavel(String email) {
+		Responsavel responsavel = responsavelService.consultarPorEmail(email);
+		List<Matricula> lista = repo.findByResponsavel(responsavel);
+		return lista;
+	}
 
 	public Matricula inserir(Matricula matricula) {
 		matricula = repo.save(matricula);
@@ -74,6 +92,13 @@ public class MatriculaService {
 	public Matricula fromDTO(MatriculaDTO matriculaDto) {
 		Turma turma = turmaService.consultarPorId(matriculaDto.getTurmaId());
 		Matricula matricula = new Matricula(matriculaDto.getAluno(), turma, matriculaDto.getDataTermino());
+		return matricula;
+	}
+	
+	public Matricula fromDTO(MatriculaNewDTO matriculaNewDTO) {
+		Turma turma = turmaService.consultarPorId(matriculaNewDTO.getIdTurma());
+		Aluno aluno = alunoService.consultarPorId(matriculaNewDTO.getIdAluno());
+		Matricula matricula = new Matricula(aluno, turma, null);
 		return matricula;
 	}
 

@@ -130,6 +130,7 @@ public class AvaliacaoService {
 				map().setUrina(source.getQuestionario().getUrina());
 				map().setEvacuacao(source.getQuestionario().getEvacuacao());
 				map().setInteracao(source.getQuestionario().getInteracao());
+				map().setParticipacao(source.getQuestionario().getParticipacao());
 				map().setObservacao(source.getQuestionario().getObservacao());
 			}
 			

@@ -23,13 +23,16 @@ import org.springframework.web.bind.annotation.RestController;
 import com.elineuton.bemtevi.api.domain.Aluno;
 import com.elineuton.bemtevi.api.domain.Avaliacao;
 import com.elineuton.bemtevi.api.domain.Matricula;
+import com.elineuton.bemtevi.api.domain.Turma;
 import com.elineuton.bemtevi.api.dto.AlunoDTO;
 import com.elineuton.bemtevi.api.dto.AlunoNewDTO;
 import com.elineuton.bemtevi.api.dto.AvaliacaoDTO;
 import com.elineuton.bemtevi.api.dto.MatriculaDTO;
+import com.elineuton.bemtevi.api.dto.TurmaDTO;
 import com.elineuton.bemtevi.api.services.AlunoService;
 import com.elineuton.bemtevi.api.services.AvaliacaoService;
 import com.elineuton.bemtevi.api.services.MatriculaService;
+import com.elineuton.bemtevi.api.services.TurmaService;
 
 @RestController
 @RequestMapping("/alunos")
@@ -43,6 +46,12 @@ public class AlunoResource {
 	
 	@Autowired
 	private MatriculaService matriculaService;
+	
+	@Autowired
+	private TurmaService turmaService;
+	
+	@Autowired
+	private AlunoService alunoService;
 	
 	//@PreAuthorize("hasAnyRole('ADMIN')")
 	@GetMapping
@@ -147,6 +156,12 @@ public class AlunoResource {
 		List<Matricula> lista = matriculaService.consultarMatriculaPorAlunoId(id);
 		List<MatriculaDTO> listaDto = lista.stream().map(aluno -> new MatriculaDTO(aluno)).collect(Collectors.toList());
 		return ResponseEntity.ok(listaDto);
+	}
+	
+	@GetMapping("/{id}/turma")
+	public ResponseEntity<TurmaDTO> consultaTurmaPorAlunolId(@PathVariable Integer id) {
+		Turma turma = turmaService.consultaTurmaPorAlunoId(id);
+		return ResponseEntity.ok(service.convertToDTO(turma));
 	}
 	
 }

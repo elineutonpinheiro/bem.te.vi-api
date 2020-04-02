@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import org.modelmapper.ModelMapper;
+import org.modelmapper.PropertyMap;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -11,9 +13,11 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.elineuton.bemtevi.api.domain.Aluno;
+import com.elineuton.bemtevi.api.domain.Responsavel;
 import com.elineuton.bemtevi.api.domain.Turma;
 import com.elineuton.bemtevi.api.dto.AlunoDTO;
 import com.elineuton.bemtevi.api.dto.AlunoNewDTO;
+import com.elineuton.bemtevi.api.dto.TurmaDTO;
 import com.elineuton.bemtevi.api.repositories.AlunoRepository;
 import com.elineuton.bemtevi.api.services.exceptions.DataIntegrityException;
 import com.elineuton.bemtevi.api.services.exceptions.ObjectNotFoundException;
@@ -29,6 +33,9 @@ public class AlunoService {
 	
 	@Autowired
 	private AlunoService alunoService;
+	
+	@Autowired
+	private ResponsavelService responsavelService;
 
 	public List<Aluno> listar() {
 		return repo.findAll();
@@ -65,7 +72,7 @@ public class AlunoService {
 	}
 
 	public Aluno fromDTO(AlunoDTO alunoDto) {
-		return new Aluno(alunoDto.getNome(), null, null);
+		return new Aluno(alunoDto.getNome(), null, null, null);
 	}
 
 	public Aluno fromDTO(AlunoNewDTO alunoDto) {
@@ -73,6 +80,24 @@ public class AlunoService {
 		//aluno.setPessoalAutorizado(alunoDto.getPessoalAutorizado());
 		aluno.getPessoalAutorizado().addAll(alunoDto.getPessoalAutorizado());
 		return aluno;
+	}
+	
+	public TurmaDTO convertToDTO(Turma turma) {
+		ModelMapper modelMapper = new ModelMapper();
+		
+		modelMapper.addMappings(new PropertyMap<Turma, TurmaDTO>() {
+
+			@Override
+			protected void configure() {
+				map().setId(source.getId());
+				map().setNome(source.getNome());
+				map().setSala(source.getSala());
+			}
+			
+		});
+		
+	    TurmaDTO turmaDTO = modelMapper.map(turma, TurmaDTO.class);
+	    return turmaDTO;
 	}
 
 	public List<Aluno> consultarAlunosPorTurmaId(Integer id) {
@@ -103,6 +128,12 @@ public class AlunoService {
 		} catch (DataIntegrityViolationException e) {
 			throw new DataIntegrityException("Não é possível excluir entidades que possuem relacionamentos");
 		}
+	}
+	
+	public List<Aluno> consultarAlunosPorEmailResponsavel(String email) {
+		Responsavel responsavel = responsavelService.consultarPorEmail(email);
+		List<Aluno> lista = repo.findByResponsavel(responsavel);
+		return lista;
 	}
 
 }

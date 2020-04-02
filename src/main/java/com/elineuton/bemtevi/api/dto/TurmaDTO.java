@@ -13,7 +13,7 @@ public class TurmaDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
-	@Getter
+	@Getter @Setter
 	private Integer id;
 	
 	@Getter @Setter

@@ -3,16 +3,21 @@ package com.elineuton.bemtevi.api.services;
 import java.util.List;
 import java.util.Optional;
 
+import org.modelmapper.ModelMapper;
+import org.modelmapper.PropertyMap;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import com.elineuton.bemtevi.api.domain.Aluno;
 import com.elineuton.bemtevi.api.domain.AnoLetivo;
+import com.elineuton.bemtevi.api.domain.Avaliacao;
 import com.elineuton.bemtevi.api.domain.Profissional;
 import com.elineuton.bemtevi.api.domain.Turma;
 import com.elineuton.bemtevi.api.domain.Unidade;
+import com.elineuton.bemtevi.api.dto.AvaliacaoDTO;
 import com.elineuton.bemtevi.api.dto.TurmaDTO;
 import com.elineuton.bemtevi.api.dto.TurmaNewDTO;
 import com.elineuton.bemtevi.api.repositories.MatriculaRepository;
@@ -34,6 +39,9 @@ public class TurmaService {
 	
 	@Autowired
 	private ProfissionalService profissionalService;
+	
+	@Autowired
+	private AlunoService alunoService;
 	
 	@Autowired
 	private MatriculaRepository matriculaRepository;
@@ -101,6 +109,12 @@ public class TurmaService {
 		}
 		
 		return lista;
+	}
+	
+	public Turma consultaTurmaPorAlunoId(Integer id) {
+		Aluno aluno = alunoService.consultarPorId(id);
+		Turma turma = repo.findByAluno(aluno);
+		return turma;
 	}
 
 }
