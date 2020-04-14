@@ -13,6 +13,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.elineuton.bemtevi.api.domain.Aluno;
+import com.elineuton.bemtevi.api.domain.Instituicao;
 import com.elineuton.bemtevi.api.domain.Responsavel;
 import com.elineuton.bemtevi.api.domain.Turma;
 import com.elineuton.bemtevi.api.dto.AlunoDTO;
@@ -36,6 +37,9 @@ public class AlunoService {
 	
 	@Autowired
 	private ResponsavelService responsavelService;
+	
+	@Autowired
+	private InstituicaoService instituicaoService;
 
 	public List<Aluno> listar() {
 		return repo.findAll();
@@ -133,6 +137,12 @@ public class AlunoService {
 	public List<Aluno> consultarAlunosPorEmailResponsavel(String email) {
 		Responsavel responsavel = responsavelService.consultarPorEmail(email);
 		List<Aluno> lista = repo.findByResponsavel(responsavel);
+		return lista;
+	}
+	
+	public List<Aluno> consultarAlunosPorInstituicaoId(Integer id) {
+		Instituicao instituicao = instituicaoService.consultaPorId(id);
+		List<Aluno> lista = repo.findByInstituicao(instituicao);		
 		return lista;
 	}
 

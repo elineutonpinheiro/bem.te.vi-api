@@ -17,6 +17,7 @@ import com.elineuton.bemtevi.api.domain.Aluno;
 import com.elineuton.bemtevi.api.domain.Avaliacao;
 import com.elineuton.bemtevi.api.domain.Profissional;
 import com.elineuton.bemtevi.api.domain.Questionario;
+import com.elineuton.bemtevi.api.domain.enums.StatusAvaliacao;
 import com.elineuton.bemtevi.api.dto.AvaliacaoDTO;
 import com.elineuton.bemtevi.api.repositories.AvaliacaoRepository;
 import com.elineuton.bemtevi.api.services.exceptions.DataIntegrityException;
@@ -51,7 +52,7 @@ public class AvaliacaoService {
 		LocalDate a = LocalDate.now();
 		avaliacao.setData(a);
 		
-		Avaliacao avaliacaoTemp = consultarAvaliacaoPorAlunoIdEData(avaliacao.getAluno().getId(), avaliacao.getData());
+		Avaliacao avaliacaoTemp = buscarAvaliacaoPorAlunoIdEData(avaliacao.getAluno().getId(), avaliacao.getData());
 		
 		if(avaliacaoTemp != null && avaliacao.getId() == null) {
 			return avaliacaoTemp;
@@ -97,7 +98,7 @@ public class AvaliacaoService {
 	}
 	
 
-	public Avaliacao consultarAvaliacaoPorAlunoIdEData(Integer alunoId, LocalDate data) {
+	public Avaliacao buscarAvaliacaoPorAlunoIdEData(Integer alunoId, LocalDate data) {
 		Aluno aluno = alunoService.consultarPorId(alunoId);
 		Avaliacao avaliacao = repo.findByAlunoAndData(aluno, data);
 	

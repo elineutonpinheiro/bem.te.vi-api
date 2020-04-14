@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.elineuton.bemtevi.api.domain.Aluno;
 import com.elineuton.bemtevi.api.domain.Profissional;
 import com.elineuton.bemtevi.api.domain.Turma;
+import com.elineuton.bemtevi.api.domain.Unidade;
 
 @Repository
 public interface TurmaRepository extends JpaRepository<Turma, Integer> {
@@ -19,5 +20,13 @@ public interface TurmaRepository extends JpaRepository<Turma, Integer> {
 	
 	@Query("select t from Turma t join Matricula m on t.id = m.id.turma and m.id.aluno = :aluno")
 	Turma findByAluno(@Param("aluno") Aluno aluno);
+	
+	List<Turma> findByUnidade(Unidade unidade);
+	
+	/*
+	 * @Query("select t.nome from Turma t join Lotacao l on t.id = l.id.turma and l.id.profissional = :profissional"
+	 * ) List<String> findNomeTurmaByProfissional(@Param("profissional")
+	 * Profissional profissional);
+	 */
 	
 }

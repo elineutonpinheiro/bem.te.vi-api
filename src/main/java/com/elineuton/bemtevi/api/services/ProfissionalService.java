@@ -10,10 +10,15 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.elineuton.bemtevi.api.domain.Instituicao;
 import com.elineuton.bemtevi.api.domain.Profissional;
+import com.elineuton.bemtevi.api.domain.Turma;
+import com.elineuton.bemtevi.api.domain.Unidade;
 import com.elineuton.bemtevi.api.dto.ProfissionalDTO;
 import com.elineuton.bemtevi.api.dto.ProfissionalNewDTO;
 import com.elineuton.bemtevi.api.repositories.ProfissionalRepository;
+import com.elineuton.bemtevi.api.repositories.TurmaRepository;
+import com.elineuton.bemtevi.api.repositories.UnidadeRepository;
 import com.elineuton.bemtevi.api.services.exceptions.DataIntegrityException;
 import com.elineuton.bemtevi.api.services.exceptions.ObjectNotFoundException;
 
@@ -22,6 +27,15 @@ public class ProfissionalService {
 	
 	@Autowired
 	private ProfissionalRepository repo;
+	
+	@Autowired
+	private InstituicaoService instituicaoService;
+	
+	@Autowired
+	private TurmaRepository turmaRepository;
+	
+	@Autowired
+	private UnidadeRepository unidadeRepository;
 	
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
@@ -75,7 +89,7 @@ public class ProfissionalService {
 	}
 	
 	public Profissional fromDTO(ProfissionalDTO profissionalDTO) {
-		return new Profissional(profissionalDTO.getNome(), profissionalDTO.getCargo(), null, null, null);
+		return new Profissional(profissionalDTO.getNome(), profissionalDTO.getCargo(), null, null, profissionalDTO.isAtivo());
 	}
 	
 	public Profissional fromDTO(ProfissionalNewDTO profissionalNewDTO) {
@@ -83,6 +97,21 @@ public class ProfissionalService {
 				passwordEncoder.encode(profissionalNewDTO.getEmail()), 
 				passwordEncoder.encode(profissionalNewDTO.getSenha()), 
 				profissionalNewDTO.getAtivo());
+	}
+	
+	public List<Profissional> consultarProfissionaisPorInstituicaoId(Integer id) {
+		Instituicao instituicao = instituicaoService.consultaPorId(id);
+		List<Profissional> lista = repo.findByInstituicao(instituicao);
+		
+		/*
+		 * for (Profissional profissional : lista) {
+		 * profissional.setTurmas(turmaRepository.findNomeTurmaByProfissional(
+		 * profissional));
+		 * profissional.setUnidades(unidadeRepository.findNomeUnidadeByProfissional(
+		 * profissional)); }
+		 */
+		
+		return lista;
 	}
 	
 

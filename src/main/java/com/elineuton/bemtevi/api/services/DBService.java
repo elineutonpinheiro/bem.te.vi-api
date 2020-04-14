@@ -100,23 +100,23 @@ public class DBService {
 		Instituicao i1 = new Instituicao("Vovó Francisca", true);
 		Instituicao i2 = new Instituicao("Vovó Ataíde", true);
 		
-		Endereco e1 = new Endereco("Av.", "127","A","Alvorada","Boa Vista","Roraima","69317234");
+		Endereco e1 = new Endereco("Rua Euclides Gomes da Silva", "127","A","Alvorada","Boa Vista","Roraima","69317234");
+		Endereco e2 = new Endereco("Av. dos Garimpeiros", "1010","A","Pintolândia","Boa Vista","Roraima","69300205");
 		
-		Unidade u1 = new Unidade("Unidade 1", e1, "36237090","unidade1@vovofrancisca.com", i1, true);
-		Unidade u2 = new Unidade("Unidade 2", e1, "36231121","unidade2@vovofrancisca.com", i1, true);
-		Unidade u3 = new Unidade("Unidade 1", e1, "36250010","unidade1@vovoataide.com", i2, true);
+		Unidade u1 = new Unidade("Unidade Alvorada", e1, "36237090","unidade1@vovofrancisca.com", true, i1);
+		Unidade u2 = new Unidade("Unidade Pintolândia", e2, "36231121","unidade2@vovofrancisca.com", true, i2);
 		
 		//Salva Instituição e Unidade
 		instituicaoRepository.saveAll(Arrays.asList(i1, i2));
-		unidadeRepository.saveAll(Arrays.asList(u1, u2, u3));
+		unidadeRepository.saveAll(Arrays.asList(u1, u2));
 		
 		AnoLetivo al1 = new AnoLetivo("2020", date, parsedDate.plusYears(1));
 		
 		anoLetivoRepository.saveAll(Arrays.asList(al1));
 		
 		Turma t1 = new Turma("Infantil I", u1, "Integral", "101", al1, true);
-		Turma t2 = new Turma("Infantil II", u1, "Integral", "101", al1, true);
-		Turma t3 = new Turma("Fundamental III", u1, "Integral", "101", al1, true);
+		Turma t2 = new Turma("Infantil II", u2, "Integral", "201", al1, true);
+		Turma t3 = new Turma("Fundamental III", u2, "Integral", "301", al1, true);
 		
 		//Salva Turmas 
 		turmaRepository.saveAll(Arrays.asList(t1,t2));
@@ -128,78 +128,39 @@ public class DBService {
 		//Salva atividades
 		atividadeRepository.saveAll(Arrays.asList(a1,a2));
 		
-		Profissional p1 = new Profissional("Claudia Santos", "Cuidadora", "elineuton.ps@gmail.com", passwordEnconder.encode("123456"), true);
-		Profissional p2 = new Profissional("Yenniver Muniz", "Cuidadora", "francisco.ps@gmail.com", passwordEnconder.encode("100100"), true);
-		p2.addPerfil(Perfil.ADMIN);
+		Profissional p1 = new Profissional("Claudia Santos", "Cuidadora", "claudiasantos@gmail.com", passwordEnconder.encode("123456"), true);
+		Profissional p2 = new Profissional("Valter Dias", "Cuidador", "valterdias@gmail.com", passwordEnconder.encode("100100"), true);
+		//p2.addPerfil(Perfil.ADMIN);
 		
 		Lotacao lot1 = new Lotacao(t1, p1, LocalDate.now(), LocalDate.now().plusYears(1));
-		Lotacao lot2 = new Lotacao(t2, p1, LocalDate.now(), LocalDate.now().plusYears(1));
+		Lotacao lot2 = new Lotacao(t2, p2, LocalDate.now(), LocalDate.now().plusYears(1));
 		Lotacao lot3 = new Lotacao(t3, p2, LocalDate.now(), LocalDate.now().plusYears(1));
-		Lotacao lot4 = new Lotacao(t3, p1, LocalDate.now(), LocalDate.now().plusYears(1));
 		
 		Responsavel resp1 = new Responsavel("Felipe Melim", TipoParentesco.PAI, "felipemelim@gmail.com", passwordEnconder.encode("456789"), true);
-		responsavelRepository.saveAll(Arrays.asList(resp1));
+		Responsavel resp2 = new Responsavel("Livia Sousa", TipoParentesco.AVO_M, "liviasousa@gmail.com", passwordEnconder.encode("987654"), true);
 		
-		Aluno alu1 = new Aluno("Paulo da Costa Luz", "12/12/2019", resp1, true);
-		Aluno alu2 = new Aluno("Isis da Conceição", "12/12/2019", resp1, true);
-		Aluno alu3 = new Aluno("Tainara da Conceição", "12/12/2019", resp1, true);
-		Aluno alu4 = new Aluno("Luciana da Conceição", "12/12/2019", resp1, true);
-		Aluno alu5 = new Aluno("Paulo da Conceição", "12/12/2019", resp1, true);
-		Aluno alu6 = new Aluno("Raí da Conceição", "12/12/2019", resp1, true);
-		Aluno alu7 = new Aluno("Richard da Conceição", "12/12/2019", resp1, true);
+		responsavelRepository.saveAll(Arrays.asList(resp1, resp2));
+		
+		Aluno alu1 = new Aluno("Paulo da Costa Melim", "12/12/2019", resp1, true);
+		Aluno alu2 = new Aluno("Isis Maria Melim", "12/12/2019", resp1, true);
+		Aluno alu3 = new Aluno("Tainara Kelly Sousa", "12/12/2019", resp2, true);
 		
 		alu1.getPessoalAutorizado().addAll(Arrays.asList("Francisco Elineuton", "Thiago Ventura"));
 		
 		//Salva Profissional e Aluno
 		profissionalRepository.saveAll(Arrays.asList(p1, p2));
-		alunoRepository.saveAll(Arrays.asList(alu1, alu2, alu3, alu4, alu5, alu6, alu7));
+		alunoRepository.saveAll(Arrays.asList(alu1, alu2, alu3));
 		
 		//Salva Lotações
-		lotacaoRepository.saveAll(Arrays.asList(lot1, lot2, lot3, lot4));
+		lotacaoRepository.saveAll(Arrays.asList(lot1, lot2, lot3));
 		
 		//Um aluno não pode estar matriculado em mais de uma turma no mesmo ano
 		Matricula mat1 = new Matricula(alu1, t1, null);
-		Matricula mat2 = new Matricula(alu2, t2, LocalDate.of(2019, 03, 19));
-		//Matricula mat3 = new Matricula(alu2, t3, LocalDate.of(2011, 10, 01));
-		Matricula mat4 = new Matricula(alu3, t1, null);
-		Matricula mat5 = new Matricula(alu4, t1, null);
-		//Matricula mat6 = new Matricula(alu5, t1, null);
-		//Matricula mat7 = new Matricula(alu6, t1, null);
+		Matricula mat2 = new Matricula(alu2, t2, null);
+		Matricula mat3 = new Matricula(alu3, t3, null);
 		
 		//Salva Matrículas
-		matriculaRepository.saveAll(Arrays.asList(mat1, mat2, mat4, mat5));
-		
-		/*
-		 * Questao q1 = new Questao("Café da Manhã"); Questao q2 = new
-		 * Questao("Lanche da Manhã"); Questao q3 = new Questao("Almoço"); Questao q4 =
-		 * new Questao("Lanche da Tarde"); Questao q5 = new Questao("Banho"); Questao q6
-		 * = new Questao("Fralda"); Questao q7 = new Questao("Escovação"); Questao q8 =
-		 * new Questao("Dormiu"); Questao q9 = new Questao("Estado do sono"); Questao
-		 * q10 = new Questao("Febre"); Questao q11 = new Questao("Urina"); Questao q12 =
-		 * new Questao("Evacuação"); Questao q13 = new Questao("Interação"); Questao q14
-		 * = new Questao("Participação");
-		 */
-		
-		
-		/*
-		 * Resposta r1 = new Resposta(q1, "Pouco"); Resposta r2 = new Resposta(q2,
-		 * "Não aceitou");
-		 */
-		
-		Questionario questionario = new Questionario("Aceitou bem", "bem", "não", "x", 1, 2, 5, false, "x", false, "x", "x", "x", "x", "x");
-		
-		Avaliacao av1 = new Avaliacao(null, alu1, p1, parsedDate.plusDays(1), StatusAvaliacao.A_FAZER, questionario);
-		//Avaliacao av2 = new Avaliacao(alu2, p1, parsedDate.plusDays(2), StatusAvaliacao.A_FAZER, questionario);
-		//Avaliacao av3 = new Avaliacao(alu2, p2, parsedDate.plusDays(3), StatusAvaliacao.A_FAZER, questionario);
-		Avaliacao av4 = new Avaliacao(null, alu3, p1, parsedDate, StatusAvaliacao.EM_ANDAMENTO, questionario);
-		
-		//av1.getRespostas().addAll(Arrays.asList(r1, r2));
-
-		//Salva Questão, Resposta e Avaliação	
-		//questaoRepository.saveAll(Arrays.asList(q1, q2, q3, q4, q5, q6, q7, q8, q9, q10, q11, q12, q13, q14));
-		//respostaRepository.saveAll(Arrays.asList(r1, r2));
-		avaliacaoRepository.saveAll(Arrays.asList(av1, av4));
-		
+		matriculaRepository.saveAll(Arrays.asList(mat1, mat2, mat3));
 		
 	}
 }

@@ -8,6 +8,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 
 import com.elineuton.bemtevi.api.domain.enums.TipoParentesco;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -47,6 +48,10 @@ public class Responsavel implements Serializable {
 	
 	@Getter	@Setter
 	private Boolean ativo;
+	
+	@Getter	@Setter
+	@Transient
+	private Long qtdeMatriculas;
 
 	public Responsavel(String nome, TipoParentesco parentesco, String email, String senha, Boolean ativo) {
 		this.nome = nome;

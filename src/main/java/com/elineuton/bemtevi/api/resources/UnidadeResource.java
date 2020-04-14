@@ -19,8 +19,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.elineuton.bemtevi.api.domain.Turma;
 import com.elineuton.bemtevi.api.domain.Unidade;
+import com.elineuton.bemtevi.api.dto.TurmaDTO;
 import com.elineuton.bemtevi.api.dto.UnidadeDTO;
+import com.elineuton.bemtevi.api.services.TurmaService;
 import com.elineuton.bemtevi.api.services.UnidadeService;
 
 @RestController
@@ -30,7 +33,9 @@ public class UnidadeResource {
 	@Autowired
 	private UnidadeService service;
 	
-	@PreAuthorize("hasAnyRole('ADMIN')")
+	@Autowired
+	private TurmaService turmaService;
+	
 	@GetMapping
 	public ResponseEntity<List<UnidadeDTO>> listar(){
 		List<Unidade> lista = service.listar();
@@ -38,14 +43,21 @@ public class UnidadeResource {
 		return ResponseEntity.ok(listaDto);
 	}
 	
-	@PreAuthorize("hasAnyRole('ADMIN')")
+	@GetMapping("/{unidadeId}/turmas")
+	public ResponseEntity<List<TurmaDTO>> findTurmas(@PathVariable Integer unidadeId){
+		List<Turma> lista = turmaService.consultarTurmasPorUnidade(unidadeId);
+		List<TurmaDTO> listaDto = lista.stream().map(turma -> new TurmaDTO(turma)).collect(Collectors.toList());
+		return ResponseEntity.ok(listaDto);
+	}
+	
+	
 	@GetMapping("/{id}")
 	public ResponseEntity<Unidade> consultarPorId(@PathVariable Integer id) {
 		Unidade unidade = service.consultaPorId(id);
 		return unidade != null ? ResponseEntity.ok(unidade) : ResponseEntity.notFound().build();
 	}
 	
-	@PreAuthorize("hasAnyRole('ADMIN')")
+
 	@PostMapping
 	public ResponseEntity<Unidade> inserir(@Valid @RequestBody UnidadeDTO unidadeDto) {
 		Unidade unidade = service.fromDTO(unidadeDto); 
@@ -59,15 +71,15 @@ public class UnidadeResource {
 		return ResponseEntity.created(uri).body(unidade);
 	}
 	
-	@PreAuthorize("hasAnyRole('ADMIN')")
+	
 	@PutMapping("/{id}")
-	public ResponseEntity<Unidade> atualizar(@Valid @RequestBody UnidadeDTO unidadeDto, @PathVariable Integer id) {
+	public ResponseEntity<UnidadeDTO> atualizar(@Valid @RequestBody UnidadeDTO unidadeDto, @PathVariable Integer id) {
 		Unidade unidade = service.fromDTO(unidadeDto);
 		unidade = service.atualizar(unidade, id);
-		return ResponseEntity.ok(unidade);
+		return ResponseEntity.ok(service.convertToDTO(unidade));
 	}
 	
-	@PreAuthorize("hasAnyRole('ADMIN')")
+	
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> remover(@PathVariable Integer id) {
 		service.remover(id);

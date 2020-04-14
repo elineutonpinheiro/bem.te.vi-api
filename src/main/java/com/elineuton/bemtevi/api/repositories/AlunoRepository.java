@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.elineuton.bemtevi.api.domain.Aluno;
+import com.elineuton.bemtevi.api.domain.Instituicao;
 import com.elineuton.bemtevi.api.domain.Responsavel;
 import com.elineuton.bemtevi.api.domain.Turma;
 
@@ -19,6 +20,7 @@ public interface AlunoRepository extends JpaRepository<Aluno, Integer> {
 	
 	List<Aluno> findByResponsavel(Responsavel responsavel);
 	
-	
+	@Query("select distinct (m.aluno) from Matricula m where m.turma.unidade.instituicao = :instituicao")
+	List<Aluno> findByInstituicao(@Param("instituicao") Instituicao instituicao);
 
 }

@@ -14,7 +14,7 @@ public class UnidadeDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
-	@Getter
+	@Getter @Setter
 	private Integer id;
 	
 	@Getter @Setter
@@ -41,7 +41,7 @@ public class UnidadeDTO implements Serializable {
 		this.endereco = unidade.getEndereco();
 		this.telefone = unidade.getTelefone();
 		this.email = unidade.getEmail();
-		this.ativa = unidade.getAtiva();
+		this.ativa = unidade.isAtiva();
 		this.instituicaoId = unidade.getInstituicao().getId();
 	}
 

@@ -1,6 +1,8 @@
 package com.elineuton.bemtevi.api.dto;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.Set;
 
 import com.elineuton.bemtevi.api.domain.Profissional;
 
@@ -22,6 +24,14 @@ public class ProfissionalDTO implements Serializable {
 	@Getter @Setter
 	private String cargo;
 	
+	@Getter @Setter
+	private boolean ativo;
+	
+	/*
+	 * @Getter @Setter private List<String> unidades;
+	 * 
+	 * @Getter @Setter private List<String> turmas;
+	 */
 	/*
 	 * @Getter @Setter private String telefone;
 	 * 
@@ -32,7 +42,7 @@ public class ProfissionalDTO implements Serializable {
 		this.id = profissional.getId();
 		this.nome = profissional.getNome();
 		this.cargo = profissional.getCargo();
-		/* this.ativo = profissional.getAtivo(); */
+		this.ativo = profissional.getAtivo();
 	}
 	
 }

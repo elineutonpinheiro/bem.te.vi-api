@@ -116,5 +116,11 @@ public class TurmaService {
 		Turma turma = repo.findByAluno(aluno);
 		return turma;
 	}
+	
+	public List<Turma> consultarTurmasPorUnidade(Integer unidadeId) {
+		Unidade unidade = unidadeService.consultaPorId(unidadeId);
+		List<Turma> lista = repo.findByUnidade(unidade);
+		return lista;
+	}
 
 }

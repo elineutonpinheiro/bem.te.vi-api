@@ -21,12 +21,20 @@ public class ResponsavelDTO implements Serializable {
 	private String nome;
 	
 	@Getter	@Setter
-	private TipoParentesco parentesco;
+	private String parentesco;
+	
+	@Getter	@Setter
+	private Boolean ativo;
+	
+	@Getter @Setter
+	private Long qtdeMatriculas;
 	
 	public ResponsavelDTO(Responsavel responsavel) {
 		this.id = responsavel.getId();
 		this.nome = responsavel.getNome();
-		this.parentesco = responsavel.getParentesco();
+		this.parentesco = responsavel.getParentesco().getDescricao();
+		this.ativo = responsavel.getAtivo();
+		this.qtdeMatriculas = responsavel.getQtdeMatriculas();
 	}
 	
 }

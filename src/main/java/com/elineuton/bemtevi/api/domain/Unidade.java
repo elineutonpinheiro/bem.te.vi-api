@@ -42,22 +42,22 @@ public class Unidade implements Serializable {
 	@Getter @Setter
 	private String email;
 	
+	@Getter @Setter
+	private boolean ativa;
+	
 	@ManyToOne
 	@JoinColumn(foreignKey = @ForeignKey(name = "fk_instituicao_id"))
 	@Getter @Setter
 	private Instituicao instituicao;
-	
-	@Getter @Setter
-	private Boolean ativa;
 
 	public Unidade(String nome, Endereco endereco, String telefone, String email, 
-			Instituicao instituicao, Boolean ativa) {
+			boolean ativa, Instituicao instituicao) {
 		this.nome = nome;
 		this.endereco = endereco;
 		this.telefone = telefone;
 		this.email = email;
-		this.instituicao = instituicao;
 		this.ativa = ativa;
+		this.instituicao = instituicao;
 	}
 	
 	

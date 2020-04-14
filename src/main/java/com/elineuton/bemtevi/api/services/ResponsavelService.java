@@ -11,11 +11,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.elineuton.bemtevi.api.domain.Aluno;
+import com.elineuton.bemtevi.api.domain.Instituicao;
 import com.elineuton.bemtevi.api.domain.Profissional;
 import com.elineuton.bemtevi.api.domain.Responsavel;
 import com.elineuton.bemtevi.api.domain.Turma;
 import com.elineuton.bemtevi.api.dto.ResponsavelDTO;
 import com.elineuton.bemtevi.api.dto.ResponsavelNewDTO;
+import com.elineuton.bemtevi.api.repositories.MatriculaRepository;
 import com.elineuton.bemtevi.api.repositories.ResponsavelRepository;
 import com.elineuton.bemtevi.api.services.exceptions.DataIntegrityException;
 import com.elineuton.bemtevi.api.services.exceptions.ObjectNotFoundException;
@@ -25,6 +27,12 @@ public class ResponsavelService {
 	
 	@Autowired
 	private ResponsavelRepository repo;
+	
+	@Autowired
+	private InstituicaoService instituicaoService;
+	
+	@Autowired
+	private MatriculaRepository matriculaRepository;
 	
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
@@ -71,7 +79,7 @@ public class ResponsavelService {
 	}
 	
 	public Responsavel fromDTO(ResponsavelDTO responsavelDTO) {
-		return new Responsavel(responsavelDTO.getNome(), responsavelDTO.getParentesco(), null, null, null);
+		return new Responsavel(responsavelDTO.getNome(), responsavelDTO.getParentesco(), null, null, responsavelDTO.getAtivo());
 	}
 	
 	public Responsavel fromDTO(ResponsavelNewDTO responsavelNewDTO) {
@@ -80,6 +88,19 @@ public class ResponsavelService {
 				passwordEncoder.encode(responsavelNewDTO.getEmail()), 
 				passwordEncoder.encode(responsavelNewDTO.getSenha()), 
 				responsavelNewDTO.getAtivo());
+	}
+	
+	public List<Responsavel> consultarResponsaveisPorInstituicaoId(Integer id) {
+		Instituicao instituicao = instituicaoService.consultaPorId(id);
+		List<Responsavel> lista = repo.findByInstituicao(instituicao);
+		
+		
+		for (Responsavel responsavel : lista) {
+			responsavel.setQtdeMatriculas(matriculaRepository.countMatriculasPorResponsavel(responsavel));
+		}
+		 
+		
+		return lista;
 	}
 
 }
