@@ -1,23 +1,19 @@
 package com.elineuton.bemtevi.api.services;
 
-import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.elineuton.bemtevi.api.domain.Aluno;
 import com.elineuton.bemtevi.api.domain.Avaliacao;
 import com.elineuton.bemtevi.api.domain.Profissional;
 import com.elineuton.bemtevi.api.domain.Questionario;
-import com.elineuton.bemtevi.api.domain.enums.StatusAvaliacao;
 import com.elineuton.bemtevi.api.dto.AvaliacaoDTO;
 import com.elineuton.bemtevi.api.repositories.AvaliacaoRepository;
 import com.elineuton.bemtevi.api.services.exceptions.DataIntegrityException;
@@ -31,9 +27,6 @@ public class AvaliacaoService {
 	
 	@Autowired 
 	private AlunoService alunoService;
-	
-	@Autowired
-	private TurmaService turmaService;
 	
 	@Autowired
 	private ProfissionalService profissionalService;

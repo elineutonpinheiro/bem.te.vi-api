@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 
 import com.elineuton.bemtevi.api.domain.Instituicao;
 import com.elineuton.bemtevi.api.domain.Profissional;
-import com.elineuton.bemtevi.api.domain.Turma;
 
 @Repository
 public interface ProfissionalRepository extends JpaRepository<Profissional, Integer> {

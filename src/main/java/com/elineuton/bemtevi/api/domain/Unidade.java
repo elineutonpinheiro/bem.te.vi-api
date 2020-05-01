@@ -35,7 +35,6 @@ public class Unidade implements Serializable {
 	@Embedded
 	private Endereco endereco;
 	
-	//TODO Implementar a anotação @ELEMENTCOLLECTION
 	@Getter @Setter
 	private String telefone;
 	

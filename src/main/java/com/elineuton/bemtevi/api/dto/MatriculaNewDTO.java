@@ -1,12 +1,8 @@
 package com.elineuton.bemtevi.api.dto;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 
-import com.elineuton.bemtevi.api.domain.Aluno;
 import com.elineuton.bemtevi.api.domain.Matricula;
-import com.elineuton.bemtevi.api.domain.Turma;
-import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -46,7 +42,6 @@ public class MatriculaNewDTO implements Serializable {
 		this.salaTurma = matricula.getTurma().getSala();
 		this.unidade = matricula.getTurma().getUnidade().getNome();
 		this.instituicao = matricula.getTurma().getUnidade().getInstituicao().getNome();
-		
 	}
 	
 

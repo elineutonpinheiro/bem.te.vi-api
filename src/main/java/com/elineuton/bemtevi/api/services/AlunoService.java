@@ -76,13 +76,13 @@ public class AlunoService {
 	}
 
 	public Aluno fromDTO(AlunoDTO alunoDto) {
-		return new Aluno(alunoDto.getNome(), null, null, null);
+		return new Aluno(alunoDto.getNome(), null, null, true);
 	}
 
 	public Aluno fromDTO(AlunoNewDTO alunoDto) {
 		Aluno aluno = alunoService.consultarPorId(alunoDto.getAlunoId());
 		//aluno.setPessoalAutorizado(alunoDto.getPessoalAutorizado());
-		aluno.getPessoalAutorizado().addAll(alunoDto.getPessoalAutorizado());
+		//aluno.getPessoalAutorizado().addAll(alunoDto.getPessoalAutorizado());
 		return aluno;
 	}
 	
@@ -112,7 +112,6 @@ public class AlunoService {
 
 	public void atualizarPresenca(Integer id, LocalDate dataPresenca) {
 		Aluno alunoSalvo = alunoService.consultarPorId(id);
-		alunoSalvo.setDataPresenca(dataPresenca);
 		repo.save(alunoSalvo);
 	}
 
@@ -127,7 +126,7 @@ public class AlunoService {
 	public void removerPessoalAutorizado(Integer id, String pessoaAutorizada) {
 		try {
 			Aluno alunoSalvo = alunoService.consultarPorId(id);
-			alunoSalvo.getPessoalAutorizado().remove(pessoaAutorizada);
+			//alunoSalvo.getPessoalAutorizado().remove(pessoaAutorizada);
 			repo.save(alunoSalvo);
 		} catch (DataIntegrityViolationException e) {
 			throw new DataIntegrityException("Não é possível excluir entidades que possuem relacionamentos");

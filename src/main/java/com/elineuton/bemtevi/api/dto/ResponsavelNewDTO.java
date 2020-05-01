@@ -38,7 +38,7 @@ public class ResponsavelNewDTO implements Serializable {
 		this.parentesco = this.gerarStringParentesco(responsavel.getParentesco());
 		this.email = responsavel.getEmail();
 		this.senha = responsavel.getSenha();
-		this.ativo = responsavel.getAtivo();
+		this.ativo = responsavel.isAtivo();
 	}
 	
 	private String gerarStringParentesco(TipoParentesco tipoParentesco) {

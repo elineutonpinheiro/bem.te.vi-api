@@ -3,8 +3,6 @@ package com.elineuton.bemtevi.api.services;
 import java.util.List;
 import java.util.Optional;
 
-import org.modelmapper.ModelMapper;
-import org.modelmapper.PropertyMap;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -13,11 +11,9 @@ import org.springframework.stereotype.Service;
 
 import com.elineuton.bemtevi.api.domain.Aluno;
 import com.elineuton.bemtevi.api.domain.AnoLetivo;
-import com.elineuton.bemtevi.api.domain.Avaliacao;
 import com.elineuton.bemtevi.api.domain.Profissional;
 import com.elineuton.bemtevi.api.domain.Turma;
 import com.elineuton.bemtevi.api.domain.Unidade;
-import com.elineuton.bemtevi.api.dto.AvaliacaoDTO;
 import com.elineuton.bemtevi.api.dto.TurmaDTO;
 import com.elineuton.bemtevi.api.dto.TurmaNewDTO;
 import com.elineuton.bemtevi.api.repositories.MatriculaRepository;
@@ -82,14 +78,14 @@ public class TurmaService {
 
 	// TODO Trocar os NULL pelos IDs de Turma e Ano Letivo
 	public Turma fromDTO(TurmaDTO turmaDto) {
-		return new Turma(turmaDto.getNome(), null, null, null, null, null);
+		return new Turma(turmaDto.getNome(), null, null, null, null, true);
 	}
 
 	public Turma fromDTO(TurmaNewDTO turmaDto) {
 		Unidade unidade = unidadeService.consultaPorId(turmaDto.getUnidadeId());
 		AnoLetivo anoLetivo = anoLetivoService.consultaPorId(turmaDto.getAnoLetivoId());
 		Turma turma = new Turma(turmaDto.getNome(), unidade, turmaDto.getPeriodo(), 
-				turmaDto.getSala(), anoLetivo, null);
+				turmaDto.getSala(), anoLetivo, true);
 		return turma;
 	}
 

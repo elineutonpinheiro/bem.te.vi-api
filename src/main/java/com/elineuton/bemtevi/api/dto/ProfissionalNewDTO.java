@@ -29,7 +29,7 @@ public class ProfissionalNewDTO implements Serializable {
 	private String senha;
 	
 	@Getter	@Setter
-	private Boolean ativo;
+	private boolean ativo;
 	
 	public ProfissionalNewDTO(Profissional profissional) {
 		this.id = profissional.getId();
@@ -37,7 +37,7 @@ public class ProfissionalNewDTO implements Serializable {
 		this.cargo = profissional.getCargo();
 		this.email = profissional.getEmail();
 		this.senha = profissional.getSenha();
-		this.ativo = profissional.getAtivo();
+		this.ativo = profissional.isAtivo();
 	}
 	
 }

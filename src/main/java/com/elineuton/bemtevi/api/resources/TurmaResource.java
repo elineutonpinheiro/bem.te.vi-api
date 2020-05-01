@@ -10,7 +10,6 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,17 +23,14 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.elineuton.bemtevi.api.domain.Aluno;
 import com.elineuton.bemtevi.api.domain.Atividade;
-import com.elineuton.bemtevi.api.domain.Avaliacao;
 import com.elineuton.bemtevi.api.domain.Turma;
 import com.elineuton.bemtevi.api.dto.AlunoDTO;
 import com.elineuton.bemtevi.api.dto.AtividadeDTO;
-import com.elineuton.bemtevi.api.dto.AvaliacaoDTO;
 import com.elineuton.bemtevi.api.dto.TurmaDTO;
 import com.elineuton.bemtevi.api.dto.TurmaNewDTO;
 import com.elineuton.bemtevi.api.repositories.filter.AtividadeFilter;
 import com.elineuton.bemtevi.api.services.AlunoService;
 import com.elineuton.bemtevi.api.services.AtividadeService;
-import com.elineuton.bemtevi.api.services.AvaliacaoService;
 import com.elineuton.bemtevi.api.services.TurmaService;
 
 @RestController
@@ -50,10 +46,6 @@ public class TurmaResource {
 	@Autowired
 	private AlunoService alunoService;
 	
-	@Autowired
-	private AvaliacaoService avaliacaoService;
-	
-	//@PreAuthorize("hasAnyRole('ADMIN')")
 	@GetMapping
 	public ResponseEntity<List<TurmaDTO>> listar() {
 		List<Turma> lista = service.listar();
@@ -61,14 +53,12 @@ public class TurmaResource {
 		return ResponseEntity.ok(listaDto);
 	}
 
-	//@PreAuthorize("hasAnyRole('PROFISSIONAL','ADMIN')")
 	@GetMapping("/{id}")
 	public ResponseEntity<Turma> consultarPorId(@PathVariable Integer id) {
 		Turma turma = service.consultarPorId(id);
 		return turma != null ? ResponseEntity.ok(turma) : ResponseEntity.notFound().build();
 	}
 
-	//@PreAuthorize("hasAnyRole('ADMIN')")
 	@PostMapping
 	public ResponseEntity<Turma> inserir(@Valid @RequestBody TurmaNewDTO turmaDto) {
 		Turma turma = service.fromDTO(turmaDto);
@@ -81,7 +71,6 @@ public class TurmaResource {
 		return ResponseEntity.created(uri).body(turma);
 	}
 
-	//@PreAuthorize("hasAnyRole('ADMIN')")
 	@PutMapping("/{id}")
 	public ResponseEntity<Turma> atualizar(@Valid @RequestBody TurmaNewDTO turmaDto, @PathVariable Integer id) {
 		Turma turma = service.fromDTO(turmaDto);
@@ -89,14 +78,12 @@ public class TurmaResource {
 		return ResponseEntity.ok(turma);
 	}
 
-	//@PreAuthorize("hasAnyRole('ADMIN')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> remover(@PathVariable Integer id) {
 		service.remover(id);
 		return ResponseEntity.noContent().build();
 	}
 	
-	//@PreAuthorize("hasAnyRole('PROFISSIONAL', 'ADMIN')")
 	@GetMapping("/{id}/atividades")
 	public ResponseEntity<List<AtividadeDTO>> pesquisar(
 		@PathVariable Integer id,
@@ -110,7 +97,6 @@ public class TurmaResource {
 		return ResponseEntity.ok(listaDto);
 	}
 	
-	//@PreAuthorize("hasAnyRole('PROFISSIONAL','ADMIN')")
 	@GetMapping("/{id}/alunos")
 	public ResponseEntity<List<AlunoDTO>> consultarAlunosPorTurmaId(@PathVariable Integer id) {
 		List<Aluno> lista = alunoService.consultarAlunosPorTurmaId(id);
@@ -118,7 +104,7 @@ public class TurmaResource {
 		return ResponseEntity.ok(listaDto);
 	}
 	
-	//@PreAuthorize("hasAnyRole('PROFISSIONAL','ADMIN')")
+	
 	/*@GetMapping("/{id}/avaliacoes")
 	public ResponseEntity<List<AvaliacaoDTO>> consultarAvaliacaoPorTurmaId(
 			@PathVariable Integer id) {

@@ -2,7 +2,6 @@ package com.elineuton.bemtevi.api.domain;
 
 import java.io.Serializable;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -13,7 +12,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Transient;
 
 import com.elineuton.bemtevi.api.domain.enums.Perfil;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -48,17 +46,7 @@ public class Profissional implements Serializable {
 	private String senha;
 	
 	@Getter	@Setter
-	private Boolean ativo;
-	
-	/*
-	 * @Getter @Setter
-	 * 
-	 * @Transient private List<String> unidades;
-	 * 
-	 * @Getter @Setter
-	 * 
-	 * @Transient private List<String> turmas;
-	 */
+	private boolean ativo;
 	
 	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(name = "PERFIS")
@@ -68,7 +56,7 @@ public class Profissional implements Serializable {
 		addPerfil(Perfil.PROFISSIONAL);
 	}
 	
-	public Profissional(String nome, String cargo, String email, String senha, Boolean ativo) {
+	public Profissional(String nome, String cargo, String email, String senha, boolean ativo) {
 		this.nome = nome;
 		this.cargo = cargo;
 		this.email = email;

@@ -8,7 +8,6 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,7 +33,6 @@ public class MatriculaResource {
 	@Autowired
 	private AlunoRepository alunoRepository;
 	
-	//@PreAuthorize("hasAnyRole('ADMIN')")
 	@GetMapping
 	public ResponseEntity<List<MatriculaDTO>> listar(){
 		List<Matricula> lista = service.listar();
@@ -43,7 +41,6 @@ public class MatriculaResource {
 		return ResponseEntity.ok(listaDto);
 	}
 	
-	//@PreAuthorize("hasAnyRole('ADMIN')")
 	@PostMapping
 	public ResponseEntity<Matricula> inserir(@Valid @RequestBody MatriculaDTO matriculaDto) {
 		Matricula matricula = service.fromDTO(matriculaDto);
@@ -59,7 +56,6 @@ public class MatriculaResource {
 		return ResponseEntity.created(uri).body(matricula);
 	}
 	
-	//@PreAuthorize("hasAnyRole('ADMIN')")
 	@PutMapping("/{id}")
 	public ResponseEntity<Matricula> atualizar(@Valid @RequestBody MatriculaDTO matriculaDTO, @PathVariable Integer id) {
 		Matricula matricula = service.fromDTO(matriculaDTO);
@@ -67,7 +63,6 @@ public class MatriculaResource {
 		return ResponseEntity.ok(matricula);
 	}
 	
-	//@PreAuthorize("hasAnyRole('ADMIN')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> remover(@PathVariable Integer id) {
 		service.remover(id);

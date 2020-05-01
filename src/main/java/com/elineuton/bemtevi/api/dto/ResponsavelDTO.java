@@ -33,7 +33,7 @@ public class ResponsavelDTO implements Serializable {
 		this.id = responsavel.getId();
 		this.nome = responsavel.getNome();
 		this.parentesco = this.gerarStringParentesco(responsavel.getParentesco());
-		this.ativo = responsavel.getAtivo();
+		this.ativo = responsavel.isAtivo();
 		this.qtdeMatriculas = responsavel.getQtdeMatriculas();
 	}
 	

@@ -27,26 +27,23 @@ public class AnoLetivoResource {
 	@Autowired
 	private AnoLetivoService service;
 	
-	//@PreAuthorize("hasAnyRole('ADMIN')")
 	@GetMapping
 	public ResponseEntity<List<AnoLetivo>> listar(){
 		List<AnoLetivo> lista = service.listar();
 		return ResponseEntity.ok(lista);
 	}
 	
-	//@PreAuthorize("hasAnyRole('ADMIN')")
 	@GetMapping("/{id}")
 	public ResponseEntity<AnoLetivo> consultarPorId(@PathVariable Integer id) {
 		AnoLetivo anoLetivo = service.consultaPorId(id);
 		return anoLetivo != null ? ResponseEntity.ok(anoLetivo) : ResponseEntity.notFound().build();
 	}
 	
-	//@PreAuthorize("hasAnyRole('ADMIN')")
 	@PostMapping
 	public ResponseEntity<AnoLetivo> inserir(@Valid @RequestBody AnoLetivo anoLetivo) {
 		AnoLetivo anoLetivoSalvo = service.inserir(anoLetivo);
 		
-		//Mapear o recurso -> anoLetivo + id
+		//Mapear o recurso -> ano letivo + id
 		
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}")
 				.buildAndExpand(anoLetivoSalvo.getId()).toUri();
@@ -54,14 +51,12 @@ public class AnoLetivoResource {
 		return ResponseEntity.created(uri).body(anoLetivoSalvo);
 	}
 	
-	//@PreAuthorize("hasAnyRole('ADMIN')")
 	@PutMapping("/{id}")
 	public ResponseEntity<AnoLetivo> atualizar(@Valid @RequestBody AnoLetivo anoLetivo, @PathVariable Integer id) {
 		AnoLetivo anoLetivoSalvo = service.atualizar(anoLetivo, id);
 		return ResponseEntity.ok(anoLetivoSalvo);
 	}
 	
-	//@PreAuthorize("hasAnyRole('ADMIN')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> remover(@PathVariable Integer id) {
 		service.remover(id);

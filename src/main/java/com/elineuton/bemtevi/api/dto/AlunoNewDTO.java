@@ -23,7 +23,6 @@ public class AlunoNewDTO implements Serializable {
 	
 	public AlunoNewDTO(Aluno aluno) {
 		this.alunoId = aluno.getId();
-		this.pessoalAutorizado = aluno.getPessoalAutorizado();
 	}
 
 }

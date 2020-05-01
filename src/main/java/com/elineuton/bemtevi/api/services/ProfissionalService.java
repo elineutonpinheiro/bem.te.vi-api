@@ -12,13 +12,9 @@ import org.springframework.stereotype.Service;
 
 import com.elineuton.bemtevi.api.domain.Instituicao;
 import com.elineuton.bemtevi.api.domain.Profissional;
-import com.elineuton.bemtevi.api.domain.Turma;
-import com.elineuton.bemtevi.api.domain.Unidade;
 import com.elineuton.bemtevi.api.dto.ProfissionalDTO;
 import com.elineuton.bemtevi.api.dto.ProfissionalNewDTO;
 import com.elineuton.bemtevi.api.repositories.ProfissionalRepository;
-import com.elineuton.bemtevi.api.repositories.TurmaRepository;
-import com.elineuton.bemtevi.api.repositories.UnidadeRepository;
 import com.elineuton.bemtevi.api.services.exceptions.DataIntegrityException;
 import com.elineuton.bemtevi.api.services.exceptions.ObjectNotFoundException;
 
@@ -30,12 +26,6 @@ public class ProfissionalService {
 	
 	@Autowired
 	private InstituicaoService instituicaoService;
-	
-	@Autowired
-	private TurmaRepository turmaRepository;
-	
-	@Autowired
-	private UnidadeRepository unidadeRepository;
 	
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
@@ -96,7 +86,7 @@ public class ProfissionalService {
 		return new Profissional(profissionalNewDTO.getNome(), profissionalNewDTO.getCargo(), 
 				passwordEncoder.encode(profissionalNewDTO.getEmail()), 
 				passwordEncoder.encode(profissionalNewDTO.getSenha()), 
-				profissionalNewDTO.getAtivo());
+				profissionalNewDTO.isAtivo());
 	}
 	
 	public List<Profissional> consultarProfissionaisPorInstituicaoId(Integer id) {

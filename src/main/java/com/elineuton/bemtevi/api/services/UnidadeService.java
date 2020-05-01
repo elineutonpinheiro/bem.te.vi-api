@@ -12,12 +12,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.elineuton.bemtevi.api.domain.Unidade;
-import com.elineuton.bemtevi.api.domain.Aluno;
 import com.elineuton.bemtevi.api.domain.Instituicao;
-import com.elineuton.bemtevi.api.domain.Profissional;
-import com.elineuton.bemtevi.api.domain.Turma;
-import com.elineuton.bemtevi.api.domain.Unidade;
-import com.elineuton.bemtevi.api.dto.UnidadeDTO;
 import com.elineuton.bemtevi.api.dto.UnidadeDTO;
 import com.elineuton.bemtevi.api.repositories.UnidadeRepository;
 import com.elineuton.bemtevi.api.services.exceptions.DataIntegrityException;

@@ -27,14 +27,12 @@ public class AtividadeResource {
 	@Autowired
 	private AtividadeService service;
 	
-	//@PreAuthorize("hasAnyRole('ADMIN')")
 	@GetMapping("/{id}")
 	public ResponseEntity<Atividade> consultarPorId(@PathVariable Integer id) {
 		Atividade atividade = service.consultarPorId(id);
 		return atividade != null ? ResponseEntity.ok(atividade) : ResponseEntity.notFound().build();
 	}
 	
-	//@PreAuthorize("hasAnyRole('PROFISSIONAL')")
 	@PostMapping
 	public ResponseEntity<Atividade> inserir(@Valid @RequestBody AtividadeDTO atividadeDto) {
 		Atividade atividade = service.fromDTO(atividadeDto);
@@ -48,7 +46,6 @@ public class AtividadeResource {
 		return ResponseEntity.created(uri).body(atividade);
 	}
 	
-	//@PreAuthorize("hasAnyRole('PROFISSIONAL')")
 	@PutMapping("/{id}")
 	public ResponseEntity<Atividade> atualizar(@Valid @RequestBody AtividadeDTO atividadeDto, @PathVariable Integer id) {
 		Atividade atividade = service.fromDTO(atividadeDto);
@@ -56,40 +53,40 @@ public class AtividadeResource {
 		return ResponseEntity.ok(atividade);
 	}
 	
-	//@PreAuthorize("hasAnyRole('PROFISSIONAL')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> remover(@PathVariable Integer id) {
 		service.remover(id);
 		return ResponseEntity.noContent().build();
 	}
+	
+	/*
+	@GetMapping
+	public ResponseEntity<List<AtividadeDTO>> listar(){
+		List<Atividade> lista = service.listar();
+		List<AtividadeDTO> listaDto = lista.stream().map(atividade -> new AtividadeDTO(atividade)).collect(Collectors.toList());
+		return ResponseEntity.ok(listaDto);
+	}
+	*/
+
+	/*
+	@GetMapping
+	public ResponseEntity<List<AtividadeDTO>> pesquisar(AtividadeFilter atividadeFilter){
+		List<Atividade> lista = service.pesquisar(atividadeFilter);
+		List<AtividadeDTO> listaDto = lista.stream().map(atividade -> new AtividadeDTO(atividade)).collect(Collectors.toList());
+		return ResponseEntity.ok(listaDto);
+	}
+	*/
+
+	/* Implementado em TurmaResource
+	@GetMapping
+	public ResponseEntity<List<AtividadeDTO>> listar(
+			@RequestParam(value="turma", defaultValue = "") Integer turma,
+			@RequestParam(value="descricao", defaultValue = "") String descricao){
+		List<Atividade> lista = service.consultarPorTurmaEDescricao(turma, descricao);
+		List<AtividadeDTO> listaDto = lista.stream().map(atividade -> new AtividadeDTO(atividade)).collect(Collectors.toList());
+		return ResponseEntity.ok(listaDto);
+	}
+	*/
 
 }
 
-/*
-@GetMapping
-public ResponseEntity<List<AtividadeDTO>> listar(){
-	List<Atividade> lista = service.listar();
-	List<AtividadeDTO> listaDto = lista.stream().map(atividade -> new AtividadeDTO(atividade)).collect(Collectors.toList());
-	return ResponseEntity.ok(listaDto);
-}
-*/
-/*
-@GetMapping
-public ResponseEntity<List<AtividadeDTO>> pesquisar(AtividadeFilter atividadeFilter){
-	List<Atividade> lista = service.pesquisar(atividadeFilter);
-	List<AtividadeDTO> listaDto = lista.stream().map(atividade -> new AtividadeDTO(atividade)).collect(Collectors.toList());
-	return ResponseEntity.ok(listaDto);
-}
-*/
-
-
-/* Implementado em TurmaResource
-@GetMapping
-public ResponseEntity<List<AtividadeDTO>> listar(
-		@RequestParam(value="turma", defaultValue = "") Integer turma,
-		@RequestParam(value="descricao", defaultValue = "") String descricao){
-	List<Atividade> lista = service.consultarPorTurmaEDescricao(turma, descricao);
-	List<AtividadeDTO> listaDto = lista.stream().map(atividade -> new AtividadeDTO(atividade)).collect(Collectors.toList());
-	return ResponseEntity.ok(listaDto);
-}
-*/

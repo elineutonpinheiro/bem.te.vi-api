@@ -59,14 +59,14 @@ public class Turma implements Serializable {
 	private List<Atividade> atividades = new ArrayList<Atividade>();
 	
 	@Getter	@Setter
-	private Boolean ativa;
+	private boolean ativa;
 	
 	@Getter	@Setter
 	@Transient
 	private Long qtdeMatriculas;
 	 
 	public Turma(String nome, Unidade unidade, String periodo, String sala,
-			AnoLetivo anoLetivo, Boolean ativa) {
+			AnoLetivo anoLetivo, boolean ativa) {
 		this.nome = nome;
 		this.unidade = unidade;
 		this.periodo = periodo;

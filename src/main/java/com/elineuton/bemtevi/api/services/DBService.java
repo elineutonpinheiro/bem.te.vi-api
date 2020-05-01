@@ -11,18 +11,14 @@ import org.springframework.stereotype.Service;
 import com.elineuton.bemtevi.api.domain.Aluno;
 import com.elineuton.bemtevi.api.domain.AnoLetivo;
 import com.elineuton.bemtevi.api.domain.Atividade;
-import com.elineuton.bemtevi.api.domain.Avaliacao;
 import com.elineuton.bemtevi.api.domain.Endereco;
 import com.elineuton.bemtevi.api.domain.Instituicao;
 import com.elineuton.bemtevi.api.domain.Lotacao;
 import com.elineuton.bemtevi.api.domain.Matricula;
 import com.elineuton.bemtevi.api.domain.Profissional;
-import com.elineuton.bemtevi.api.domain.Questionario;
 import com.elineuton.bemtevi.api.domain.Responsavel;
 import com.elineuton.bemtevi.api.domain.Turma;
 import com.elineuton.bemtevi.api.domain.Unidade;
-import com.elineuton.bemtevi.api.domain.enums.Perfil;
-import com.elineuton.bemtevi.api.domain.enums.StatusAvaliacao;
 import com.elineuton.bemtevi.api.domain.enums.TipoParentesco;
 import com.elineuton.bemtevi.api.repositories.AlunoRepository;
 import com.elineuton.bemtevi.api.repositories.AnoLetivoRepository;
@@ -59,12 +55,6 @@ public class DBService {
 	
 	@Autowired
 	AlunoRepository alunoRepository;
-	
-	/*
-	 * @Autowired QuestaoRepository questaoRepository;
-	 * 
-	 * @Autowired RespostaRepository respostaRepository;
-	 */
 	
 	@Autowired
 	AvaliacaoRepository avaliacaoRepository;
@@ -145,7 +135,7 @@ public class DBService {
 		Aluno alu2 = new Aluno("Isis Maria Melim", "12/12/2019", resp1, true);
 		Aluno alu3 = new Aluno("Tainara Kelly Sousa", "12/12/2019", resp2, true);
 		
-		alu1.getPessoalAutorizado().addAll(Arrays.asList("Francisco Elineuton", "Thiago Ventura"));
+		//alu1.getPessoalAutorizado().addAll(Arrays.asList("Francisco Elineuton", "Thiago Ventura"));
 		
 		//Salva Profissional e Aluno
 		profissionalRepository.saveAll(Arrays.asList(p1, p2));

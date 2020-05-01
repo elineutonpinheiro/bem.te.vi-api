@@ -1,6 +1,5 @@
 package com.elineuton.bemtevi.api.services;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.BeanUtils;

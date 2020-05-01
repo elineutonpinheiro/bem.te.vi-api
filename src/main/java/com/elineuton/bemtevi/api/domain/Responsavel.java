@@ -47,13 +47,13 @@ public class Responsavel implements Serializable {
 	private String senha;
 	
 	@Getter	@Setter
-	private Boolean ativo;
+	private boolean ativo;
 	
 	@Getter	@Setter
 	@Transient
 	private Long qtdeMatriculas;
 
-	public Responsavel(String nome, TipoParentesco parentesco, String email, String senha, Boolean ativo) {
+	public Responsavel(String nome, TipoParentesco parentesco, String email, String senha, boolean ativo) {
 		this.nome = nome;
 		this.parentesco = parentesco;
 		this.email = email;

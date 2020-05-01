@@ -20,19 +20,13 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.elineuton.bemtevi.api.domain.Aluno;
-import com.elineuton.bemtevi.api.domain.Lotacao;
 import com.elineuton.bemtevi.api.domain.Matricula;
 import com.elineuton.bemtevi.api.domain.Responsavel;
-import com.elineuton.bemtevi.api.domain.Turma;
 import com.elineuton.bemtevi.api.dto.AlunoDTO;
-import com.elineuton.bemtevi.api.dto.LotacaoDTO;
 import com.elineuton.bemtevi.api.dto.MatriculaNewDTO;
 import com.elineuton.bemtevi.api.dto.ResponsavelDTO;
 import com.elineuton.bemtevi.api.dto.ResponsavelNewDTO;
-import com.elineuton.bemtevi.api.dto.TurmaDTO;
 import com.elineuton.bemtevi.api.services.AlunoService;
-import com.elineuton.bemtevi.api.services.AvaliacaoService;
-import com.elineuton.bemtevi.api.services.LotacaoService;
 import com.elineuton.bemtevi.api.services.MatriculaService;
 import com.elineuton.bemtevi.api.services.ResponsavelService;
 
@@ -50,7 +44,6 @@ public class ResponsavelResource {
 	@Autowired
 	private MatriculaService matriculaService;
 
-	//@PreAuthorize("hasAnyRole('ADMIN')")
 	@GetMapping
 	public ResponseEntity<List<ResponsavelDTO>> listar() {
 		List<Responsavel> lista = service.listar();
@@ -59,9 +52,6 @@ public class ResponsavelResource {
 		return ResponseEntity.ok(listaDto);
 	}
 
-	// ------- Usuário só recupera ele mesmo --------//
-	
-	//@PreAuthorize("hasAnyRole('ADMIN')")
 	@GetMapping("/{id}")
 	public ResponseEntity<Responsavel> consultarPorId(@PathVariable Integer id) {
 		Responsavel profissional = service.consultarPorId(id);
@@ -74,20 +64,18 @@ public class ResponsavelResource {
 		return ResponseEntity.ok().body(new ResponsavelDTO(profissional));
 	}
 
-	//@PreAuthorize("hasAnyRole('ADMIN')")
 	@PostMapping
 	public ResponseEntity<Responsavel> inserir(@Valid @RequestBody ResponsavelNewDTO profissionalNewDto) {
 		Responsavel profissional = service.fromDTO(profissionalNewDto);
 		profissional = service.inserir(profissional);
 
-		// Mapear o recurso -> instituicao + id
+		// Mapear o recurso -> responsavel + id
 
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(profissional.getId()).toUri();
 
 		return ResponseEntity.created(uri).body(profissional);
 	}
 
-	//@PreAuthorize("hasAnyRole('ADMIN')")
 	@PutMapping("/{id}")
 	public ResponseEntity<Responsavel> atualizar(@Valid @RequestBody ResponsavelDTO profissionalDto,
 			@PathVariable Integer id) {
@@ -96,14 +84,12 @@ public class ResponsavelResource {
 		return ResponseEntity.ok(profissional);
 	}
 
-	//@PreAuthorize("hasAnyRole('ADMIN')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> remover(@PathVariable Integer id) {
 		service.remover(id);
 		return ResponseEntity.noContent().build();
 	}
 
-	//@PreAuthorize("hasAnyRole('PROFISSIONAL', 'ADMIN')")
 	@GetMapping("/{email}/alunos")
 	public ResponseEntity<List<AlunoDTO>> consultarAlunosPorEmailResponsavel(@PathVariable String email) {
 		List<Aluno> lista = alunoService.consultarAlunosPorEmailResponsavel(email);

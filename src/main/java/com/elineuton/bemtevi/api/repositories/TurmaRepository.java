@@ -23,10 +23,4 @@ public interface TurmaRepository extends JpaRepository<Turma, Integer> {
 	
 	List<Turma> findByUnidade(Unidade unidade);
 	
-	/*
-	 * @Query("select t.nome from Turma t join Lotacao l on t.id = l.id.turma and l.id.profissional = :profissional"
-	 * ) List<String> findNomeTurmaByProfissional(@Param("profissional")
-	 * Profissional profissional);
-	 */
-	
 }

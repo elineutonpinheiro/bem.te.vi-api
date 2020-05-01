@@ -37,6 +37,4 @@ public class LotacaoDTO implements Serializable {
 		this.profissionalId = lotacao.getProfissional().getId();
 	}
 	
-	
-	
 }

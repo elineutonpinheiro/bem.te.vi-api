@@ -8,8 +8,6 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,16 +19,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.elineuton.bemtevi.api.domain.Avaliacao;
 import com.elineuton.bemtevi.api.domain.Lotacao;
 import com.elineuton.bemtevi.api.domain.Profissional;
 import com.elineuton.bemtevi.api.domain.Turma;
-import com.elineuton.bemtevi.api.dto.AvaliacaoDTO;
 import com.elineuton.bemtevi.api.dto.LotacaoDTO;
 import com.elineuton.bemtevi.api.dto.ProfissionalDTO;
 import com.elineuton.bemtevi.api.dto.ProfissionalNewDTO;
 import com.elineuton.bemtevi.api.dto.TurmaDTO;
-import com.elineuton.bemtevi.api.services.AvaliacaoService;
 import com.elineuton.bemtevi.api.services.LotacaoService;
 import com.elineuton.bemtevi.api.services.ProfissionalService;
 import com.elineuton.bemtevi.api.services.TurmaService;
@@ -47,12 +42,8 @@ public class ProfissionalResource {
 	private TurmaService turmaService;
 	
 	@Autowired
-	private AvaliacaoService avaliacaoService;
-	
-	@Autowired
 	private LotacaoService lotacaoService;
 
-	//@PreAuthorize("hasAnyRole('ADMIN')")
 	@GetMapping
 	public ResponseEntity<List<ProfissionalDTO>> listar() {
 		List<Profissional> lista = service.listar();
@@ -60,10 +51,7 @@ public class ProfissionalResource {
 				.collect(Collectors.toList());
 		return ResponseEntity.ok(listaDto);
 	}
-
-	// ------- Usuário só recupera ele mesmo --------//
 	
-	//@PreAuthorize("hasAnyRole('ADMIN')")
 	@GetMapping("/{id}")
 	public ResponseEntity<Profissional> consultarPorId(@PathVariable Integer id) {
 		Profissional profissional = service.consultarPorId(id);
@@ -76,20 +64,18 @@ public class ProfissionalResource {
 		return ResponseEntity.ok().body(new ProfissionalDTO(profissional));
 	}
 
-	//@PreAuthorize("hasAnyRole('ADMIN')")
 	@PostMapping
 	public ResponseEntity<Profissional> inserir(@Valid @RequestBody ProfissionalNewDTO profissionalNewDto) {
 		Profissional profissional = service.fromDTO(profissionalNewDto);
 		profissional = service.inserir(profissional);
 
-		// Mapear o recurso -> instituicao + id
+		// Mapear o recurso -> profissional + id
 
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(profissional.getId()).toUri();
 
 		return ResponseEntity.created(uri).body(profissional);
 	}
 
-	//@PreAuthorize("hasAnyRole('ADMIN')")
 	@PutMapping("/{id}")
 	public ResponseEntity<Profissional> atualizar(@Valid @RequestBody ProfissionalDTO profissionalDto,
 			@PathVariable Integer id) {
@@ -98,14 +84,12 @@ public class ProfissionalResource {
 		return ResponseEntity.ok(profissional);
 	}
 
-	//@PreAuthorize("hasAnyRole('ADMIN')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> remover(@PathVariable Integer id) {
 		service.remover(id);
 		return ResponseEntity.noContent().build();
 	}
 
-	//@PreAuthorize("hasAnyRole('PROFISSIONAL', 'ADMIN')")
 	@GetMapping("/{email}/turmas")
 	public ResponseEntity<List<TurmaDTO>> consultarTurmasPorEmailProfissional(@PathVariable String email) {
 		List<Turma> lista = turmaService.consultarTurmasPorEmailProfissional(email);
@@ -122,7 +106,6 @@ public class ProfissionalResource {
 	}
 	*/
 	
-	//@PreAuthorize("hasAnyRole('ADMIN')")
 	@GetMapping("/{id}/lotacoes")
 	public ResponseEntity<List<LotacaoDTO>> consultarLotacaosPorProfissionalId(@PathVariable Integer id) {
 		List<Lotacao> lista = lotacaoService.consultarLotacaoPorProfissionalId(id);

@@ -10,11 +10,8 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.elineuton.bemtevi.api.domain.Aluno;
 import com.elineuton.bemtevi.api.domain.Instituicao;
-import com.elineuton.bemtevi.api.domain.Profissional;
 import com.elineuton.bemtevi.api.domain.Responsavel;
-import com.elineuton.bemtevi.api.domain.Turma;
 import com.elineuton.bemtevi.api.domain.enums.TipoParentesco;
 import com.elineuton.bemtevi.api.dto.ResponsavelDTO;
 import com.elineuton.bemtevi.api.dto.ResponsavelNewDTO;
@@ -113,7 +110,6 @@ public class ResponsavelService {
 			responsavel.setQtdeMatriculas(matriculaRepository.countMatriculasPorResponsavel(responsavel));
 		}
 		 
-		
 		return lista;
 	}
 
