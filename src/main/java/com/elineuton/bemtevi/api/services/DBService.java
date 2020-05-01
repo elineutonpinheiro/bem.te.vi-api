@@ -137,7 +137,7 @@ public class DBService {
 		Lotacao lot3 = new Lotacao(t3, p2, LocalDate.now(), LocalDate.now().plusYears(1));
 		
 		Responsavel resp1 = new Responsavel("Felipe Melim", TipoParentesco.PAI, "felipemelim@gmail.com", passwordEnconder.encode("456789"), true);
-		Responsavel resp2 = new Responsavel("Livia Sousa", TipoParentesco.AVO_M, "liviasousa@gmail.com", passwordEnconder.encode("987654"), true);
+		Responsavel resp2 = new Responsavel("Livia Sousa", TipoParentesco.AVO, "liviasousa@gmail.com", passwordEnconder.encode("987654"), true);
 		
 		responsavelRepository.saveAll(Arrays.asList(resp1, resp2));
 		

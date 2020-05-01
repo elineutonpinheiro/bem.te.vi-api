@@ -21,7 +21,7 @@ public class ResponsavelNewDTO implements Serializable {
 	private String nome;
 	
 	@Getter @Setter
-	private TipoParentesco parentesco;
+	private String parentesco;
 	
 	@Getter @Setter
 	private String email;
@@ -35,10 +35,23 @@ public class ResponsavelNewDTO implements Serializable {
 	public ResponsavelNewDTO(Responsavel responsavel) {
 		this.id = responsavel.getId();
 		this.nome = responsavel.getNome();
-		this.parentesco = responsavel.getParentesco();
+		this.parentesco = this.gerarStringParentesco(responsavel.getParentesco());
 		this.email = responsavel.getEmail();
 		this.senha = responsavel.getSenha();
 		this.ativo = responsavel.getAtivo();
+	}
+	
+	private String gerarStringParentesco(TipoParentesco tipoParentesco) {
+		switch (tipoParentesco) {
+		case PAI:
+			return "Pai";
+		case MAE:
+			return "Mãe";
+		case TIO:
+			return "Tio(a)";
+		default:
+			return "Avô/Avó";
+		}
 	}
 	
 }

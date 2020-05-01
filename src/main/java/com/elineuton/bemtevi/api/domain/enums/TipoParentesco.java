@@ -7,8 +7,8 @@ public enum TipoParentesco {
 	
 	PAI("PAI"),
 	MAE("MÃE"),
-	AVO_M("AVÔ"),
-	AVO_F("AVÓ");
+	TIO("TIO(A)"),
+	AVO("AVÔ/AVÓ");
 	
 	@Getter @Setter
 	private String descricao;

@@ -32,9 +32,23 @@ public class ResponsavelDTO implements Serializable {
 	public ResponsavelDTO(Responsavel responsavel) {
 		this.id = responsavel.getId();
 		this.nome = responsavel.getNome();
-		this.parentesco = responsavel.getParentesco().getDescricao();
+		this.parentesco = this.gerarStringParentesco(responsavel.getParentesco());
 		this.ativo = responsavel.getAtivo();
 		this.qtdeMatriculas = responsavel.getQtdeMatriculas();
 	}
+	
+	private String gerarStringParentesco(TipoParentesco tipoParentesco) {
+		switch (tipoParentesco) {
+		case PAI:
+			return "Pai";
+		case MAE:
+			return "Mãe";
+		case TIO:
+			return "Tio(a)";
+		default:
+			return "Avô/Avó";
+		}
+	}
+
 	
 }

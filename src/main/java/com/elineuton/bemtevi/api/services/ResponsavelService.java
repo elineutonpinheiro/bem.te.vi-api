@@ -15,6 +15,7 @@ import com.elineuton.bemtevi.api.domain.Instituicao;
 import com.elineuton.bemtevi.api.domain.Profissional;
 import com.elineuton.bemtevi.api.domain.Responsavel;
 import com.elineuton.bemtevi.api.domain.Turma;
+import com.elineuton.bemtevi.api.domain.enums.TipoParentesco;
 import com.elineuton.bemtevi.api.dto.ResponsavelDTO;
 import com.elineuton.bemtevi.api.dto.ResponsavelNewDTO;
 import com.elineuton.bemtevi.api.repositories.MatriculaRepository;
@@ -79,17 +80,30 @@ public class ResponsavelService {
 	}
 	
 	public Responsavel fromDTO(ResponsavelDTO responsavelDTO) {
-		return new Responsavel(responsavelDTO.getNome(), responsavelDTO.getParentesco(), null, null, responsavelDTO.getAtivo());
+		return new Responsavel(responsavelDTO.getNome(), this.gerarEnumParentesco(responsavelDTO.getParentesco()), null, null, responsavelDTO.getAtivo());
 	}
 	
 	public Responsavel fromDTO(ResponsavelNewDTO responsavelNewDTO) {
 		return new Responsavel(responsavelNewDTO.getNome(), 
-				responsavelNewDTO.getParentesco(), 
+				this.gerarEnumParentesco(responsavelNewDTO.getParentesco()), 
 				passwordEncoder.encode(responsavelNewDTO.getEmail()), 
 				passwordEncoder.encode(responsavelNewDTO.getSenha()), 
 				responsavelNewDTO.getAtivo());
 	}
 	
+	private TipoParentesco gerarEnumParentesco(String descricao) {
+		switch (descricao) {
+		case "Pai":
+			return TipoParentesco.PAI;
+		case "Mãe":
+			return TipoParentesco.MAE;
+		case "Tio(a)":
+			return TipoParentesco.TIO;
+		default:
+			return TipoParentesco.AVO;
+		}
+	}
+
 	public List<Responsavel> consultarResponsaveisPorInstituicaoId(Integer id) {
 		Instituicao instituicao = instituicaoService.consultaPorId(id);
 		List<Responsavel> lista = repo.findByInstituicao(instituicao);
