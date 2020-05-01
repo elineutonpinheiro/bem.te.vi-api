@@ -34,9 +34,6 @@ public class Aluno implements Serializable {
 	@Getter @Setter
 	private String dataNascimento;
 	
-	@Getter @Setter
-	private LocalDate dataPresenca;
-	
 	@ManyToOne
 	@JoinColumn(foreignKey = @ForeignKey(name = "fk_responsavel_id"))
 	@Getter @Setter
