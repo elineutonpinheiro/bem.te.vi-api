@@ -32,7 +32,7 @@ public class Aluno implements Serializable {
 	private String nome;
 
 	@Getter @Setter
-	private String dataNascimento;
+	private LocalDate dataNascimento;
 	
 	@ManyToOne
 	@JoinColumn(foreignKey = @ForeignKey(name = "fk_responsavel_id"))
@@ -52,9 +52,9 @@ public class Aluno implements Serializable {
 	 */
 	
 	@Getter @Setter
-	private Boolean ativo;
+	private boolean ativo;
 
-	public Aluno(String nome, String dataNascimento, Responsavel responsavel, Boolean ativo) {
+	public Aluno(String nome, LocalDate dataNascimento, Responsavel responsavel, boolean ativo) {
 		this.nome = nome;
 		this.dataNascimento = dataNascimento;
 		this.responsavel = responsavel;
