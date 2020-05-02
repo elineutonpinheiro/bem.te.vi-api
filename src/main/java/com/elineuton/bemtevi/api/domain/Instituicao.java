@@ -35,9 +35,9 @@ public class Instituicao implements Serializable {
 	private Set<Unidade> unidades = new HashSet<>();
 	
 	@Getter @Setter
-	private Boolean ativa;
+	private boolean ativa;
 
-	public Instituicao(String nome, Boolean ativa) {
+	public Instituicao(String nome, boolean ativa) {
 		this.nome = nome;
 		this.ativa = ativa;
 	}

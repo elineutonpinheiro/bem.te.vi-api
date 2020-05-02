@@ -9,9 +9,11 @@ import javax.persistence.CollectionTable;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 
 import com.elineuton.bemtevi.api.domain.enums.Perfil;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -49,7 +51,7 @@ public class Profissional implements Serializable {
 	private boolean ativo;
 	
 	@ElementCollection(fetch = FetchType.EAGER)
-	@CollectionTable(name = "PERFIS")
+	@CollectionTable(name = "PERFIS", foreignKey = @ForeignKey(name = "fk_perfil_cod"))
 	private Set<Integer> perfis = new HashSet<>();
 	
 	public Profissional() {
