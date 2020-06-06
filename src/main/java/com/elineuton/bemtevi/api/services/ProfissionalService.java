@@ -27,9 +27,6 @@ public class ProfissionalService {
 	@Autowired
 	private InstituicaoService instituicaoService;
 	
-	@Autowired
-	private BCryptPasswordEncoder passwordEncoder;
-	
 	public List<Profissional> listar() {
 		return repo.findAll();
 	}
@@ -79,14 +76,12 @@ public class ProfissionalService {
 	}
 	
 	public Profissional fromDTO(ProfissionalDTO profissionalDTO) {
-		return new Profissional(profissionalDTO.getNome(), profissionalDTO.getCargo(), null, null, profissionalDTO.isAtivo());
+		return new Profissional(profissionalDTO.getNome(), profissionalDTO.getCargo(), null, profissionalDTO.isAtivo());
 	}
 	
 	public Profissional fromDTO(ProfissionalNewDTO profissionalNewDTO) {
 		return new Profissional(profissionalNewDTO.getNome(), profissionalNewDTO.getCargo(), 
-				passwordEncoder.encode(profissionalNewDTO.getEmail()), 
-				passwordEncoder.encode(profissionalNewDTO.getSenha()), 
-				profissionalNewDTO.isAtivo());
+				profissionalNewDTO.getEmail(), profissionalNewDTO.isAtivo());
 	}
 	
 	public List<Profissional> consultarProfissionaisPorInstituicaoId(Integer id) {

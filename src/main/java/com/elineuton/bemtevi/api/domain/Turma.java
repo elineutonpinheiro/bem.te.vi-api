@@ -53,10 +53,14 @@ public class Turma implements Serializable {
 	@Getter	@Setter
 	private AnoLetivo anoLetivo;
 
-	@OneToMany(mappedBy = "turma", fetch = FetchType.LAZY)
-	@JsonIgnore
-	@Getter @Setter
-	private List<Atividade> atividades = new ArrayList<Atividade>();
+	/*
+	 * @OneToMany(mappedBy = "turma", fetch = FetchType.LAZY)
+	 * 
+	 * @JsonIgnore
+	 * 
+	 * @Getter @Setter private List<Atividade> atividades = new
+	 * ArrayList<Atividade>();
+	 */
 	
 	@Getter	@Setter
 	private boolean ativa;

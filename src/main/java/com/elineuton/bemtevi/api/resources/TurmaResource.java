@@ -47,10 +47,10 @@ public class TurmaResource {
 	private AlunoService alunoService;
 	
 	@GetMapping
-	public ResponseEntity<List<TurmaDTO>> listar() {
+	public ResponseEntity<List<Turma>> listar() {
 		List<Turma> lista = service.listar();
-		List<TurmaDTO> listaDto = lista.stream().map(turma -> new TurmaDTO(turma)).collect(Collectors.toList());
-		return ResponseEntity.ok(listaDto);
+//		List<TurmaDTO> listaDto = lista.stream().map(turma -> new TurmaDTO(turma)).collect(Collectors.toList());
+		return ResponseEntity.ok(lista);
 	}
 
 	@GetMapping("/{id}")

@@ -85,7 +85,7 @@ public class TurmaService {
 		Unidade unidade = unidadeService.consultaPorId(turmaDto.getUnidadeId());
 		AnoLetivo anoLetivo = anoLetivoService.consultaPorId(turmaDto.getAnoLetivoId());
 		Turma turma = new Turma(turmaDto.getNome(), unidade, turmaDto.getPeriodo(), 
-				turmaDto.getSala(), anoLetivo, true);
+				turmaDto.getSala(), anoLetivo, turmaDto.isAtiva());
 		return turma;
 	}
 

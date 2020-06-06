@@ -42,10 +42,6 @@ public class Profissional implements Serializable {
 	@JsonIgnore
 	@Getter	@Setter
 	private String email;
-
-	@JsonIgnore
-	@Getter	@Setter
-	private String senha;
 	
 	@Getter	@Setter
 	private boolean ativo;
@@ -58,11 +54,10 @@ public class Profissional implements Serializable {
 		addPerfil(Perfil.PROFISSIONAL);
 	}
 	
-	public Profissional(String nome, String cargo, String email, String senha, boolean ativo) {
+	public Profissional(String nome, String cargo, String email, boolean ativo) {
 		this.nome = nome;
 		this.cargo = cargo;
 		this.email = email;
-		this.senha = senha;
 		this.ativo = ativo;
 		addPerfil(Perfil.PROFISSIONAL);
 	}

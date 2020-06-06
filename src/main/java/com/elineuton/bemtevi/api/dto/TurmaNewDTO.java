@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@NoArgsConstructor
 public class TurmaNewDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -31,5 +30,17 @@ public class TurmaNewDTO implements Serializable {
 	
 	@Getter @Setter
 	private Integer anoLetivoId;
+
+	public TurmaNewDTO(String nome, String periodo, String sala, boolean ativa, Integer unidadeId,
+			Integer anoLetivoId) {
+		this.nome = nome;
+		this.periodo = periodo;
+		this.sala = sala;
+		this.ativa = ativa;
+		this.unidadeId = unidadeId;
+		this.anoLetivoId = anoLetivoId;
+	}
+	
+	
 	
 }

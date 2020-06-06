@@ -23,6 +23,7 @@ import com.elineuton.bemtevi.api.domain.Instituicao;
 import com.elineuton.bemtevi.api.domain.Profissional;
 import com.elineuton.bemtevi.api.domain.Responsavel;
 import com.elineuton.bemtevi.api.domain.Unidade;
+import com.elineuton.bemtevi.api.dto.AlunoNewDTO;
 import com.elineuton.bemtevi.api.dto.ResponsavelDTO;
 import com.elineuton.bemtevi.api.dto.UnidadeDTO;
 import com.elineuton.bemtevi.api.services.AlunoService;
@@ -107,9 +108,10 @@ public class InstituicaoResource {
 	}
 	
 	@GetMapping("/{instituicaoId}/alunos")
-	public ResponseEntity<List<Aluno>> consultarAlunosPorInstituicaoId(@PathVariable Integer instituicaoId) {
+	public ResponseEntity<List<AlunoNewDTO>> consultarAlunosPorInstituicaoId(@PathVariable Integer instituicaoId) {
 		List<Aluno> lista = alunoService.consultarAlunosPorInstituicaoId(instituicaoId);
-		return ResponseEntity.ok(lista);
+		List<AlunoNewDTO> listaDto = lista.stream().map(aluno -> new AlunoNewDTO(aluno)).collect(Collectors.toList());
+		return ResponseEntity.ok(listaDto);
 	}
 	 
 }

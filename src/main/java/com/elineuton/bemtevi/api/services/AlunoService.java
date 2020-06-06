@@ -80,7 +80,7 @@ public class AlunoService {
 	}
 
 	public Aluno fromDTO(AlunoNewDTO alunoDto) {
-		Aluno aluno = alunoService.consultarPorId(alunoDto.getAlunoId());
+		Aluno aluno = alunoService.consultarPorId(alunoDto.getId());
 		//aluno.setPessoalAutorizado(alunoDto.getPessoalAutorizado());
 		//aluno.getPessoalAutorizado().addAll(alunoDto.getPessoalAutorizado());
 		return aluno;

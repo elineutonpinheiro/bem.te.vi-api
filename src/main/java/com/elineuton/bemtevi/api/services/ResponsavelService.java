@@ -32,10 +32,14 @@ public class ResponsavelService {
 	@Autowired
 	private MatriculaRepository matriculaRepository;
 	
-	@Autowired
-	private BCryptPasswordEncoder passwordEncoder;
-	
 	public List<Responsavel> listar() {
+		
+		List<Responsavel> lista = repo.findAll();
+		
+		for (Responsavel responsavel : lista) {
+			responsavel.setQtdeMatriculas(matriculaRepository.countMatriculasPorResponsavel(responsavel));
+		}
+		
 		return repo.findAll();
 	}
 	
@@ -77,15 +81,13 @@ public class ResponsavelService {
 	}
 	
 	public Responsavel fromDTO(ResponsavelDTO responsavelDTO) {
-		return new Responsavel(responsavelDTO.getNome(), this.gerarEnumParentesco(responsavelDTO.getParentesco()), null, null, responsavelDTO.getAtivo());
+		return new Responsavel(responsavelDTO.getNome(), this.gerarEnumParentesco(responsavelDTO.getParentesco()), null, responsavelDTO.getAtivo());
 	}
 	
 	public Responsavel fromDTO(ResponsavelNewDTO responsavelNewDTO) {
 		return new Responsavel(responsavelNewDTO.getNome(), 
 				this.gerarEnumParentesco(responsavelNewDTO.getParentesco()), 
-				passwordEncoder.encode(responsavelNewDTO.getEmail()), 
-				passwordEncoder.encode(responsavelNewDTO.getSenha()), 
-				responsavelNewDTO.getAtivo());
+				responsavelNewDTO.getEmail(), responsavelNewDTO.getAtivo());
 	}
 	
 	private TipoParentesco gerarEnumParentesco(String descricao) {

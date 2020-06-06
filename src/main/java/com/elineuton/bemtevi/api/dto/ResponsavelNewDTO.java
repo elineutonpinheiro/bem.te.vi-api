@@ -26,9 +26,6 @@ public class ResponsavelNewDTO implements Serializable {
 	@Getter @Setter
 	private String email;
 	
-	@Getter @Setter
-	private String senha;
-	
 	@Getter	@Setter
 	private Boolean ativo;
 	
@@ -37,7 +34,6 @@ public class ResponsavelNewDTO implements Serializable {
 		this.nome = responsavel.getNome();
 		this.parentesco = this.gerarStringParentesco(responsavel.getParentesco());
 		this.email = responsavel.getEmail();
-		this.senha = responsavel.getSenha();
 		this.ativo = responsavel.isAtivo();
 	}
 	
